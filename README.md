@@ -1,0 +1,4 @@
+lmsclient
+=========
+
+Docebo mobile client
