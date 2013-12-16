@@ -31,3 +31,6 @@ proguard/
 # Phonegap not needed folders
 *.cordova
 /platforms
+
+# Mac Files
+.DS_Store
