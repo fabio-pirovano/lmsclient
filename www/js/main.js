@@ -1,4 +1,4 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'utils/ConfigurationManager'], (function($, $ui, login, config){
+;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView'], (function($, $ui, login){
 
     var onDeviceReady = function(){
 
@@ -41,9 +41,6 @@
         }
 
         console.log('the device is READY!!!!')
-
-        // Initialize the configuration manager
-        config.init();
 
         $("#afui").get(0).className = platform;
 

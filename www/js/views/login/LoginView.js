@@ -10,9 +10,6 @@
 
         console.log('mo loggo', evt, config.logoExists(), this);
 
-       // var event = new CustomEvent('FREGNA');
-       // this.dispatchEvent(event);
-
         evt.preventDefault();
 
         if(config.logoExists()){
@@ -77,8 +74,9 @@
 
     var init = function(){
 
-        // TODO move it to a new init method
+        // Initialize the loader and configuration managers
         logoLoader.init();
+        config.init();
 
         username =  $('#username');
         password =  $('#password');

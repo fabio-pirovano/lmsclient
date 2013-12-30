@@ -1,5 +1,8 @@
 ;define('utils/LogoLoader', ['base64'], (function(base64){
 
+
+    console.log('utils/LogoLoader', this);
+
     var events = {
                   LOGO_DOWNLOADED: 'logoDownloaded',
                   LOGO_DOWNLOAD_ERROR: 'logoDownloadError',
@@ -146,7 +149,7 @@
 
         if (url){
 
-            var m = url.toString().match(/.*\/(.+?)\./);
+            var m = (url.match(/[^\\/]+\.[^\\/]+$/) || []).pop();
 
             if (m && m.length > 1){
 
