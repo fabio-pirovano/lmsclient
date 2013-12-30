@@ -113,3 +113,86 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+
+
+#logo{
+
+    background-image: url(../img/logo_white.png);
+    background-repeat: no-repeat;
+    height: 40px;
+}
+
+select#language{
+
+    width: 50% !important;
+    float: right !important;
+
+}
+
+/* ============= GRID SYSTEM ===================== */
+
+.col2{
+
+    width: 50% !important;
+    float: left !important;
+
+}
+
+/* ============= LOGIN FORM ===================== */
+
+input.login{
+
+    background-repeat: no-repeat !important;
+    text-indent: 20px !important;
+
+}
+
+input#username {
+
+    background-image: url(../img/user.png) !important;
+
+}
+
+input#password {
+
+    background-image: url(../img/lock.png) !important;
+
+}
+input#website {
+
+    background-image: url(../img/globe.png)  !important;
+
+}
+
+#do-login {
+
+    width: 100%;
+
+}
+
+a#recover-password{
+
+    border: transparent !important;
+    background: transparent !important;
+    color: white !important;
+
+    width: 100%;
+
+}
+
+/* ================================== */
+
+#afui .centered {
+   /* top:30px !important; */ /* Change top to what the header height is */
+   /* bottom:0px !important; */ /* We are not showing the navbar */
+
+   /*
+    background:rgba(0,0,0,.7) !important;
+    */
+
+    top: 20% !important;
+    height: 80% !important;
+
+}
+
