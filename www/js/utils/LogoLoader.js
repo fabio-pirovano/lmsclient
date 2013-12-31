@@ -1,8 +1,5 @@
 ;define('utils/LogoLoader', ['base64'], (function(base64){
 
-
-    console.log('utils/LogoLoader', this);
-
     var events = {
                   LOGO_DOWNLOADED: 'logoDownloaded',
                   LOGO_DOWNLOAD_ERROR: 'logoDownloadError',
@@ -153,7 +150,7 @@
 
             if (m && m.length > 1){
 
-                return m[1];
+                return m;
 
             }
         }

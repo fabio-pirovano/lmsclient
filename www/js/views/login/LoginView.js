@@ -15,8 +15,13 @@
 
         if(config.logoExists()){
 
-            controller.doLogin($username.val(), $password.val(), $domain.val());
-            showLoader();
+            $("#login-loader").find("img").prop('src', config.configurationItem('logo'));
+
+            showLoader('', function(){
+
+                controller.doLogin($username.val(), $password.val(), $domain.val());
+
+            }, 'login-loader');
 
         }else{
 
@@ -32,10 +37,13 @@
 
                     config.saveConfig('logo', evt.detail.logoData);
 
-                    controller.doLogin($username.val(), $password.val(), $domain.val());
-                    showLoader();
+                    $("#login-loader").find("img").prop('src', config.configurationItem('logo'));
 
-                    // TODO show the new screen with the logo and handle successful or unseccsful authentication
+                    showLoader('', function(){
+
+                        controller.doLogin($username.val(), $password.val(), $domain.val());
+
+                    }, 'login-loader');
 
                 });
 
@@ -52,10 +60,12 @@
 
     };
 
-    var showLoader = function(msg){
+    var showLoader = function(msg, callBack, panel){
 
         // TODO Make the mask string multi language
-        if(msg){
+
+
+        if(msg && msg != ''){
 
             $.ui.showMask(msg);
 
@@ -64,6 +74,25 @@
             $.ui.showMask('Authenticating...');
 
         }
+
+        if(callBack){
+
+            $('#' + panel).bind('loadpanel', function(e){
+
+                console.log(e);
+                callBack();
+
+            });
+
+        }
+
+        if(panel){
+
+            $.ui.loadContent(panel, false, false, 'up');
+
+        }
+
+
 
     };
 

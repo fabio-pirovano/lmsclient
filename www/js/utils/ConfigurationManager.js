@@ -7,11 +7,12 @@
                   ITEM_ADDED: 'onItemAdded'};
 
     // Module variables
-    var db, logoExists, isReady;
+    var db, logoExists, isReady, data;
     var that = this;
 
     var initDatabase = function(tx) {
 
+        data = {};
         tx.executeSql("CREATE TABLE IF NOT EXISTS 'configuration' ('id' INTEGER PRIMARY KEY, 'name' TEXT, 'value' BLOB)");
 
     };
@@ -20,8 +21,6 @@
 
         db = window.openDatabase('docebo', '1.0', 'docebo-lms', 1024 * 1024 * 20);
         db.transaction(initDatabase, onInitError, onInitSuccess);
-
-        // console.log('that', that, this);
 
     };
 
@@ -43,14 +42,18 @@
 
         }, databaseError);
 
-        // console.log('that', that, this);
-
     };
 
     var onLogoResult = function (tx, results) {
 
         console.log('on logo quey result', tx, results, results.rows.length);
         logoExists = Boolean(results.rows.length);
+
+        if(logoExists){
+
+            data['logo'] = results.rows.item(0).value;
+
+        }
 
         var event = new CustomEvent(events.DATA_READY, {detail: {logoExists: logoExists}});
         this.dispatchEvent(event);
@@ -88,6 +91,12 @@
 
     };
 
+    var getConfigurationItem = function(name){
+
+        return data[name];
+
+    };
+
     var saveConfigurationItem = function(name, value){
 
         db.transaction(function(tx){
@@ -98,6 +107,7 @@
 
         }, databaseError);
 
+        data[name] = value;
         // console.log('that', that, this);
 
     };
@@ -119,6 +129,7 @@
         logoExists: doLogoExists,
         isReady: doIsReady,
         saveConfig: saveConfigurationItem,
+        configurationItem: getConfigurationItem,
         events: events
 
     }

@@ -40,9 +40,7 @@
 
         }
 
-        console.log('the device is READY!!!!')
-
-        $("#afui").get(0).className = platform;
+        $('#afui').get(0).className = platform;
 
         $(document).ready(function(){
 
@@ -59,7 +57,8 @@
         console.log($);
 
         document.addEventListener('deviceready', onDeviceReady, false);
-        onDeviceReady();
+        // onDeviceReady();
+
 
     };
 
