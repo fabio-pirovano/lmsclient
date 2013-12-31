@@ -29,7 +29,7 @@
 
     var initValidation = function(form){
 
-        console.log('init validation', form);
+        console.log('init validation', form, happy);
 
         //TODO add multi-language messages
 
@@ -58,7 +58,8 @@
                     test: validators.website
 
                 }
-            }
+            },
+            submitButton: '#do-login'
         });
 
     };

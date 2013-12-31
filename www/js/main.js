@@ -59,7 +59,7 @@
         console.log($);
 
         document.addEventListener('deviceready', onDeviceReady, false);
-        // onDeviceReady();
+        onDeviceReady();
 
     };
 

@@ -3,7 +3,8 @@
                                   (function($, document, controller, config, logoLoader, infoProvider){
 
 
-    var username, password, domain, doLogin, forgotPassword;
+    var $username, $password, $domain,
+        $form, $forgotPassword;
 
 
     var onLogin = function(evt){
@@ -14,7 +15,7 @@
 
         if(config.logoExists()){
 
-            controller.doLogin(username.val(), password.val(), domain.val());
+            controller.doLogin($username.val(), $password.val(), $domain.val());
             showLoader();
 
         }else{
@@ -31,7 +32,7 @@
 
                     config.saveConfig('logo', evt.detail.logoData);
 
-                    controller.doLogin(username.val(), password.val(), domain.val());
+                    controller.doLogin($username.val(), $password.val(), $domain.val());
                     showLoader();
 
                     // TODO show the new screen with the logo and handle successful or unseccsful authentication
@@ -78,30 +79,30 @@
         logoLoader.init();
         config.init();
 
-        username =  $('#username');
-        password =  $('#password');
-        domain =    $('#website');
+        $username =  $('#username');
+        $password =  $('#password');
+        $domain =    $('#website');
 
-        doLogin = $('#do-login');
-        forgotPassword = $('#recover-password');
+        $form = $('#login-form');
+        $forgotPassword = $('#recover-password');
 
         // console.log('aqui', $, username, password, domain);
 
-        controller.initValidation($('#login-form'));
+        controller.initValidation($form);
 
-        doLogin.bind('click', onLogin, true);
-        forgotPassword.bind('tap', controller.recoverPassword);
+        $form.bind('submit', onLogin);
+        $forgotPassword.bind('tap', controller.recoverPassword);
 
     };
 
     var dispose = function(){
 
-        doLogin.unbind('click', controller.doLogin);
-        forgotPassword.unbind('click', controller.recoverPassword);
+        $form.unbind('submit', controller.doLogin);
+        $forgotPassword.unbind('click', controller.recoverPassword);
 
-        username.val('');
-        password.val('');
-        domain.val('');
+        $username.val('');
+        $password.val('');
+        $domain.val('');
 
     };
 
