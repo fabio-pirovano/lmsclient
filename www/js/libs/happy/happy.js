@@ -108,10 +108,8 @@
         } else {
             this.bind('submit', handleSubmit);
         }
-        console.log('sdasdasdasdadadadadada', this)
+
         return this;
     };
 
-})(this.jQuery || this.Zepto || this.$)
-
-);
+})(this.jQuery || this.Zepto || this.$));

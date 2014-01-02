@@ -1,148 +1,101 @@
-;define('views/login/LoginView', ['appframework', 'domReady!',
-                                  'controllers/Login', 'utils/ConfigurationManager', 'utils/LogoLoader', 'utils/InfoProvider'],
-                                  (function($, document, controller, config, logoLoader, infoProvider){
+;define('views/login/LoginView', ['appframework', 'controllers/Login'],
+    (function($, controller){
 
 
-    var $username, $password, $domain,
-        $form, $forgotPassword;
+        var $username, $password, $domain,
+            $form, $forgotPassword;
 
 
-    var onLogin = function(evt){
+        var onLogin = function(evt){
 
-        console.log('mo loggo', evt, config.logoExists(), this);
+            evt.preventDefault();
 
-        evt.preventDefault();
+            var username, password;
+            username = $username.val();
+            password = $password.val();
 
-        if(config.logoExists()){
+            controller.doLogin(username, password);
 
-            $("#login-loader").find("img").prop('src', config.configurationItem('logo'));
+        };
 
-            showLoader('', function(){
+        var showLoader = function(msg, callBack, panel){
 
-                controller.doLogin($username.val(), $password.val(), $domain.val());
+            // TODO Make the mask string multi language
+            if(msg && msg != ''){
 
-            }, 'login-loader');
+                $.ui.showMask(msg);
 
-        }else{
+            }else{
 
-            console.log('event', infoProvider.events.API_INFO_DATA_READY, this);
+                $.ui.showMask('Authenticating...');
 
-            addEventListener(infoProvider.events.API_INFO_DATA_READY, function(evt){
+            }
 
-                evt.target.removeEventListener(evt.type, arguments.callee);
+            if(callBack){
 
-                addEventListener(logoLoader.events.LOGO_DATA_READY, function(evt){
+                $('#' + panel).bind('loadpanel', function(e){
 
-                    evt.target.removeEventListener(evt.type, arguments.callee);
-
-                    config.saveConfig('logo', evt.detail.logoData);
-
-                    $("#login-loader").find("img").prop('src', config.configurationItem('logo'));
-
-                    showLoader('', function(){
-
-                        controller.doLogin($username.val(), $password.val(), $domain.val());
-
-                    }, 'login-loader');
+                    callBack();
 
                 });
 
-                console.log('GETTING READY TO LOAD', infoProvider.logoURL(), this);
+            }
 
-                logoLoader.load(infoProvider.logoURL());
+            if(panel){
 
-            });
+                $.ui.loadContent(panel, false, false, 'up');
 
-            infoProvider.getInfo();
-            showLoader('Loading assets...');
+            }
 
-        }
+        };
 
-    };
+        var hideLoader = function(){
 
-    var showLoader = function(msg, callBack, panel){
+            $.ui.hideMask();
 
-        // TODO Make the mask string multi language
+        };
 
+        var init = function(){
 
-        if(msg && msg != ''){
+            controller.init(this);
 
-            $.ui.showMask(msg);
+            $username =  $('#username');
+            $password =  $('#password');
+            $domain =    $('#website');
 
-        }else{
+            $form = $('#login-form');
+            $forgotPassword = $('#recover-password');
 
-            $.ui.showMask('Authenticating...');
+            require(['libs/happy/happy'], function(happy){
 
-        }
-
-        if(callBack){
-
-            $('#' + panel).bind('loadpanel', function(e){
-
-                console.log(e);
-                callBack();
+                controller.initValidation($form);
 
             });
 
+            $form.bind('submit', onLogin);
+            $forgotPassword.bind('tap', controller.recoverPassword);
+
+        };
+
+        var dispose = function(){
+
+            $form.unbind('submit', onLogin);
+            $forgotPassword.unbind('tap', controller.recoverPassword);
+
+            $username.val('');
+            $password.val('');
+            $domain.val('');
+
+        };
+
+
+        return {
+
+            init: init,
+            dispose: dispose,
+            showLoader: showLoader,
+            hideLoader: hideLoader
+
         }
 
-        if(panel){
-
-            $.ui.loadContent(panel, false, false, 'up');
-
-        }
-
-
-
-    };
-
-    var hideLoader = function(){
-
-        $.ui.hideMask();
-
-    };
-
-    var init = function(){
-
-        // Initialize the loader and configuration managers
-        logoLoader.init();
-        config.init();
-
-        $username =  $('#username');
-        $password =  $('#password');
-        $domain =    $('#website');
-
-        $form = $('#login-form');
-        $forgotPassword = $('#recover-password');
-
-        // console.log('aqui', $, username, password, domain);
-
-        controller.initValidation($form);
-
-        $form.bind('submit', onLogin);
-        $forgotPassword.bind('tap', controller.recoverPassword);
-
-    };
-
-    var dispose = function(){
-
-        $form.unbind('submit', controller.doLogin);
-        $forgotPassword.unbind('click', controller.recoverPassword);
-
-        $username.val('');
-        $password.val('');
-        $domain.val('');
-
-    };
-
-
-    return {
-
-        init: init,
-        dispose: dispose,
-        showLoader: showLoader,
-        hideLoader: hideLoader
-
-    }
-
-}));
+    }));
