@@ -3,6 +3,7 @@ define('utils/InfoProvider', ['core/Constants'], (function(Constants){
     var events = {API_INFO_DATA_READY: 'onInfoDataReady'};
 
     var logoURL, dataCache;
+    var that = this;
 
     var getInfo = function(){
 
@@ -42,10 +43,10 @@ define('utils/InfoProvider', ['core/Constants'], (function(Constants){
 
     var dataReady = function(){
 
-        console.log('ON DATA READY', logoURL, this, this.dispatchEvent)
+        // console.log('ON DATA READY', logoURL, this, this.dispatchEvent)
 
         var event = new CustomEvent(events.API_INFO_DATA_READY, {bubbles: true, cancelable: true});
-        this.dispatchEvent(event);
+        that.dispatchEvent(event);
 
         /*
         var evt = document.createEvent("Event");

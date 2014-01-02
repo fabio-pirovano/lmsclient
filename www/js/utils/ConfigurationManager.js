@@ -12,12 +12,17 @@
 
     var initDatabase = function(tx) {
 
-        data = {};
+        // console.log('utils/ConfigurationManager => initDatbase', this, that);
+
         tx.executeSql("CREATE TABLE IF NOT EXISTS 'configuration' ('id' INTEGER PRIMARY KEY, 'name' TEXT, 'value' BLOB)");
 
     };
 
     var init = function(){
+
+        // console.log('utils/ConfigurationManager => init', this, that);
+
+        data = {};
 
         db = window.openDatabase('docebo', '1.0', 'docebo-lms', 1024 * 1024 * 20);
         db.transaction(initDatabase, onInitError, onInitSuccess);
@@ -33,6 +38,8 @@
 
     var onInitSuccess = function () {
 
+        // console.log('utils/ConfigurationManager => onInitSuccess', this, that);
+
         isReady = true;
 
         db.transaction(function(tx){
@@ -46,6 +53,8 @@
 
     var onLogoResult = function (tx, results) {
 
+        // console.log('utils/ConfigurationManager => onLogoResult', this, that);
+
         console.log('on logo quey result', tx, results, results.rows.length);
         logoExists = Boolean(results.rows.length);
 
@@ -56,9 +65,9 @@
         }
 
         var event = new CustomEvent(events.DATA_READY, {detail: {logoExists: logoExists}});
-        this.dispatchEvent(event);
+        that.dispatchEvent(event);
 
-        // console.log('that', that, this);
+        console.log('logoExists', logoExists, that);
 
     };
 
@@ -99,6 +108,8 @@
 
     var saveConfigurationItem = function(name, value){
 
+        // console.log('utils/ConfigurationManager => saveConfigurationItem', this, that);
+
         db.transaction(function(tx){
 
            // tx.executeSql('INSERT INTO configuration (name, value) VALUES (?,?)', [name, value], onLogoResult, databaseError);
@@ -119,7 +130,7 @@
         var event = new CustomEvent(events.ITEM_ADDED, {detail: {results: results}});
         that.dispatchEvent(event);
 
-        console.log('that', that, this);
+        // console.log('that', that, this);
 
     }
 

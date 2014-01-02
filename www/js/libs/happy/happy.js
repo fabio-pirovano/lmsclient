@@ -108,6 +108,7 @@
         } else {
             this.bind('submit', handleSubmit);
         }
+        console.log('sdasdasdasdadadadadada', this)
         return this;
     };
 

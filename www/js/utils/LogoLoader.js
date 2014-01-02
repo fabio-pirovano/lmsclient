@@ -10,8 +10,13 @@
                  };
 
     var fileSystem, filePath, logoData;
+    var that = this;
 
     var init = function(){
+
+        // console.log('utils/LogoLoader => init', this, that);
+
+        // return;
 
         window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, function(fs){
 
@@ -25,6 +30,8 @@
     };
 
     var loadLogo = function(url){
+
+        // console.log('utils/LogoLoader => loadLogo', this, that);
 
         var uri = encodeURI(url);
 
@@ -53,7 +60,7 @@
                 console.log("download complete ******************************: " + entry.fullPath, this);
 
                 var event = new CustomEvent(events.LOGO_DOWNLOADED, {detail: {logoPath: entry.fullPath}});
-                this.dispatchEvent(event);
+                that.dispatchEvent(event);
 
                 readLogoData(entry.fullPath, true);
 
@@ -65,7 +72,7 @@
                 console.log("download error code"    +  error.code);
 
                 var event = new CustomEvent(events.LOGO_DOWNLOAD_ERROR, {detail: {error: error.code, source: error.source}});
-                this.dispatchEvent(event);
+                that.dispatchEvent(event);
 
             },
             false,
@@ -81,11 +88,8 @@
 
     var readLogoData = function(path, destroy){
 
-        var that = this;
 
-        console.log(arguments)
-
-   //     return;
+       // console.log('utils/LogoLoader => readLogoData', this, that);
 
         fileSystem.root.getFile(path, {create: false, exclusive: true},
                                 function (fileEntry) {
@@ -138,7 +142,7 @@
         console.log("download error code"    +  error.code);
 
         var event = new CustomEvent(events.FILE_ERROR, {detail: {error: error.code, source: error.source}});
-        this.dispatchEvent(event);
+        that.dispatchEvent(event);
 
     };
 

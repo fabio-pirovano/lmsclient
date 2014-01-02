@@ -1,7 +1,6 @@
-;
-define((function () {
+;define((function () {
 
-    var happy = {
+    var methods = {
         USPhone: function (val) {
             return /^\(?(\d{3})\)?[\- ]?\d{3}[\- ]?\d{4}$/.test(val)
         },
@@ -34,7 +33,7 @@ define((function () {
         }
     }
 
-    return happy;
+    return methods;
 
     }
 ));
