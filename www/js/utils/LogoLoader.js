@@ -16,7 +16,7 @@
 
         // console.log('utils/LogoLoader => init', this, that);
 
-        // return;
+        //== return;
 
         window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, function(fs){
 

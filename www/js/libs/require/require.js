@@ -1309,7 +1309,7 @@ var requirejs, require, define;
                             //and remove any trailing .js, since different package
                             //envs have different conventions: some use a module name,
                             //some use a file name.
-                            main: (pkgObj.main || 'main')
+                            main: (pkgObj.main || 'login')
                                   .replace(currDirRegExp, '')
                                   .replace(jsSuffixRegExp, '')
                         };

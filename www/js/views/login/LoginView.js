@@ -49,9 +49,27 @@
 
         };
 
-        var hideLoader = function(){
+        var hideLoader = function(panel){
 
             $.ui.hideMask();
+
+            if(panel){
+
+                $.ui.loadContent(panel, false, false, 'up');
+
+            }
+
+        };
+
+        var doGoNext = function(){
+
+            //TODO handle the app routing since here
+
+        };
+
+        var invalidCredentials = function(msg){
+
+            return document.getElementById($.ui.popup(msg).id);
 
         };
 
@@ -94,7 +112,9 @@
             init: init,
             dispose: dispose,
             showLoader: showLoader,
-            hideLoader: hideLoader
+            hideLoader: hideLoader,
+            invalidCredentials: invalidCredentials,
+            goNext: doGoNext
 
         }
 

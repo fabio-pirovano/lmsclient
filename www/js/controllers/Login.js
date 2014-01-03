@@ -2,7 +2,7 @@
     'utils/ConfigurationManager', 'utils/LogoLoader', 'utils/InfoProvider'],
     (function(happy, validators, Constants, config, logoLoader, infoProvider){
 
-        var view;
+        var view, currentInterval;
         var that = this;
 
         var doRecoverPassword = function(){
@@ -72,6 +72,36 @@
                 success: function( data ) {
 
                     console.log( "Sample of data:", data);
+                    var currentData = JSON.parse(data);
+
+                    if(currentData.success === true){
+
+                        require(['model/User'], function(User){
+
+                            var currentUser = new User();
+
+                            currentUser.username = username;
+                            currentUser.id = currentData.id;
+                            currentUser.token = currentData.token;
+
+                            config.saveConfig('user', JSON.stringify(currentUser));
+
+                            view.hideLoader('courses');
+                            view.goNext();
+
+                        });
+
+
+                    }else{
+
+                        var popup = view.invalidCredentials(currentData.message);
+                        currentInterval = setInterval(function(){
+
+                            handleUnsuccessfulLogin(popup);
+
+                        }, 120);
+
+                    }
 
                 },
                 error: function(xhr, error){
@@ -80,6 +110,32 @@
 
                 }
             });
+
+        }
+
+        var elementInDocument = function(element) {
+
+            while (element = element.parentNode) {
+
+                if (element == document) {
+
+                    return true;
+
+                }
+            }
+
+            return false;
+
+        };
+
+        var handleUnsuccessfulLogin= function(element){
+
+            if(!elementInDocument(element)){
+
+                clearInterval(currentInterval);
+                view.hideLoader('main');
+
+            }
 
         };
 
