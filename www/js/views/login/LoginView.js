@@ -114,7 +114,8 @@
             showLoader: showLoader,
             hideLoader: hideLoader,
             invalidCredentials: invalidCredentials,
-            goNext: doGoNext
+            goNext: doGoNext,
+            getUsername: function(){return $username;}
 
         }
 

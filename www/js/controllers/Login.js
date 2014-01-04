@@ -1,6 +1,6 @@
 ;define('controllers/Login', ['libs/happy/happy', 'libs/happy/happy.methods', 'core/Constants',
-    'utils/ConfigurationManager', 'utils/LogoLoader', 'utils/InfoProvider'],
-    (function(happy, validators, Constants, config, logoLoader, infoProvider){
+    'utils/ConfigurationManager', 'utils/LogoLoader', 'utils/InfoProvider', 'core/DataManager'],
+    (function(happy, validators, Constants, config, logoLoader, infoProvider, dataManager){
 
         var view, currentInterval;
         var that = this;
@@ -13,7 +13,7 @@
 
         var handleLogin = function(username, password){
 
-            console.log(config.logoExists(), this)
+            console.log(config.logoExists(), this);
 
             if(config.logoExists()){
 
@@ -68,7 +68,7 @@
 
                 url: Constants.API_URL,
                 type: 'post',
-                data: JSON.stringify({'details': {'action': 'authenticate', 'username': username , 'password': password }}),
+                data: JSON.stringify({'details': {'action': 'authenticate', "getUsername": username , 'password': password }}),
                 success: function( data ) {
 
                     console.log( "Sample of data:", data);
@@ -80,11 +80,14 @@
 
                             var currentUser = new User();
 
-                            currentUser.username = username;
+                            currentUser.getUsername = username;
                             currentUser.id = currentData.id;
                             currentUser.token = currentData.token;
 
-                            config.saveConfig('user', JSON.stringify(currentUser));
+                            var event = new CustomEvent(dataManager.events.USER_LOGGED_IN, {detail: {user: currentUser}});
+                            that.dispatchEvent(event);
+
+                            config.saveConfig('username', username);
 
                             view.hideLoader('courses');
                             view.goNext();
@@ -176,9 +179,32 @@
 
         };
 
+        var onUsername = function(evt) {
+
+            evt.target.removeEventListener(evt.type, arguments.callee);
+            view.getUsername().attr('value', evt.detail.value);
+
+        };
+
         var init = function(v){
 
             view = v;
+
+            that.addEventListener(config.events.CONFIGURATION_VALUE_FOUND, onUsername);
+            that.addEventListener(config.events.DATA_READY, function(evt){
+
+                evt.target.removeEventListener(evt.type, arguments.callee);
+
+                var value = config.configurationItem('username');
+
+                if(value){
+
+                    view.getUsername().attr('value', value);
+                    that.removeEventListener(config.events.CONFIGURATION_VALUE_FOUND, onUsername);
+
+                }
+
+            });
 
             // Initialize the loader and configuration managers
             logoLoader.init();

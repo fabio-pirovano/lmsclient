@@ -4,7 +4,10 @@
 
     // Custom events
     var events = {DATA_READY: 'dataReady',
-                  ITEM_ADDED: 'onItemAdded'};
+                  ITEM_ADDED: 'itemAdded',
+                  CONFIGURATION_VALUE_FOUND: 'configurationValueFound',
+                  CONFIGURATION_VALUE_NOT_FOUND: 'configurationValueNotFound'
+    };
 
     // Module variables
     var db, logoExists, isReady, data;
@@ -13,7 +16,6 @@
     var initDatabase = function(tx) {
 
         // console.log('utils/ConfigurationManager => initDatbase', this, that);
-
         tx.executeSql("CREATE TABLE IF NOT EXISTS 'configuration' ('id' INTEGER PRIMARY KEY, 'name' TEXT, 'value' BLOB)");
 
     };
@@ -21,7 +23,6 @@
     var init = function(){
 
         // console.log('utils/ConfigurationManager => init', this, that);
-
         data = {};
 
         db = window.openDatabase('docebo', '1.0', 'docebo-lms', 1024 * 1024 * 20);
@@ -44,7 +45,6 @@
 
         db.transaction(function(tx){
 
-            console.log('faccio la query!!!!');
             tx.executeSql('SELECT * FROM configuration WHERE name = "logo"', [], onLogoResult, databaseError);
 
         }, databaseError);
@@ -102,7 +102,39 @@
 
     var getConfigurationItem = function(name){
 
-        return data[name];
+        var event;
+
+       if(data[name]){
+
+           event = new CustomEvent(events.CONFIGURATION_VALUE_FOUND, {detail: {value: data[name]}});
+           that.dispatchEvent(event);
+
+       }else{
+
+           db.transaction(function(tx){
+
+               tx.executeSql('SELECT * FROM configuration WHERE name = "' + name + '"', [], function(tx, results){
+
+                   console.log('SELECT * FROM configuration WHERE name = "' + name + '"')
+
+                   if(results && results.rows && results.rows.length){
+
+                       data[name] = results.rows.item(0).value;
+
+                       event = new CustomEvent(events.CONFIGURATION_VALUE_FOUND, {detail: {value: data[name]}});
+
+                   }else{
+
+                       event = new CustomEvent(events.CONFIGURATION_VALUE_NOT_FOUND, {detail: {value: null}});
+
+                   }
+
+                   that.dispatchEvent(event);
+
+               }, databaseError);
+
+           }, databaseError);
+       }
 
     };
 
@@ -112,9 +144,20 @@
 
         db.transaction(function(tx){
 
-           // tx.executeSql('INSERT INTO configuration (name, value) VALUES (?,?)', [name, value], onLogoResult, databaseError);
-            tx.executeSql('INSERT INTO configuration (name, value) VALUES (:name, :value)', [name, value], onConfigurationItemSaved, databaseError);
-            // tx.executeSql('SELECT * FROM configuration WHERE name = "logo"', [], onLogoResult, databaseError);
+            // tx.executeSql('INSERT INTO configuration (name, value) VALUES (:name, :value)', [name, value], onConfigurationItemSaved, databaseError);
+            tx.executeSql('SELECT * FROM configuration WHERE name = "' + name + '"', [], function(tx, results){
+
+                if(results && results.rows && results.rows.length){
+
+                    tx.executeSql('UPDATE configuration SET (value) = (:value) WHERE name = "' + name + '"', [value], onConfigurationItemSaved, databaseError);
+
+                }else{
+
+                    tx.executeSql('INSERT INTO configuration (name, value) VALUES (:name, :value)', [name, value], onConfigurationItemSaved, databaseError);
+
+                }
+
+            }, databaseError);
 
         }, databaseError);
 

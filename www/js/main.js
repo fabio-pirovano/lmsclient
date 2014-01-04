@@ -1,4 +1,4 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView'], (function($, $ui, login){
+;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager'], (function($, $ui, login, dataManager){
 
     var onDeviceReady = function(){
 
@@ -45,6 +45,8 @@
         $(document).ready(function(){
 
             $ui.launch();
+
+            dataManager.init();
             login.init();
 
 
