@@ -1,5 +1,5 @@
-;define('views/login/LoginView', ['appframework', 'controllers/Login'],
-    (function($, controller){
+;define('views/login/LoginView', ['appframework', 'controllers/Login', 'i18n!nls/login'],
+    (function($, controller, loginMessages){
 
 
         var $username, $password, $domain,
@@ -82,9 +82,15 @@
             $password           = $('#password');
             $domain             = $('#website');
             $languageSelector   = $('#language');
+            $forgotPassword     = $('#recover-password');
 
-            $form = $('#login-form');
-            $forgotPassword = $('#recover-password');
+            $form               = $('#login-form');
+
+            $username.attr('placeholder', loginMessages.username);
+            $password.attr('placeholder', loginMessages.password);
+            $domain.attr('placeholder', loginMessages.domain);
+            $forgotPassword.text(loginMessages.forgot);
+            $($form).find('input[type="submit"]').val(loginMessages.submit);
 
             require(['utils/SelectParser'], function(selectParser){
 

@@ -1,6 +1,7 @@
 ;define('controllers/Login', ['libs/happy/happy', 'libs/happy/happy.methods', 'core/Constants',
-    'utils/ConfigurationManager', 'utils/LogoLoader', 'utils/InfoProvider', 'core/DataManager'],
-    (function(happy, validators, Constants, config, logoLoader, infoProvider, dataManager){
+    'utils/ConfigurationManager', 'utils/LogoLoader', 'utils/InfoProvider', 'core/DataManager',
+    'i18n!nls/login'],
+    (function(happy, validators, Constants, config, logoLoader, infoProvider, dataManager, loginMessages){
 
         var view, currentInterval;
         var that = this;
@@ -154,21 +155,21 @@
                     '#username': {
 
                         required: true,
-                        message: 'Might we inquire your name'
+                        message: loginMessages.userRequired //'Might we inquire your name'
 
                     },
 
                     '#password': {
 
                         required: true,
-                        message: 'Please type your password!'
+                        message: loginMessages.passRequired //'Please type your password!'
 
                     },
 
                     '#website':{
 
                         required: true,
-                        message: 'Specify the web site you would like to login',
+                        message: loginMessages.domainRequired, // 'Specify the web site you would like to login',
                         test: validators.website
 
                     }
