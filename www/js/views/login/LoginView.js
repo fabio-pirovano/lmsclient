@@ -3,7 +3,7 @@
 
 
         var $username, $password, $domain,
-            $form, $forgotPassword;
+            $form, $forgotPassword, $languageSelector;
 
 
         var onLogin = function(evt){
@@ -36,6 +36,7 @@
                 $('#' + panel).bind('loadpanel', function(e){
 
                     callBack();
+                    $('#' + panel).unbind('loadpanel', arguments.callee);
 
                 });
 
@@ -73,16 +74,25 @@
 
         };
 
-        var init = function(){
+        var init = function(lang){
 
             controller.init(this);
 
-            $username =  $('#username');
-            $password =  $('#password');
-            $domain =    $('#website');
+            $username           = $('#username');
+            $password           = $('#password');
+            $domain             = $('#website');
+            $languageSelector   = $('#language');
 
             $form = $('#login-form');
             $forgotPassword = $('#recover-password');
+
+            require(['utils/SelectParser'], function(selectParser){
+
+                selectParser.init($languageSelector);
+                selectParser.update(lang || 'en')
+
+
+            });
 
             require(['libs/happy/happy'], function(happy){
 
@@ -92,6 +102,7 @@
 
             $form.bind('submit', onLogin);
             $forgotPassword.bind('tap', controller.recoverPassword);
+            $languageSelector.bind('change', controller.changeLanguage);
 
         };
 

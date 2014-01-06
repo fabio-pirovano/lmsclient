@@ -44,14 +44,38 @@
 
         $(document).ready(function(){
 
-            $ui.launch();
+            navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
 
-            dataManager.init();
-            login.init();
+            addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
 
+         //   $ui.launch();
+         //   login.init('it');
 
         });
 
+    };
+
+    var onLocalePreferenceChanged = function(evt){
+
+        localStorage.setItem('userLocale', evt.detail.value.toLocaleLowerCase());
+        location.reload();
+
+    };
+
+    var onSystemLanguage = function(locale){
+
+        console.log('onPreferredLanguage', locale.value);
+
+        $ui.launch();
+        dataManager.init();
+
+        login.init(localStorage.getItem('userLocale') || locale.value);
+
+    };
+
+    var onGlobalizationError = function(error) {
+
+        navigator.notification.alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n', null);
 
     };
 

@@ -147,7 +147,6 @@
             console.log('init validation', form);
 
             //TODO add multi-language messages
-
             form.isHappy({
                 fields: {
                     // reference the field you're talking about, probably by `id`
@@ -186,6 +185,13 @@
 
         };
 
+        var doChangeLanguage = function(evt){
+
+            var event = new CustomEvent('localePreferenceChanged', {detail: {value: evt.target.value }, bubbles: true, cancelable: true});
+            that.dispatchEvent(event);
+
+        };
+
         var init = function(v){
 
             view = v;
@@ -217,6 +223,7 @@
             doLogin: handleLogin,
             initValidation: initValidation,
             recoverPassword: doRecoverPassword,
+            changeLanguage: doChangeLanguage,
             init: init
 
         }

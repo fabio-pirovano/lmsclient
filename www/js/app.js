@@ -22,6 +22,20 @@ require.config({
         }
     },
 
+    config: {
+        //Set the config for the i18n module ID
+        i18n: {
+            locale: (function(){
+
+                var value =  localStorage.getItem('userLocale') || (navigator.language || navigator.userLanguage).toLowerCase();
+                value = value + '-' + value;
+
+                return value;
+
+            }())
+        }
+    },
+
     waitSeconds: 10
 
 });
