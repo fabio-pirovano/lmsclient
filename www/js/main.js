@@ -42,7 +42,22 @@
 
         $('#afui').get(0).className = platform;
 
-        alert(platform)
+        try{
+
+            var networkState = navigator.connection.type;
+            if(networkState == Connection.NONE){
+
+                // TODO make the messages multi languae -> messages.js
+                alert('A connection is required to use this app');
+                return;
+
+            }
+
+        }catch (error){
+
+            console.log(error)
+
+        }
 
         $(document).ready(function(){
 
@@ -64,6 +79,7 @@
             // dataManager.init();
 
         });
+
 
     };
 
