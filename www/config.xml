@@ -12,7 +12,7 @@
     <content src="index.html" />
     <access origin="*" />
 	
-	<preference name="phonegap-version" value="3.3.0" />
+	<preference name="phonegap-version" value="3.1.0" />
 		
 	<feature name="org.apache.cordova.file" />
 	<feature name="org.apache.cordova.file-transfer" />
