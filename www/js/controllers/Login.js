@@ -5,6 +5,7 @@
 
         var view, currentInterval;
         var that = this;
+        var cache = {};
 
         var doRecoverPassword = function(){
 
@@ -15,10 +16,11 @@
         var handleLogin = function(username, password){
 
             console.log(config.logoExists(), this);
+            cache['login-loader'] =  $('#login-loader');
 
             if(config.logoExists()){
 
-                $("#login-loader").find("img").prop('src', config.configurationItem('logo'));
+                cache['login-loader'].find("img").prop('src', config.configurationItem('logo'));
 
                 view.showLoader('', function(){
 
@@ -40,7 +42,7 @@
 
                         config.saveConfig('logo', evt.detail.logoData);
 
-                        $("#login-loader").find("img").prop('src', config.configurationItem('logo'));
+                        cache['login-loader'].find("img").prop('src', config.configurationItem('logo'));
 
                         view.showLoader('', function(){
 
@@ -56,8 +58,8 @@
 
                 });
 
-                infoProvider.getInfo();
-                view.showLoader('Loading assets...');
+                infoProvider.getInfo(view.getDomain());
+                view.showLoader(login.loadingAssets);
 
             }
 
@@ -69,7 +71,7 @@
 
                 url: Constants.API_URL,
                 type: 'post',
-                data: JSON.stringify({'details': {'action': 'authenticate', "getUsername": username , 'password': password }}),
+                data: JSON.stringify({'details': {'action': 'authenticate', 'username': username , 'password': password }}),
                 success: function( data ) {
 
                     console.log( "Sample of data:", data);
@@ -90,6 +92,7 @@
 
                             config.saveConfig('username', username);
 
+                            cache['login-loader'].removeAttr('src');
                             view.hideLoader('courses');
                             view.goNext();
 

@@ -20,7 +20,6 @@
 
         var showLoader = function(msg, callBack, panel){
 
-            // TODO Make the mask string multi language
             if(msg && msg != ''){
 
                 $.ui.showMask(msg);
@@ -65,6 +64,25 @@
         var doGoNext = function(){
 
             //TODO handle the app routing since here
+            if(!$.ui.isSideMenuEnabled()){
+
+                $.ui.enableSideMenu();
+
+                if($('#menu').hasClass('tabletMenu')){
+
+                    $.ui.toggleSideMenu(true);
+
+                }
+
+            }
+
+            $('#menubadge').css('visibility', 'visible');
+
+            require(['core/BackButtonManager'], (function(backManager){
+
+                backManager.init($('#courses'), [$('#reports'), $('#settings'), $('#logout')]);
+
+            }));
 
         };
 
@@ -78,6 +96,8 @@
 
             controller.init(this);
 
+            $('#main').attr('title', loginMessages.welcome);
+
             $username           = $('#username');
             $password           = $('#password');
             $domain             = $('#website');
@@ -90,7 +110,7 @@
             $password.attr('placeholder', loginMessages.password);
             $domain.attr('placeholder', loginMessages.domain);
             $forgotPassword.text(loginMessages.forgot);
-            $($form).find('input[type="submit"]').val(loginMessages.submit);
+            $($form).find('#do-login').text(loginMessages.submit);
 
             require(['utils/SelectParser'], function(selectParser){
 
@@ -132,7 +152,8 @@
             hideLoader: hideLoader,
             invalidCredentials: invalidCredentials,
             goNext: doGoNext,
-            getUsername: function(){return $username;}
+            getUsername: function(){return $username;},
+            getDomain: function(){return $domain.val();}
 
         }
 

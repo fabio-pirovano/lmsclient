@@ -9,6 +9,7 @@
     'welcome':        'Benvenuto',
     'userRequired':   'Inserire il nome utente',
     'passRequired':   'Per cortesia digutare la password!',
-    'domainRequired': 'Indicare il sito a cui connettersi'
+    'domainRequired': 'Indicare il sito a cui connettersi',
+    'loadingAssets':  'Caricamento files'
 
 });

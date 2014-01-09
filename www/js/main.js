@@ -1,4 +1,4 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager'], (function($, $ui, login, dataManager){
+;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav'], (function($, $ui, login, dataManager, nav){
 
     var onDeviceReady = function(){
 
@@ -45,11 +45,21 @@
         $(document).ready(function(){
 
             navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
-
             addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
 
-         //   $ui.launch();
-         //   login.init('it');
+            $ui.launch();
+            $ui.showBackButton = false;
+
+            $ui.disableSideMenu();
+            $ui.toggleNavMenu();
+
+            $('#courses-link').text(nav.courses);
+            $('#reports-link').text(nav.reports);
+            $('#settings-link').text(nav.settings);
+            $('#logout-link').text(nav.logout);
+
+          //  login.init('it');
+          //  dataManager.init();
 
         });
 
@@ -84,7 +94,7 @@
         console.log($);
 
         document.addEventListener('deviceready', onDeviceReady, false);
-        // onDeviceReady();
+        onDeviceReady();
 
 
     };

@@ -109,6 +109,8 @@
            event = new CustomEvent(events.CONFIGURATION_VALUE_FOUND, {detail: {value: data[name]}});
            that.dispatchEvent(event);
 
+           return data[name];
+
        }else{
 
            db.transaction(function(tx){

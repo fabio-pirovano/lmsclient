@@ -50,6 +50,9 @@
         <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/src/ios7.css'  />
         <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/src/ios.css'  />
 
+        <!--
+            <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/af.ui.css'  />
+        -->
 
         <!-- App Styles -->
         <link rel='stylesheet' type='text/css' href='css/index.css' />
@@ -75,47 +78,63 @@
             </div>
             <div id='content'>
 
-                <div title='Welcome' id='main' class='panel centered' selected='true'>
+                <nav id='main-nav'>
+                    <div class='title gray-user-profile'>
+                        User Profile<br>
+                    </div>
+                    <ul>
+                        <li><a id='courses-link'    href='#courses'></a></li>
+                        <li><a id='reports-link'    href='#reports'></a></li>
+                        <li><a id='settings-link'   href='#settings'></a></li>
+                        <li><a id='logout-link'     href='#logout'></a></li>
+                    </ul>
+
+                </nav>
+
+                <div id='main' title='Welcome' class='panel' selected='true'>
                     <!--
                         optionals properties for future references
                         data-load='loadedPanel' data-unload='unloadedPanel' data-tab='navbar_home'>
                     -->
 
-                    <div class='grid'>
-                        <div class='col2'>
-                            <a id='logo'>
-                                <img src='img/logo_white.png'>
-                            </a>
+                    <div class='login-content'>
+                        <div class='grid'>
+                            <div class='col2'>
+                                <a>
+                                    <img src='img/logo_white.png'>
+                                </a>
+                            </div>
+                            <div class='col2'>
+                                <select id='language' class='transparent '>
+                                    <option value='en'>english</option>
+                                    <option value='it'>italiano</option>
+                                    <option value='fr'>français</option>
+                                    <option value='es'>spanish</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class='col2'>
-                            <select id='language'>
-                                <option value='en'>english</option>
-                                <option value='it'>italiano</option>
-                                <option value='fr'>français</option>
-                                <option value='es'>spanish</option>
-                            </select>
-                        </div>
+
+                        <br>
+
+                        <form id='login-form'>
+                            <input id='username'    class='login' type='text'>
+                            <input id='password'    class='login' type='password' value='changeme'>
+                            <input id='website'     class='login' type='text' value='release61.docebo.info'>
+                            <input id='do-login'    class='button green' type='submit'>
+                            <a id='recover-password'class='button flat'></a>
+                        </form>
+                    </div>
+                </div>
+                <div id='login-loader' class='panel' data-footer='none' style='text-align: center;'>
+
+                    <div class='loader-content'>
+                        <img>
                     </div>
 
+                </div>
+                <div title='My Courses' id='courses' class='panel white' data-footer='none' data-nav='main-nav' >
                     <br>
-
-                    <form id='login-form'>
-                        <input id='username'    class='login' type='text'>
-                        <input id='password'    class='login' type='password' value='changeme'>
-                        <input id='website'     class='login' type='text' value='release61.docebo.info'>
-                        <input id='do-login'    class='button' type='submit'>
-                        <a id='recover-password'class='button flat'></a>
-                    </form>
-                </div>
-
-                <div id='login-loader' class='panel centered' data-footer='none' style='text-align: center;'>
-
-                    <img>
-
-                </div>
-                <div title='My Courses' id='courses' class='panel centered' data-footer='none'>
-                    <input type='search' placeholder='search'>
-
+                    <input type='search' placeholder='search courses' style='color: #53575E;'>
                     <ul>
                         <li>
                             <span>Course 1</span>
@@ -214,6 +233,22 @@
                         </li>
                     </ul>
                 </div>
+
+                <!-- Reports -->
+                <div title='Reports' id='reports' class='panel white' data-footer='none' data-nav='main-nav'>
+                    <p>The reports will go here!</p>
+                </div>
+
+                <!-- Settings -->
+                <div title='Settings' id='settings' class='panel white' data-footer='none' data-nav='main-nav'>
+                    <p>The settings will go here!</p>
+                </div>
+
+                <!-- Logout -->
+                <div title='Logout' id='logout' class='panel white' data-footer='none' data-nav='main-nav'>
+                    <p>The logout will go here!</p>
+                </div>
+
             </div>
         </div>
 

@@ -5,7 +5,7 @@ define('utils/InfoProvider', ['core/Constants'], (function(Constants){
     var logoURL, dataCache;
     var that = this;
 
-    var getInfo = function(){
+    var getInfo = function(url){
 
         if(dataCache && logoURL){
 
@@ -17,7 +17,7 @@ define('utils/InfoProvider', ['core/Constants'], (function(Constants){
 
                 url: Constants.API_URL,
                 type: 'post',
-                data: JSON.stringify({'details': {'action': 'getlmsinfo'}}),
+                data: JSON.stringify({'details': {'action': 'getlmsinfo', 'url': url}}),
                 success: function( data ) {
 
                     dataCache = JSON.parse(data);

@@ -9,6 +9,7 @@
     'welcome':        'Welcome',
     'userRequired':   'Might we inquire your name?',
     'passRequired':   'Please type your password!',
-    'domainRequired': 'Specify the web site you would like to login'
+    'domainRequired': 'Specify the web site you would like to login',
+    'loadingAssets':  'Loading assets'
 
 });
