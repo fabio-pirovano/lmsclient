@@ -30,7 +30,7 @@
 
             case  devicePlatform == 'iOS':
             // TODO uncomment for production
-            // window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
+            window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
             platform = 'ios7';
             break;
 
