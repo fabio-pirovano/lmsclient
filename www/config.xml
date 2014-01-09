@@ -12,13 +12,13 @@
     <content src="index.html" />
     <access origin="*" />
 	
-	<gap:preference name="phonegap-version" value="3.3.0" />
+	<preference name="phonegap-version" value="3.3.0" />
 		
-	<gap:plugin name="org.apache.cordova.file" />
-	<gap:plugin name="org.apache.cordova.file-transfer" />
-	<gap:plugin name="org.apache.cordova.globalization" />
-	<gap:plugin name="org.apache.cordova.console" />
-	<gap:plugin name="org.apache.cordova.device" />
-	<gap:plugin name="org.apache.cordova.network-information" />
+	<feature name="org.apache.cordova.file" />
+	<feature name="org.apache.cordova.file-transfer" />
+	<feature name="org.apache.cordova.globalization" />
+	<feature name="org.apache.cordova.console" />
+	<feature name="org.apache.cordova.device" />
+	<feature name="org.apache.cordova.network-information" />
 	
 </widget>
