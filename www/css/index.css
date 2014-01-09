@@ -140,7 +140,7 @@ input.login{
 
     background-repeat: no-repeat !important;
     text-indent: 20px !important;
-    background-size: 4% auto !important;
+    background-size: 5% auto !important;
     background-position: left center !important;
 
 }
@@ -161,7 +161,6 @@ input#password {
 input#website {
 
     background-image: url(../img/globe.png)  !important;
-
 
 }
 
@@ -195,11 +194,11 @@ select#language{
     background: transparent !important;
     color: white !important;
     border: none !important;
-    font-size: 28px !important;
+    font-size: 24px !important;
     background-repeat: no-repeat !important;
     background-position: right center !important;
     background-image: url(../img/arrow-down.png) !important;
-    padding: 0 8% 0 0;
+    padding: 0 10% 0 0;
     direction: rtl;
 
 }

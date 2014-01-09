@@ -30,7 +30,7 @@
 
             case  devicePlatform == 'iOS':
             // TODO uncomment for production
-            // window.device.version === 7.0 ?  platform = 'ios7' : platform = 'ios';
+            // window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
             platform = 'ios7';
             break;
 
@@ -41,6 +41,8 @@
         }
 
         $('#afui').get(0).className = platform;
+
+        alert(platform)
 
         $(document).ready(function(){
 
@@ -58,8 +60,8 @@
             $('#settings-link').text(nav.settings);
             $('#logout-link').text(nav.logout);
 
-          //  login.init('it');
-          //  dataManager.init();
+            // login.init('it');
+            // dataManager.init();
 
         });
 
@@ -94,7 +96,7 @@
         console.log($);
 
         document.addEventListener('deviceready', onDeviceReady, false);
-        onDeviceReady();
+        // onDeviceReady();
 
 
     };
