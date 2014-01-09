@@ -11,7 +11,11 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-		
+	
+	<gap:preference name="phonegap-version" value="3.1.0" />
+	<gap:preference name="orientation" value="default" />
+	<gap:preference name="fullscreen" value="true" /
+	
  	<gap:platform name="ios" />
 	
 	<gap:plugin name="org.apache.cordova.file" />
