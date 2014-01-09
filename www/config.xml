@@ -11,10 +11,14 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+		
+ 	<gap:platform name="ios" />
 	
-	<preference name="phonegap-version" value="3.1.0" />
-	<preference name="orientation" value="default" />
-	<preference name="fullscreen" value="true" /
-	
+	<gap:plugin name="org.apache.cordova.file" />
+	<gap:plugin name="org.apache.cordova.file-transfer" />
+	<gap:plugin name="org.apache.cordova.globalization" />
+	<gap:plugin name="org.apache.cordova.console" />
+	<gap:plugin name="org.apache.cordova.device" />
+	<gap:plugin name="org.apache.cordova.network-information" />
 	
 </widget>
