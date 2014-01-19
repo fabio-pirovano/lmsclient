@@ -1,10 +1,8 @@
-;define('views/login/LoginView', ['appframework', 'controllers/Login', 'i18n!nls/login'],
-    (function($, controller, loginMessages){
-
+;define('views/login/LoginView', ['appframework', 'controllers/Login', 'i18n!nls/login', 'core/Constants'],
+    (function($, controller, loginMessages, Constants){
 
         var $username, $password, $domain,
             $form, $forgotPassword, $languageSelector;
-
 
         var onLogin = function(evt){
 
@@ -43,7 +41,7 @@
 
             if(panel){
 
-                $.ui.loadContent(panel, false, false, 'up');
+                $.ui.loadContent(panel, false, false, Constants.PANELS_DIRECTION);
 
             }
 
@@ -77,12 +75,6 @@
             }
 
             $('#menubadge').css('visibility', 'visible');
-
-            require(['core/BackButtonManager'], (function(backManager){
-
-                backManager.init($('#courses'), [$('#reports'), $('#settings'), $('#logout')]);
-
-            }));
 
         };
 
@@ -129,6 +121,12 @@
             $form.bind('submit', onLogin);
             $forgotPassword.bind('tap', controller.recoverPassword);
             $languageSelector.bind('change', controller.changeLanguage);
+
+            require(['core/BackButtonManager'], (function(backManager){
+
+                backManager.init($('#courses'), [$('#reports'), $('#settings'), $('#logout'), $('#forgot-pwd')]);
+
+            }));
 
         };
 

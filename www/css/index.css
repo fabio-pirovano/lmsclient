@@ -205,6 +205,36 @@ select#language{
 
 /* ================================== */
 
+/* ============= FORGOT PASSWORD ===================== */
+
+#do-recover {
+
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+
+    width: 100%;
+    color: white !important;
+    background-color: #53AB53 !important;
+    border-radius: 0 !important;
+    border: none !important;
+
+}
+
+.forgot-pwd-content{
+
+    overflow: auto;
+    margin: auto 5px auto 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 220px;
+
+}
+/* ================================== */
+
 /* side menu - always hidden */
 #afui  nav {
     display:none;
@@ -223,9 +253,10 @@ select#language{
 
 /* ======== Menu ======== */
 #afui  nav {
-    display:none;
-}
 
+    display:none;
+
+}
 
 #afui > #menu {
     z-index:200;

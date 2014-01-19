@@ -19,6 +19,8 @@
 
     var init = function(toDisable, toEnable){
 
+        console.log('init bb manager', this);
+
         $backButtonDisabled = toDisable;
         $backButtonDisabled.bind('loadpanel', disableBackButton);
         $backButtonDisabled.bind('content-loaded', disableBackButton);

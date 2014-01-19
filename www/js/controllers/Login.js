@@ -11,6 +11,9 @@
 
             console.log('should  recover password');
 
+            var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.FORGOT_PWD_VIEW, module: Constants.FORGOT_PWD_MODULE, data: null}});
+            that.dispatchEvent(event);
+
         };
 
         var handleLogin = function(username, password){

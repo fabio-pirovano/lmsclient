@@ -1,8 +1,10 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav'], (function($, $ui, login, dataManager, nav){
+;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter'],
+
+    (function($, $ui, login, dataManager, nav, router){
 
     var onDeviceReady = function(){
 
-        var platform, devicePlatform
+        var platform, devicePlatform;
 
         if(window.device && window.device.available){
 
@@ -30,7 +32,7 @@
 
             case  devicePlatform == 'iOS':
             // TODO uncomment for production
-            window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
+            // window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
             platform = 'ios7';
             break;
 
@@ -64,6 +66,7 @@
             navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
             addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
 
+            // TODO check if this ui init can be removed considering that there is another one in the onSystemLanguage handler
             $ui.launch();
             $ui.showBackButton = false;
 
@@ -77,6 +80,8 @@
 
             // login.init('it');
             // dataManager.init();
+
+            // router.init();
 
         });
 
@@ -94,8 +99,9 @@
 
         console.log('onPreferredLanguage', locale.value);
 
-        $ui.launch();
+        // $ui.launch();
         dataManager.init();
+        router.init();
 
         login.init(localStorage.getItem('userLocale') || locale.value);
 
@@ -112,7 +118,7 @@
         console.log($);
 
         document.addEventListener('deviceready', onDeviceReady, false);
-        // onDeviceReady();
+        onDeviceReady();
 
 
     };
