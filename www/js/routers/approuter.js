@@ -6,7 +6,7 @@
 
         var view = evt.detail.view;
 
-        if(evt.detail.data){
+        if(evt.detail.state){
 
             // TODO handle custom views such as the reports and the SCO
 
@@ -16,7 +16,9 @@
 
                require([evt.detail.module], function(module){
 
-                   module.init();
+                   var data = evt.detail.data;
+
+                   module.init(data || null);
 
                });
 

@@ -1,11 +1,11 @@
 ;define('model/State', function(){
 
-    function State(data, controller, viewPath, template){
+    function State(data, template, controller, viewPath){
 
         this.data = data;
+        this.template = template || controller.toLowerCase() + '-tpl.html';
         this.controller = controller;
         this.viewPath = viewPath;
-        this.template = template || controller.toLowerCase() + '-tpl.html';
 
     }
 

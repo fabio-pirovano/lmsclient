@@ -11,7 +11,7 @@
 
             console.log('should  recover password');
 
-            var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.FORGOT_PWD_VIEW, module: Constants.FORGOT_PWD_MODULE, data: null}});
+            var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.FORGOT_PWD_VIEW, module: Constants.FORGOT_PWD_MODULE, data: null, state: null}});
             that.dispatchEvent(event);
 
         };
@@ -25,7 +25,7 @@
 
                 cache['login-loader'].find("img").prop('src', config.configurationItem('logo'));
 
-                view.showLoader('', function(){
+                view.showHideLoader(true, '', function(){
 
                     login(username, password);
 
@@ -47,7 +47,7 @@
 
                         cache['login-loader'].find("img").prop('src', config.configurationItem('logo'));
 
-                        view.showLoader('', function(){
+                        view.showHideLoader('', function(){
 
                             login(username, password);
 
@@ -62,7 +62,7 @@
                 });
 
                 infoProvider.getInfo(view.getDomain());
-                view.showLoader(login.loadingAssets);
+                view.showHideLoader(true, login.loadingAssets);
 
             }
 
@@ -96,8 +96,11 @@
                             config.saveConfig('username', username);
 
                             cache['login-loader'].removeAttr('src');
-                            view.hideLoader('courses');
+                            view.showHideLoader(false);
                             view.goNext();
+
+                            var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_VIEW, module: Constants.COURSES_MODULE, data: dataManager, state: null}});
+                            that.dispatchEvent(event);
 
                         });
 

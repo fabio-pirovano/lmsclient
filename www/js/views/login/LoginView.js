@@ -16,15 +16,15 @@
 
         };
 
-        var showLoader = function(msg, callBack, panel){
+        var doShowHideLoader = function(show, msg, callBack, panel){
 
-            if(msg && msg != ''){
+            if(show == true){
 
-                $.ui.showMask(msg);
+                showMask(msg);
 
             }else{
 
-                $.ui.showMask('Authenticating...');
+                $.ui.hideMask();
 
             }
 
@@ -47,13 +47,15 @@
 
         };
 
-        var hideLoader = function(panel){
+        var showMask = function(msg){
 
-            $.ui.hideMask();
+            if(msg && msg != ''){
 
-            if(panel){
+                $.ui.showMask(msg);
 
-                $.ui.loadContent(panel, false, false, 'up');
+            }else{
+
+                $.ui.showMask('Authenticating...');
 
             }
 
@@ -68,7 +70,8 @@
 
                 if($('#menu').hasClass('tabletMenu')){
 
-                    $.ui.toggleSideMenu(true);
+                    // TODO Determin with the customer is the menu is needed on tablets
+                    // $('#menu.tabletMenu')
 
                 }
 
@@ -146,8 +149,7 @@
 
             init: init,
             dispose: dispose,
-            showLoader: showLoader,
-            hideLoader: hideLoader,
+            showHideLoader: doShowHideLoader,
             invalidCredentials: invalidCredentials,
             goNext: doGoNext,
             getUsername: function(){return $username;},

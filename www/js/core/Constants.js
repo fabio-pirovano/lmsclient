@@ -10,6 +10,9 @@ define('core/Constants', [], (function(){
         FORGOT_PWD_MODULE: 'views/forgotpassword/ForgotPasswordView',
         FORGOT_PWD_VIEW: 'forgot-pwd',
 
+        COURSES_MODULE: 'views/courses/CoursesView',
+        COURSES_VIEW: 'courses',
+
         // Common events
         CHANGE_VIEW_EVENT: 'changeViewEvent'
 
