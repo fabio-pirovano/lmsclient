@@ -1,35 +1,46 @@
-;define('views/courses/CoursesView', [], (function(){
+;define('views/courses/CoursesView', ['appframeworkui', 'controllers/Courses'], (function($ui, courses){
 
     var doInit = function(data){
 
-      console.log(data);
+        var user = data.getUser();
 
-      var user = data.getUser();
+        courses.init(this);
 
-
-        $.ajax({
-
-            url: Constants.API_URL,
-            type: 'post',
-            data: JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': user.token }}),
-            success: function( data ) {
-
-                console.log( "Sample of data:", data);
-
-            },
-            error: function(xhr, error){
-
-                console.log(arguments);
-
-            }
-        });
+        // TODO make it multi language
+        $ui.showMask('Loading...');
+        courses.getUserCourses(user);
 
     };
 
+    var doShowError = function(msg){
+
+        $ui.popup(msg);
+
+    };
+
+    var doShowCourses = function(data){
+
+        for(var course in data){
+
+            console.log(course);
+
+
+        }
+
+    };
+
+    var doClearCourses = function(){
+
+
+
+    };
 
     return{
 
-        init: doInit
+        init: doInit,
+        showError: doShowError,
+        showCourses: doShowCourses,
+        clearCourses: doClearCourses
 
     }
 
