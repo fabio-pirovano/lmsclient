@@ -1,7 +1,6 @@
-;define('controllers/Courses', ['appframework', 'core/Constants'], (function($, Constants){
+;define('controllers/Courses', ['appframework', 'core/Constants', 'model/Course'], (function($, Constants, Course){
 
     var view;
-    var FAKE_DATA = {"0":{"course_info":{"course_id":"16","course_name":"Articulate presenter testing Scorm 1.2 - Scorm 2004","course_description":"<p>Articulate Presenter '13<\/p>","can_enter":{"can":true,"reason":"course_status","expiring_in":false},"course_link":"http:\/\/release61.docebo.info\/doceboLms\/index.php?modname=course&amp;op=aula&amp;idCourse=16","course_thumbnail":"http:\/\/release61.docebo.info\/templates\/standard\/\/images\/course\/course_nologo.png","courseuser_status":"1"}},"1":{"course_info":{"course_id":"13","course_name":"Articulate storyline testing Scorm 1.2 - Scorm 2004","course_description":"<p>Storyline<\/p>","can_enter":{"can":true,"reason":"course_status","expiring_in":false},"course_link":"http:\/\/release61.docebo.info\/doceboLms\/index.php?modname=course&amp;op=aula&amp;idCourse=13","course_thumbnail":"http:\/\/release61.docebo.info\/templates\/standard\/\/images\/course\/course_nologo.png","courseuser_status":"1"}},"success":true};
 
     var doInit = function(v){
 
@@ -15,20 +14,21 @@
 
             url: Constants.API_URL,
             type: 'post',
-            data: JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': user.token }}),
+            data: JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': user.token , 'key': user.getUsername}}),
             success: function( data ) {
 
-                if(data.success){
+                var currentData = JSON.parse(data);
 
-                    console.log( "Sample of data:", data);
+                if(currentData.success === true){
+
+                    console.log( "Sample of data:", currentData);
+
+                    view.showLoader(true);
+                    prepareData(currentData);
 
                 }else{
 
-                    // TODO uncomment for the production
-                    // view.showError(data.message);
-
-                    console.log(JSON.parse(FAKE_DATA));
-                    view.showCourses(JSON.parse(FAKE_DATA))
+                    view.showError(data.message);
 
                 }
 
@@ -40,6 +40,59 @@
             }
         });
 
+
+    };
+
+    var prepareData = function(data){
+
+        var tmp = [];
+
+        $.each(data, function(index, val){
+
+            console.log(index, ' - ', val);
+
+            for(var i in val.course_info){
+
+                console.log(i, ' - ', val.course_info[i]);
+
+            }
+
+            try{
+
+                var course = new Course(val.course_info);
+                tmp[index] = course;
+
+            }catch(error){
+
+                console.log('Object malformed');
+
+            }
+
+        });
+
+        console.log(tmp)
+        renderData(tmp);
+
+    };
+
+    var renderData = function(data){
+
+        setTimeout(function(){
+
+            var course = data.shift();
+            view.showCourse(course);
+
+            if(data.length > 0){
+
+                setTimeout(arguments.callee, 25);
+
+            }else{
+
+                view.showLoader(false);
+
+            }
+
+        }, 50);
 
     };
 

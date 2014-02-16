@@ -1,31 +1,42 @@
-;define('views/courses/CoursesView', ['appframeworkui', 'controllers/Courses'], (function($ui, courses){
+;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses'], (function($, mustache, controller, courses){
+
+    var courseTemplate;
+    var $courses;
 
     var doInit = function(data){
 
+        $courses = $('#user-courses');
+
         var user = data.getUser();
+        controller.init(this);
 
-        courses.init(this);
+        require([
+            'text!../tpl/course-tpl.html'
+        ], function(tpl){
 
-        // TODO make it multi language
-        $ui.showMask('Loading...');
-        courses.getUserCourses(user);
+            courseTemplate = tpl;
+            controller.getUserCourses(user);
+
+        });
 
     };
 
     var doShowError = function(msg){
 
-        $ui.popup(msg);
+        console.log('doShowError', msg);
+
+        if(msg){
+
+            $.ui.popup(msg);
+
+        }
 
     };
 
-    var doShowCourses = function(data){
+    var doShowCourse = function(data){
 
-        for(var course in data){
-
-            console.log(course);
-
-
-        }
+        var html = mustache.to_html(courseTemplate, data);
+        $courses.html($courses.html() + html);
 
     };
 
@@ -35,12 +46,27 @@
 
     };
 
+    var doShowLoader = function(status){
+
+        if(status){
+
+            $.ui.showMask(courses.loading);
+
+        }else{
+
+            $.ui.hideMask();
+
+        }
+
+    };
+
     return{
 
         init: doInit,
         showError: doShowError,
-        showCourses: doShowCourses,
-        clearCourses: doClearCourses
+        showCourse: doShowCourse,
+        clearCourses: doClearCourses,
+        showLoader: doShowLoader
 
     }
 

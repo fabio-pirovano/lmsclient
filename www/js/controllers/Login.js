@@ -87,7 +87,8 @@
                             var currentUser = new User();
 
                             currentUser.getUsername = username;
-                            currentUser.id = currentData.id;
+                            currentUser.id = currentData.id_user;
+
                             currentUser.token = currentData.token;
 
                             var event = new CustomEvent(dataManager.events.USER_LOGGED_IN, {detail: {user: currentUser}});

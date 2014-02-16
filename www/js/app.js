@@ -4,6 +4,7 @@ require.config({
     paths: {
         appframework: 'libs/appframework/appframework',
         appframeworkui: 'libs/appframework/appframework.ui.min',
+        mustache: 'libs/mustache/mustache',
         text: 'libs/require/plugins/text',
         domReady: 'libs/require/plugins/domReady',
         i18n: 'libs/require/plugins/i18n',
