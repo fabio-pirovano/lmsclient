@@ -1,6 +1,8 @@
 ;define('controllers/Courses', ['appframework', 'core/Constants', 'model/Course'], (function($, Constants, Course){
 
+    var that = this;
     var view;
+    var token, key;
 
     var doInit = function(v){
 
@@ -10,25 +12,26 @@
 
     var doGetUserCourses = function(user){
 
+        token = user.token;
+        key = user.getUsername;
+
         $.ajax({
 
             url: Constants.API_URL,
             type: 'post',
-            data: JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': user.token , 'key': user.getUsername}}),
+            data: JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': token , 'key': key}}),
             success: function( data ) {
 
                 var currentData = JSON.parse(data);
 
                 if(currentData.success === true){
 
-                    console.log( "Sample of data:", currentData);
-
                     view.showLoader(true);
-                    prepareData(currentData);
+                    prepareCoursesData(currentData);
 
                 }else{
 
-                    view.showError(data.message);
+                    showError(data.message);
 
                 }
 
@@ -40,10 +43,51 @@
             }
         });
 
+    };
+
+    var showError = function (message) {
+
+        view.showLoader(false);
+        view.showError(message);
 
     };
 
-    var prepareData = function(data){
+    var doGetCourseDetails = function(id){
+
+        view.showLoader(true);
+
+        $.ajax({
+
+            url: Constants.API_URL,
+            type: 'post',
+            data: JSON.stringify({'details': {'action': 'courseDetails', 'idCourse': id , 'token': token , 'key': key}}),
+            success: function( data ) {
+
+                var currentData = JSON.parse(data);
+
+                if(currentData.success === true){
+
+                    console.log(currentData.objects);
+                    var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE, data: currentData.objects, push: true}});
+                    that.dispatchEvent(event);
+
+                }else{
+
+                    showError(data.message);
+
+                }
+
+            },
+            error: function(xhr, error){
+
+                view.showError(error.message);
+
+            }
+        });
+
+    };
+
+    var prepareCoursesData = function(data){
 
         var tmp = [];
 
@@ -84,11 +128,12 @@
 
             if(data.length > 0){
 
-                setTimeout(arguments.callee, 25);
+                setTimeout(arguments.callee, 50);
 
             }else{
 
                 view.showLoader(false);
+                view.initCoursesInteraction(true);
 
             }
 
@@ -107,7 +152,8 @@
 
         init: doInit,
         getUserCourses: doGetUserCourses,
-        searchCourses: doSearchCourses
+        searchCourses: doSearchCourses,
+        getCourseDetails: doGetCourseDetails
 
     };
 

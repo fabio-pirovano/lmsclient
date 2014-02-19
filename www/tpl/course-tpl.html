@@ -1,22 +1,18 @@
-<li>
+<li data-url='{{link}}' class='padd-right'>
 
-    <a href='{{link}}' class='padd-right'>
-
-        <img src='{{thumb}}' />
-        <div class='course'>
-
-            <strong>{{{name}}}</strong>
+    <div class='course'>
+        <img src='{{thumb}}'/>
+        <strong>{{{name}}}</strong>
             <span class='metadata'>
                 <span class='course=status'>{{status}}</span><br/>
                 <span class='course-lang'>{{lang}}</span>
             </span>
 
-        </div>
+    </div>
 
-    </a>
-
-    <a class='detail-disclosure'>
-        <span>{{{description}}}</span>
-    </a>
-
+    <div>
+        <a class='detail-disclosure'>
+            <span>{{{description}}}</span>
+        </a>
+    </div>
 </li>

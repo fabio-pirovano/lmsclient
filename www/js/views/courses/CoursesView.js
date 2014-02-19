@@ -1,9 +1,11 @@
-;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses'], (function($, mustache, controller, courses){
+;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/courserouter'], (function($, mustache, controller, courses, router){
 
     var courseTemplate;
     var $courses;
 
     var doInit = function(data){
+
+        router.init();
 
         $courses = $('#user-courses');
 
@@ -42,15 +44,30 @@
 
     var doClearCourses = function(){
 
-
+        $courses.html('');
 
     };
 
-    var doShowLoader = function(status){
+    var doInitCoursesInteraction = function(status){
+
+      if(status){
+
+          $courses.find('li').bind('tap', onCourseSelection);
+
+
+      }else{
+
+          $courses.find('li').unbind('tap', onCourseSelection);
+
+      }
+
+    };
+
+    var doShowLoader = function(status, message){
 
         if(status){
 
-            $.ui.showMask(courses.loading);
+            $.ui.showMask(message || courses.loading);
 
         }else{
 
@@ -60,13 +77,25 @@
 
     };
 
+    var onCourseSelection = function(evt){
+
+        evt.preventDefault();
+
+        var url = $(this).attr('data-url'),
+            idCourse = url.match(/idCourse=([^&]*)/)[1];
+
+        controller.getCourseDetails(idCourse);
+
+    };
+
     return{
 
         init: doInit,
         showError: doShowError,
         showCourse: doShowCourse,
         clearCourses: doClearCourses,
-        showLoader: doShowLoader
+        showLoader: doShowLoader,
+        initCoursesInteraction: doInitCoursesInteraction
 
     }
 
