@@ -54,7 +54,8 @@
 
     var doGetCourseDetails = function(id){
 
-        view.showLoader(true);
+        // TODO make the string multilanguage
+        view.showLoader(true, 'Loading course details...');
 
         $.ajax({
 
@@ -68,8 +69,11 @@
                 if(currentData.success === true){
 
                     console.log(currentData.objects);
-                    var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE, data: currentData.objects, push: true}});
+                    var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE,
+                                                                              data: {course_id: id, items: currentData.objects}, push: true}});
                     that.dispatchEvent(event);
+
+                    view.showLoader(false);
 
                 }else{
 
@@ -80,7 +84,7 @@
             },
             error: function(xhr, error){
 
-                view.showError(error.message);
+                showError(error.message);
 
             }
         });

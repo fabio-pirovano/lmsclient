@@ -13,7 +13,7 @@ define('core/Constants', [], (function(){
         COURSES_MODULE: 'views/courses/CoursesView',
         COURSES_VIEW: 'courses',
 
-        COURSES_DETAILS_MODULE: 'views/courses/CoursDetails',
+        COURSES_DETAILS_MODULE: 'views/courses/CourseDetails',
         COURSES_DETAILS_VIEW: 'course-details',
 
         // Common events

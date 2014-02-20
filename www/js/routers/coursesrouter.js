@@ -13,7 +13,7 @@
 
             });
 
-            $(view).unbind('loadpanel', arguments.callee);
+            $('#' + view).unbind('loadpanel', arguments.callee);
 
         });
 
