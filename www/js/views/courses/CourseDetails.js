@@ -20,6 +20,8 @@
 
     var renderCourseDetails = function(data){
 
+        console.log('renderCourseDetails ', data);
+
         var html;
 
         data.items.forEach(function (val){

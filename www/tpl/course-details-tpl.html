@@ -1,13 +1,13 @@
-<li data-course='{{course_id}}' data-organization='{{id_org}}' class='padd-right'>
+<li data-course='{{courseId}}' data-organization='{{organization}}' class='padd-right'>
 
     <div class='course'>
 
-        {{#locked}}
+        {{#isLocked}}
             <img src='../img/locked.png'/>
-        {{/locked}}
-        {{^locked}}
-            <img src='../img/{{type}}.png'/>
-        {{/locked}}
+        {{/isLocked}}
+        {{^isLocked}}
+            <img src='../img/{{courseType}}.png'/>
+        {{/isLocked}}
 
         <strong>{{title}}</strong>
 

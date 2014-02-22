@@ -147,7 +147,7 @@
             if(!elementInDocument(element)){
 
                 clearInterval(currentInterval);
-                view.hideLoader('main');
+                view.showHideLoader(false, '', null, 'main');
 
             }
 

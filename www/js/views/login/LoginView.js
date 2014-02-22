@@ -70,7 +70,7 @@
 
                 if($('#menu').hasClass('tabletMenu')){
 
-                    // TODO Determin with the customer is the menu is needed on tablets
+                    // TODO Discuss with the customer is the menu is needed on tablets
                     // $('#menu.tabletMenu')
 
                 }

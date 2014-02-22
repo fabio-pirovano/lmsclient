@@ -1,4 +1,4 @@
-;define('controllers/Courses', ['appframework', 'core/Constants', 'model/Course'], (function($, Constants, Course){
+;define('controllers/Courses', ['appframework', 'core/Constants', 'model/Course', 'model/DetailsFactory'], (function($, Constants, Course, DetailsFactory){
 
     var that = this;
     var view;
@@ -70,7 +70,7 @@
 
                     console.log(currentData.objects);
                     var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE,
-                                                                              data: {course_id: id, items: currentData.objects}, push: true}});
+                                                                              data: DetailsFactory.create(id, currentData.objects), push: true}});
                     that.dispatchEvent(event);
 
                     view.showLoader(false);
