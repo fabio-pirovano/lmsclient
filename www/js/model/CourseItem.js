@@ -7,7 +7,7 @@
         this.isLocked       = locked;
         this.title          = title;
         this.courseType     = type;
-        this.isFolder       = folder;
+        this.isFolder       = type === 'folder';
 
     }
 

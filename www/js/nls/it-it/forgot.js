@@ -3,6 +3,7 @@
 
     'username':          'Introduci lo userame',
     'email':            'Introduci l-email',
-    'reset':            'Azzera password'
+    'reset':            'Azzera password',
+    'resetURL':        'Indirizzo Web'
 
 });

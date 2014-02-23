@@ -97,14 +97,6 @@
 
         $.each(data, function(index, val){
 
-            console.log(index, ' - ', val);
-
-            for(var i in val.course_info){
-
-                console.log(i, ' - ', val.course_info[i]);
-
-            }
-
             try{
 
                 var course = new Course(val.course_info);

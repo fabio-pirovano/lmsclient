@@ -81,8 +81,15 @@
 
         evt.preventDefault();
 
-        var url = $(this).attr('data-url'),
-            idCourse = url.match(/idCourse=([^&]*)/)[1];
+        var target = $(this);
+
+        var url         = target.attr('data-url'),
+            idCourse    = url.match(/idCourse=([^&]*)/)[1],
+            thumb        = target.find('img').attr('src'),
+            name       = target.find('strong').text();
+
+        localStorage.setItem('currentCourseName', name);
+        localStorage.setItem('currentCourseThumb', thumb);
 
         controller.getCourseDetails(idCourse);
 
