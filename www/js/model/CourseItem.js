@@ -1,6 +1,6 @@
 ;define('model/CourseItem', [], function(){
 
-    function CourseItem(id, organization, locked, title, type, folder){
+    function CourseItem(id, organization, locked, title, type){
 
         this.courseId       = id;
         this.organization   = organization;

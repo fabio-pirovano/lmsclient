@@ -32,7 +32,7 @@
 
             for (var i = 0, tot = courseItems.length; i < tot; i++) {
 
-                var item = new CourseItem(id, courseItems[i].id_org, courseItems[i].locked, courseItems[i].title, courseItems[i].type, courseItems[i].folder);
+                var item = new CourseItem(id, courseItems[i].id_org, courseItems[i].locked, courseItems[i].title, courseItems[i].type);
                 result.push(item);
 
             }
@@ -55,9 +55,9 @@
         constructor: DetailsFactory,
 
         toString: function() {
-            // Note that as `formatNameAndAge` is static we must supply a reference
-            // to `this` so it can operate on this instance.
-            return formatNameAndAge(this);
+
+            return Object.prototype.toString.call(this);
+
         }
     };
 

@@ -5,6 +5,9 @@ define('core/Constants', [], (function(){
         // URLs and Configuration constants
         API_URL: 'http://www.gnstudio.com/demos/docebo/api_light.php',
         PANELS_DIRECTION: 'up',
+        DETAILS_REVEALS_DIRECTION: 'right',
+        DETAILS_HIDE_DIRECTION: 'left',
+        DETAILS_SHOW_FOLDER: 'down',
 
         // App Views and Modules
         FORGOT_PWD_MODULE: 'views/forgotpassword/ForgotPasswordView',

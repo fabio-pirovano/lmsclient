@@ -69,8 +69,8 @@
                 if(currentData.success === true){
 
                     console.log(currentData.objects);
-                    var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE,
-                                                                              data: DetailsFactory.create(id, currentData.objects), push: true}});
+                    var event = new CustomEvent(Constants.DETAIL_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE,
+                                                                              data: {token: token, key: key, objects: DetailsFactory.create(id, currentData.objects)}, push: true}});
                     that.dispatchEvent(event);
 
                     view.showLoader(false);

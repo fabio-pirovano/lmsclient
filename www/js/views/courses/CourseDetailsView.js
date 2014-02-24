@@ -1,15 +1,27 @@
-;define('views/courses/CourseDetailsView', ['appframework', 'mustache'], (function($, mustache){
+;define('views/courses/CourseDetailsView', ['appframework', 'mustache', 'i18n!nls/courses', 'core/Constants'], (function($, mustache, courses, Constants){
 
-    var detailsTemplate;
+    var detailsTemplate, controller, currentCurseWindow;
     var $courseDetails, $courseInfo, $courseItems;
 
     var doInit = function(data){
+
+        var token = data.token;
+        var key = data.key;
+
+        var view = this;
+
+        require(['controllers/CourseDetails'], function(module){
+
+            controller = module;
+            module.init(token, key, view);
+
+        });
 
         $courseDetails  = $('#course-details');
         $courseInfo     = $('#course-info');
         $courseItems    = $('#course-items');
 
-        $courseDetails.attr('title', localStorage.getItem('currentCourseName'));
+        $.ui.setTitle(localStorage.getItem('currentCourseName'));
 
         var $thumb  = $courseInfo.find('img').attr('src', ''),
             $course = $courseInfo.find('span').text('');
@@ -22,7 +34,7 @@
             $course.text(localStorage.getItem('currentCourseName'));
 
             detailsTemplate = tpl;
-            renderCourseDetails(data);
+            renderCourseDetails(data.objects);
 
         });
 
@@ -51,18 +63,19 @@
 
         evt.preventDefault();
 
-        var $item = $(this);
+        var $selectedItem = $(this);
 
-        var isFolder     = $item.attr('data-folder') == 'true',
-            courseId     = $item.attr('data-course'),
-            organization = $item.attr('data-organization');
+        var isFolder     = $selectedItem.attr('data-folder') == 'true',
+            courseId     = $selectedItem.attr('data-course'),
+            organization = $selectedItem.attr('data-organization');
 
         if(isFolder){
 
+            controller.getFolderDetails(courseId, organization);
 
         }else{
 
-
+            controller.openLearningObject(organization);
 
         }
 
@@ -82,10 +95,59 @@
 
     };
 
+    var doShowError = function(msg){
+
+        if(msg){
+
+            $.ui.popup(msg);
+
+        }
+
+    };
+
+    var doShowLoader = function(status, message){
+
+        if(status){
+
+            $.ui.showMask(message || courses.loading);
+
+        }else{
+
+            $.ui.hideMask();
+
+        }
+
+    };
+
+    var getCurrentData = function(){
+
+        return $courseItems.html();
+
+    };
+
+    var refreshData = function(data){
+
+        $courseItems.html('');
+        renderCourseDetails(data);
+
+    };
+
+    var openURL = function(url){
+
+        currentCurseWindow = window.open(url, '_blank', 'location=no');
+        currentCurseWindow.addEventListener('exit', function() { alert(event.url); });
+
+    };
+
     return{
 
         init: doInit,
-        dispose: doDispose
+        dispose: doDispose,
+        showError: doShowError,
+        showLoader: doShowLoader,
+        currentData: getCurrentData,
+        refreshData: refreshData,
+        openURL: openURL
 
     };
 

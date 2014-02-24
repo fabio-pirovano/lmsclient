@@ -3,7 +3,9 @@
     var that = this;
     var history = [];
 
-    var loadView = function (view, module, data) {
+    var loadView = function (view, module, data, reverse) {
+
+        var direction;
 
         $('#' + view).bind('loadpanel', function (e) {
 
@@ -17,7 +19,9 @@
 
         });
 
-        $.ui.loadContent(view, false, false, Constants.PANELS_DIRECTION);
+        reverse ? direction  = Constants.DETAILS_HIDE_DIRECTION : Constants.DETAILS_REVEALS_DIRECTION;
+
+        $.ui.loadContent(view, false, false, direction);
 
     };
 
@@ -42,7 +46,7 @@
     var doGoBack = function(){
 
         var details = history.pop();
-        loadView(details.view, details.module, details.data);
+        loadView(details.view, details.module, details.data, true);
 
     };
 
