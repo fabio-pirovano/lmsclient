@@ -1,4 +1,4 @@
-;define('views/courses/CourseDetailsView', ['appframework', 'mustache', 'i18n!nls/courses', 'core/Constants'], (function($, mustache, courses, Constants){
+;define('views/courses/CourseDetailsView', ['appframework', 'mustache', 'i18n!nls/courses'], (function($, mustache, courses){
 
     var detailsTemplate, controller, currentCurseWindow;
     var $courseDetails, $courseInfo, $courseItems;

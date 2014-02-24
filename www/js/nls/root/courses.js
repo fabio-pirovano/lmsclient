@@ -1,6 +1,7 @@
 // root
 ;define({
 
-    'loading':        'Loading Courses…'
+    'loading':          'Loading Courses...',
+    'loadingCourse':    'Preparing your course...'
 
 });

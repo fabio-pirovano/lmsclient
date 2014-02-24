@@ -1,4 +1,4 @@
-;define('controllers/CourseDetails', ['appframework', 'core/Constants', 'model/CourseItem'], (function ($, Constants, CourseItem) {
+;define('controllers/CourseDetails', ['appframework', 'core/Constants', 'model/CourseItem', 'i18n!nls/courses'], (function ($, Constants, CourseItem, courses) {
 
     var token, key, view, detailsStack;
 
@@ -75,7 +75,7 @@
 
     var openLearningObject = function (id) {
 
-        view.showLoader(true);
+        view.showLoader(true, courses.loadingCourse);
 
         $.ajax({
 
