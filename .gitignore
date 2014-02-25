@@ -31,6 +31,10 @@ proguard/
 # Phonegap not needed folders
 *.cordova
 /platforms
+/plugins
 
 # Mac Files
 .DS_Store
+
+# Serve side files
+api_light.php
