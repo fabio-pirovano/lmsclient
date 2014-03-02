@@ -71,12 +71,12 @@
 
     };
 
-    var databaseError = function(error){
+    var databaseError = function(transaction, error){
 
-        console.log('Database error', error.code, SQLError);
+        console.log('Database error', error.code, error.__proto__);
 
         // TODO add a meaningful message for the user and log something on the device
-
+        /*
         console.log('SQLError.UNKNOWN_ERR', SQLError.UNKNOWN_ERR);
         console.log('SQLError.DATABASE_ERR', SQLError.DATABASE_ERR);
         console.log('SQLError.VERSION_ERR', SQLError.VERSION_ERR);
@@ -85,6 +85,7 @@
         console.log('SQLError.SYNTAX_ERR', SQLError.SYNTAX_ERR);
         console.log('SQLError.CONSTRAINT_ERR', SQLError.CONSTRAINT_ERR);
         console.log('SQLError.TIMEOUT_ERR', SQLError.TIMEOUT_ERR);
+        */
 
     };
 
@@ -151,7 +152,7 @@
 
                 if(results && results.rows && results.rows.length){
 
-                    tx.executeSql('UPDATE configuration SET (value) = (:value) WHERE name = "' + name + '"', [value], onConfigurationItemSaved, databaseError);
+                    tx.executeSql('UPDATE configuration SET value = :value WHERE name = "' + name + '"', [value], onConfigurationItemSaved, databaseError);
 
                 }else{
 
