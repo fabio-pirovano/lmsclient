@@ -127,7 +127,9 @@
 
             require(['core/BackButtonManager'], (function(backManager){
 
-                backManager.init($('#courses'), [$('#reports'), $('#settings'), $('#logout'), $('#forgot-pwd')]);
+                //  function(toDisable, toEnable)
+                backManager.init($('#courses'),
+                                [$('#reports'), $('#settings'), $('#logout'), $('#forgot-pwd'), $('#course-details')]);
 
             }));
 

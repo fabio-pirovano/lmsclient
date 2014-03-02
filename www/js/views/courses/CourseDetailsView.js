@@ -1,6 +1,6 @@
 ;define('views/courses/CourseDetailsView', ['appframework', 'mustache', 'i18n!nls/courses'], (function($, mustache, courses){
 
-    var detailsTemplate, controller, currentCurseWindow;
+    var detailsTemplate, controller, currentCourseWindow;
     var $courseDetails, $courseInfo, $courseItems;
 
     var doInit = function(data){
@@ -21,7 +21,7 @@
         $courseInfo     = $('#course-info');
         $courseItems    = $('#course-items');
 
-        $.ui.setTitle(localStorage.getItem('currentCourseName'));
+        $.ui.setTitle(localStorage.getItem('currentCourseName').substr(0, 12) + '...');
 
         var $thumb  = $courseInfo.find('img').attr('src', ''),
             $course = $courseInfo.find('span').text('');
@@ -128,14 +128,28 @@
     var refreshData = function(data){
 
         $courseItems.html('');
+
+        $.ui.setBackButtonText(courses.goBack);
         renderCourseDetails(data);
+
+    };
+
+    var restoreHTML = function(html){
+
+        $courseItems.html(html);
+
+    };
+
+    var restoreBackButton = function(){
+
+        $.ui.setBackButtonText(courses.myCourses);
 
     };
 
     var openURL = function(url){
 
-        currentCurseWindow = window.open(url, '_blank', 'location=no');
-        currentCurseWindow.addEventListener('exit', function() { alert(event.url); });
+        currentCourseWindow = window.open(url, '_blank', 'location=no');
+        currentCourseWindow.addEventListener('exit', function() { alert(event.url); });
 
     };
 
@@ -146,6 +160,8 @@
         showError: doShowError,
         showLoader: doShowLoader,
         currentData: getCurrentData,
+        restoreHTML: restoreHTML,
+        restoreBackButton: restoreBackButton,
         refreshData: refreshData,
         openURL: openURL
 

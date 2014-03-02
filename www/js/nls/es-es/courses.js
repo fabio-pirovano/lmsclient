@@ -2,6 +2,8 @@
 ;define({
 
     'loading':          'Cargando Cursos...',
-    'loadingCourse':    'Preparación del curso...'
+    'loadingCourse':    'Preparación del curso...',
+    'goBack':           'Espalda',
+    'myCourses':        'Cursos'
 
 });

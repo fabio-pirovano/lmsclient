@@ -8,12 +8,16 @@
          if(!isEnabled)$.ui.setBackButtonVisibility(true);
          isEnabled = true;
 
+         console.log('enableBackButton', evt)
+
      };
 
     var disableBackButton = function(evt){
 
         if(isEnabled)$.ui.setBackButtonVisibility(false);
          isEnabled = false;
+
+        console.log('disableBackButton', evt)
 
     };
 

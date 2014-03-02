@@ -17,10 +17,21 @@
         if (push) {
 
             detailsStack.push(data);
+            $.ui.pushHistory('course-details', 'course-details?stack=', 'up', detailsStack.length);
 
         } else {
 
             detailsStack.pop();
+
+        }
+
+        if(detailsStack.length > 0){
+
+            $(window).bind('hashchange', onDetailsStatusChange);
+
+        }else{
+
+            $(window).unbind('hashchange', onDetailsStatusChange);
 
         }
 
@@ -70,6 +81,25 @@
 
             }
         });
+
+    };
+
+    var onDetailsStatusChange = function(evt){
+
+        if(window.location.hash == '#' + Constants.COURSES_DETAILS_VIEW){
+
+            view.restoreHTML(detailsStack[0]);
+            view.restoreBackButton();
+
+            manageStack(null, false);
+
+        }
+
+        if(detailsStack.length == 0){
+
+            $(window).unbind('hashchange', onDetailsStatusChange);
+
+        }
 
     };
 
