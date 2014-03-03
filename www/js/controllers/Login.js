@@ -7,7 +7,7 @@
         var that = this;
         var cache = {};
 
-        var doRecoverPassword = function(){
+        var doRecoverPassword = function(evt){
 
             console.log('should  recover password');
 

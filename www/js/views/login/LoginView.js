@@ -112,7 +112,6 @@
                 selectParser.init($languageSelector);
                 selectParser.update(lang || 'en')
 
-
             });
 
             require(['libs/happy/happy'], function(happy){

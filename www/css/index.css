@@ -230,7 +230,7 @@ select#language{
     left: 0;
     bottom: 0;
     right: 0;
-    height: 220px;
+    height: 290px;
 
 }
 /* ================================== */
@@ -434,3 +434,9 @@ select#language{
 }
 
 /* ======== End Login Panel ======== */
+
+#intro-text{
+
+    color: white !important;
+
+}
