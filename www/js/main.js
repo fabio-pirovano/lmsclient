@@ -76,7 +76,7 @@
             $('#courses-link').text(nav.courses);
             $('#reports-link').text(nav.reports);
             $('#settings-link').text(nav.settings);
-            $('#logout-link').text(nav.logout).bind('click', doLogout);
+            $('#logout-link').text(nav.logout).bind('tap', doLogout);
 
             // login.init('it');
             // dataManager.init();
