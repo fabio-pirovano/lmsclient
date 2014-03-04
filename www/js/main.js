@@ -1,6 +1,6 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter'],
+;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants'],
 
-    (function($, $ui, login, dataManager, nav, router){
+    (function($, $ui, login, dataManager, nav, router, Constants){
 
     var onDeviceReady = function(){
 
@@ -32,8 +32,8 @@
 
             case  devicePlatform == 'iOS':
             // TODO uncomment for production
-            // window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
-            platform = 'ios7';
+            window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
+            // platform = 'ios7';
             break;
 
             default:
@@ -76,7 +76,7 @@
             $('#courses-link').text(nav.courses);
             $('#reports-link').text(nav.reports);
             $('#settings-link').text(nav.settings);
-            $('#logout-link').text(nav.logout);
+            $('#logout-link').text(nav.logout).bind('click', doLogout);
 
             // login.init('it');
             // dataManager.init();
@@ -85,6 +85,37 @@
 
         });
 
+    };
+
+    var doLogout = function(){
+
+        $.ui.showMask();
+
+        var user = dataManager.getUser();
+
+        $.ajax({
+
+            url: Constants.API_URL,
+            type: 'post',
+            data: JSON.stringify({'details': {'action': 'logout', 'userid': user.id , 'token': user.token , 'key': user.getUsername}}),
+            success: function( data ) {
+
+                var currentData = JSON.parse(data);
+
+                if(currentData.success === true){
+
+                    $.ui.hideMask();
+                    $.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+
+                }
+
+            },
+            error: function(xhr, error){
+
+                console.log(arguments);
+
+            }
+        });
 
     };
 

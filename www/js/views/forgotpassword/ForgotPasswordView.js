@@ -56,7 +56,7 @@
 
         if(msg){
 
-            $.ui.popup(msg);
+            return document.getElementById($.ui.popup(msg).id);
 
         }
 
