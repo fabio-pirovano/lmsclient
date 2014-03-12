@@ -1,6 +1,6 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants'],
+;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants', 'i18n!nls/miscellaneous'],
 
-    (function($, $ui, login, dataManager, nav, router, Constants){
+    (function($, $ui, login, dataManager, nav, router, Constants, miscellaneous){
 
     var onDeviceReady = function(){
 
@@ -76,7 +76,7 @@
             $('#courses-link').text(nav.courses);
             $('#reports-link').text(nav.reports);
             $('#settings-link').text(nav.settings);
-            $('#logout-link').text(nav.logout).bind('tap', doLogout);
+            $('#logout-link').text(nav.logout).bind('touchend', doLogout);
 
             // login.init('it');
             // dataManager.init();
@@ -87,9 +87,12 @@
 
     };
 
-    var doLogout = function(){
+    var doLogout = function(evt){
 
-        $.ui.showMask();
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        $.ui.showMask(miscellaneous.loggingout);
 
         var user = dataManager.getUser();
 
@@ -97,7 +100,7 @@
 
             url: Constants.API_URL,
             type: 'post',
-            data: JSON.stringify({'details': {'action': 'logout', 'userid': user.id , 'token': user.token , 'key': user.getUsername}}),
+            data: JSON.stringify({'details': {'action': 'logout', 'userid': user.id, 'key': user.getUsername, 'token': user.token}}),
             success: function( data ) {
 
                 var currentData = JSON.parse(data);
