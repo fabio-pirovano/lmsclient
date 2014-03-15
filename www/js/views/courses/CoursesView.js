@@ -1,12 +1,13 @@
 ;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/coursesrouter'], (function($, mustache, controller, courses, router){
 
     var courseTemplate;
-    var $courses;
+    var $coursesSearch, $courses;
 
     var doInit = function(data){
 
         router.init();
 
+        $coursesSearch = $('#user-courses-search');
         $courses = $('#user-courses');
 
         var user = data.getUser();

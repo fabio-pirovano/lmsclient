@@ -1,5 +1,5 @@
-;define('views/login/LoginView', ['appframework', 'controllers/Login', 'i18n!nls/login', 'core/Constants'],
-    (function($, controller, loginMessages, Constants){
+;define('views/login/LoginView', ['appframework', 'controllers/Login', 'i18n!nls/login', 'core/Constants', 'utils/ConfigurationManager'],
+    (function($, controller, loginMessages, Constants, config){
 
         var $username, $password, $domain,
             $form, $forgotPassword, $languageSelector;
@@ -78,6 +78,7 @@
             }
 
             $('#menubadge').css('visibility', 'visible');
+            config.saveConfig('defaulturl', $domain.val());
 
         };
 
@@ -104,6 +105,7 @@
             $username.attr('placeholder', loginMessages.username);
             $password.attr('placeholder', loginMessages.password);
             $domain.attr('placeholder', loginMessages.domain);
+
             $forgotPassword.text(loginMessages.forgot);
             $($form).find('#do-login').text(loginMessages.submit);
 
@@ -154,7 +156,8 @@
             invalidCredentials: invalidCredentials,
             goNext: doGoNext,
             getUsername: function(){return $username;},
-            getDomain: function(){return $domain.val();}
+            getDomain: function(){return $domain.val();},
+            getDomainItem: function(){return $domain;}
 
         }
 
