@@ -23,7 +23,7 @@
 
             if(config.logoExists()){
 
-                cache['login-loader'].find("img").prop('src', config.configurationItem('logo'));
+                cache['login-loader'].find('img').prop('src', config.configurationItem('logo'));
 
                 view.showHideLoader(true, '', function(){
 

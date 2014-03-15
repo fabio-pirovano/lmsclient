@@ -31,9 +31,7 @@
             break;
 
             case  devicePlatform == 'iOS':
-            // TODO uncomment for production
             window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
-            // platform = 'ios7';
             break;
 
             default:
@@ -49,8 +47,7 @@
             var networkState = navigator.connection.type;
             if(networkState == Connection.NONE){
 
-                // TODO make the messages multi languae -> messages.js
-                alert('A connection is required to use this app');
+                navigator.notification.alert(miscellaneous.connectionRequired);
                 return;
 
             }
@@ -66,7 +63,6 @@
             navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
             addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
 
-            // TODO check if this ui init can be removed considering that there is another one in the onSystemLanguage handler
             $ui.launch();
             $ui.showBackButton = false;
 
@@ -75,13 +71,21 @@
 
             $('#courses-link').text(nav.courses);
             $('#reports-link').text(nav.reports);
+
             $('#settings-link').text(nav.settings);
+            $('#settings').bind('loadpanel', loadSettingsModule);
+
             $('#logout-link').text(nav.logout).bind('touchend', doLogout);
 
-            // login.init('it');
-            // dataManager.init();
+        });
 
-            // router.init();
+    };
+
+    var loadSettingsModule = function(evt){
+
+        require(['views/settings/SettingsView'], function(settings){
+
+            settings.init();
 
         });
 
@@ -133,7 +137,6 @@
 
         console.log('onPreferredLanguage', locale.value);
 
-        // $ui.launch();
         dataManager.init();
         router.init();
 
@@ -150,10 +153,7 @@
     var init = function(){
 
         console.log($);
-
         document.addEventListener('deviceready', onDeviceReady, false);
-        onDeviceReady();
-
 
     };
 
