@@ -441,9 +441,23 @@ select#language{
 
 }
 
-#input-settings{
+.input-settings{
 
     color: #666666 !important;
     font-size: 9px !important;
+    height: 260px !important;
+    background-color: #ffffff;
+
+}
+
+.input-settings .wide-control{
+
+    padding: 2px;
+
+}
+
+#offline-notification-settings{
+
+    display: none !important;
 
 }
