@@ -1,6 +1,6 @@
 ;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/coursesrouter'], (function($, mustache, controller, courses, router){
 
-    var courseTemplate;
+    var courseTemplate, currentSeatch;
     var $coursesSearch, $courses;
 
     var doInit = function(data){
@@ -49,18 +49,54 @@
 
     };
 
+    var onCourseSearch = function(evt){
+
+        var filter = this.value,
+            filterLenght = filter.length;
+
+        if(currentSeatch){
+
+            clearTimeout(currentSeatch);
+
+        }
+
+        currentSeatch = setTimeout(function(){
+
+            $courses.find('li').each(function(i, e){
+
+                var sel = $(e).find('div strong').text().toLowerCase().trim();
+                var query = filter.toLowerCase();
+
+                if(sel.indexOf(query) === -1){
+
+                    $(e).hide();
+
+                } else {
+
+                    $(e).show();
+
+                }
+
+            });
+
+        }, 300);
+
+    };
+
     var doInitCoursesInteraction = function(status){
 
-      if(status){
+        if(status){
 
-          $courses.find('li').bind('tap', onCourseSelection);
+            $courses.find('li').bind('tap', onCourseSelection);
+            $coursesSearch.bind('input', onCourseSearch);
 
 
-      }else{
+        }else{
 
-          $courses.find('li').unbind('tap', onCourseSelection);
+            $courses.find('li').unbind('tap', onCourseSelection);
+            $coursesSearch.unbind('input', onCourseSearch);
 
-      }
+        }
 
     };
 

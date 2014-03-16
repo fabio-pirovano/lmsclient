@@ -2,7 +2,7 @@
 
     var that = this;
     var view;
-    var token, key;
+    var token, key, courseList;
 
     var doInit = function(v){
 
@@ -110,8 +110,9 @@
 
         });
 
-        console.log(tmp)
-        renderData(tmp);
+        console.log(tmp);
+        courseList = tmp;
+        renderData(courseList);
 
     };
 

@@ -188,20 +188,25 @@
 
         };
 
-        var onUsername = function(evt) {
+        var getDomainValue = function(){
 
-            evt.preventDefault();
-            evt.stopPropagation();
+            that.addEventListener(config.events.CONFIGURATION_VALUE_FOUND, function(evt){
+
+                evt.target.removeEventListener(evt.type, arguments.callee);
+                view.getDomainItem().val(evt.detail.value);
+
+            });
+
+            config.configurationItem('defaulturl');
+
+        }
+
+        var onUsername = function(evt) {
 
             evt.target.removeEventListener(evt.type, arguments.callee);
             view.getUsername().attr('value', evt.detail.value);
 
-            that.addEventListener(config.events.CONFIGURATION_VALUE_FOUND, function(evt){
-
-                evt.target.removeEventListener(e.type, arguments.callee);
-                view.getDomainItem().attr('value', evt.detail.value);
-
-            });
+            getDomainValue();
 
         };
 
@@ -227,14 +232,6 @@
 
                     view.getUsername().attr('value', value);
                     that.removeEventListener(config.events.CONFIGURATION_VALUE_FOUND, onUsername);
-
-                }
-
-                value = config.configurationItem('defaulturl');
-
-                if(value){
-
-                    view.getDomainItem().attr('value', value);
 
                 }
 
