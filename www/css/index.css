@@ -138,10 +138,20 @@ h1 {
 
 input.login{
 
+
     background-repeat: no-repeat !important;
-    text-indent: 20px !important;
-    background-size: 5% auto !important;
-    background-position: left center !important;
+    text-indent: 25px !important;
+    background-size: 25px auto !important;
+    background-position: 5px center !important;
+
+    color: #6B6B6B !important;
+
+    margin: 0 !important;
+    border-top-color: #fff !important;
+    border-left-color: #fff !important;
+    border-right-color: #fff !important;
+    border-radius: 0 !important;
+    border-bottom-color: #ccc !important;
 
 }
 
@@ -183,6 +193,7 @@ a#recover-password{
     border: transparent !important;
     background: transparent !important;
     color: white !important;
+    margin-top: 0 !important;
 
     width: 100%;
 
@@ -231,6 +242,25 @@ select#language{
     bottom: 0;
     right: 0;
     height: 290px;
+
+}
+
+.forgot-pwd-text{
+
+    font-size: 11px !important;
+    line-height: 1em !important;
+
+}
+
+input#e-mail{
+
+    background-image: url(../img/email.png)  !important;
+
+}
+
+input#reset-url{
+
+    background-image: url(../img/globe.png)  !important;
 
 }
 /* ================================== */
