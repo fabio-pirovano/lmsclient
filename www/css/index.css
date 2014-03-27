@@ -491,3 +491,25 @@ input#reset-url{
     display: none !important;
 
 }
+
+/* ========== Course Panel ========== */
+
+.course{
+
+    color: #333333;
+
+}
+
+.even{
+
+    background-color: #EFF3F3;
+
+}
+
+.odd{
+
+    background-color: #ffffff;
+
+}
+
+/* ======== End Course Panel ======== */

@@ -48,6 +48,8 @@
 
         data.forEach(function (val){
 
+            console.log('dbg', arguments);
+
             html = mustache.to_html(detailsTemplate, val);
             $courseItems.html($courseItems.html() + html);
 

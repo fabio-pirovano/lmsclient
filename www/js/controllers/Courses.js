@@ -121,9 +121,11 @@
         setTimeout(function(){
 
             var course = data.shift();
-            view.showCourse(course);
+            var length = data.length;
 
-            if(data.length > 0){
+            view.showCourse(course, length % 2);
+
+            if(length > 0){
 
                 setTimeout(arguments.callee, 50);
 
