@@ -1,6 +1,7 @@
 ;define('views/settings/SettingsView', ['appframework', 'i18n!nls/miscellaneous', 'utils/ConfigurationManager'], function($, miscellaneous, config){
 
-    var $pushNotification, $pushNotificationLabel, $pushNotificationsValue;
+    var $settingsDescription, $pushNotification,
+        $pushNotificationLabel, $pushNotificationsValue;
 
     var onPushNotification = function(evt){
 
@@ -28,10 +29,12 @@
 
     var init = function(){
 
+        $settingsDescription        = $('#settings > p:first-of-type');
         $pushNotification           = $('#push-notification-settings input[type="checkbox"]');
         $pushNotificationLabel      = $('#push-notification-settings .narrow-control');
         $pushNotificationsValue     = $('#push-notification-values');
 
+        $settingsDescription.text(miscellaneous.settingsDescription);
         $pushNotificationLabel.text(miscellaneous.pushnotification);
         $pushNotificationsValue.attr('data-on', miscellaneous.yes);
         $pushNotificationsValue.attr('data-off', miscellaneous.no);

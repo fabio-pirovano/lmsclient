@@ -1,6 +1,6 @@
 ;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/coursesrouter'], (function($, mustache, controller, courses, router){
 
-    var ALTERNATE_COLORS_CLASSES = ['even', 'odd'];
+
     var courseTemplate, currentSeatch;
     var $coursesSearch, $courses;
 
@@ -37,11 +37,7 @@
 
     };
 
-    var doShowCourse = function(data, index){
-
-        data.rowColorKind = ALTERNATE_COLORS_CLASSES[index];
-
-        console.log(ALTERNATE_COLORS_CLASSES, index)
+    var doShowCourse = function(data){
 
         var html = mustache.to_html(courseTemplate, data);
         $courses.html($courses.html() + html);

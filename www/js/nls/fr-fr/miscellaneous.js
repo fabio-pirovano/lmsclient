@@ -1,6 +1,7 @@
 // fr_FR
 ;define({
 
+    'settingsDescription':  'Paramètres',
     'loggingout':           'Déconnexion...',
     'pushnotification':     'Notifications',
     'yes':                  'OUI',

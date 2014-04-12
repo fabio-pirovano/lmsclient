@@ -1,6 +1,7 @@
 // root
 ;define({
 
+    'settingsDescription':  'General Settings',
     'loggingout':           'Disconnecting...',
     'pushnotification':     'Notifications',
     'yes':                  'YES',

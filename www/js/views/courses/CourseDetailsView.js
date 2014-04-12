@@ -1,5 +1,6 @@
 ;define('views/courses/CourseDetailsView', ['appframework', 'mustache', 'i18n!nls/courses'], (function($, mustache, courses){
 
+    var ALTERNATE_COLORS_CLASSES = ['even', 'odd'];
     var detailsTemplate, controller, currentCourseWindow;
     var $courseDetails, $courseInfo, $courseItems;
 
@@ -46,9 +47,9 @@
 
         var html;
 
-        data.forEach(function (val){
+        data.forEach(function (val, index){
 
-            console.log('dbg', arguments);
+            val.rowColorKind = ALTERNATE_COLORS_CLASSES[index % 2];
 
             html = mustache.to_html(detailsTemplate, val);
             $courseItems.html($courseItems.html() + html);

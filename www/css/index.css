@@ -328,11 +328,11 @@ input#reset-url{
 
 #menu  ul > li {
 
-    padding-left: 10px;
+    padding-left: 0;
     display: block;
     width: 100%;
-    height: 28px;
-    min-height: 28px;
+    height: 48px;
+    min-height: 48px;
     margin: 0;
     list-style: none;
     background: inherit;
@@ -343,14 +343,15 @@ input#reset-url{
 
     display: block;
     width: 100%;
-    height: 28px;
+    height: 48px;
     font-family: 'Eurostile-Bold', Eurostile, Helvetica, Arial, sans-serif;
     font-weight: normal;
     font-size: 14px;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    line-height: 28px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #666666 !important;
+    line-height: 48px;
     text-decoration: none;
     border-bottom: none;
     color: #fff;
@@ -363,7 +364,16 @@ input#reset-url{
 }
 
 #menu ul > li:last-child > a {
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid #666666;
+}
+
+#menu ul > li > a{
+
+    background-repeat: no-repeat !important;
+    text-indent: 35px !important;
+    background-size: 25px auto !important;
+    background-position: 5px center !important;
+
 }
 
 #menubadge{
@@ -381,29 +391,53 @@ input#reset-url{
 
 }
 
+#menu #courses-link{
+
+    background-image: url(../img/courses-menu-icon.png) !important;
+
+}
+
+#menu #reports-link{
+
+    background-image: url(../img/reports-menu-icon.png) !important;
+
+}
+
+#menu #settings-link{
+
+    background-image: url(../img/settings-menu-icon.png) !important;
+
+}
+
+#menu #logout-link{
+
+    background-image: url(../img/logout-menu-icon.png) !important;
+
+}
+
 /* ======== End Menu ======== */
 
 /* ======== General Colors ======== */
 
 #afui #header {
 
-    background: #0088D1 !important;
+    background: #0465ac !important;
     color: #FFFFFF !important;
-    border-bottom: 1px solid #0088D1 !important;
+    border-bottom: 1px solid #0465ac !important;
 
 }
 
 #afui #backButton {
 
-    background: #0088D1 !important;
+    background: #0465ac !important;
     color: #fff !important;
 
 }
 
 #afui #navbar {
 
-    background: #0088D1 !important;
-    border-top: 1px solid #0088D1 !important;
+    background: #0465ac !important;
+    border-top: 1px solid #0465ac !important;
 
 }
 
@@ -415,19 +449,19 @@ input#reset-url{
 
 #afui #afSelectBoxfix .selected {
 
-    background: #0088D1 !important;
+    background: #0465ac !important;
 
 }
 
 #afui #afSelectBoxContainer #afSelectCancel {
 
-    background: #0088D1 !important;
+    background: #0465ac !important;
 
 }
 
 .panel{
 
-    background: #0088D1 !important;
+    background: #0465ac !important;
 
 }
 
@@ -465,6 +499,24 @@ input#reset-url{
 
 /* ======== End Login Panel ======== */
 
+/* ======== Settings Panel ======== */
+
+#settings{
+
+    background-color:  #EFF3F3 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+}
+
+#settings > p:first-of-type{
+
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #666666 !important;
+
+}
+
 #intro-text{
 
     color: white !important;
@@ -475,7 +527,8 @@ input#reset-url{
 
     color: #666666 !important;
     font-size: 9px !important;
-    height: 260px !important;
+    border-top: 1px solid #CACFD2;
+    border-bottom: 1px solid #CACFD2;
     background-color: #ffffff;
 
 }
@@ -492,13 +545,118 @@ input#reset-url{
 
 }
 
+/* ======== End Settings Panel ======== */
+
 /* ========== Course Panel ========== */
+
+#courses{
+
+    background-color:  #EFF3F3 !important;
+
+}
+
+#user-courses-search{
+
+    background-repeat: no-repeat !important;
+    text-indent: 35px !important;
+    background-size: 25px auto !important;
+    background-position: 5px center !important;
+
+    color: #6B6B6B !important;
+    margin: 0 !important;
+    border-color:  #ccc !important;
+    border-radius: 0 !important;
+    box-shadow: 2px 2px 5px #cccccc !important;
+    padding: 10px 0 10px 0 !important;
+
+    background-image: url(../img/magnifier.png)  !important;
+
+}
+
+#courses ul{
+
+    margin: 10px !important;
+    border: 1px solid #ccc !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+    display: inline-block !important;
+
+}
+
+
+#courses ul li img{
+
+    float: left;
+    width: 120px;
+
+}
 
 .course{
 
-    color: #333333;
+    width: 90% !important;
 
 }
+
+.course strong{
+
+    color: #0465ac;
+
+}
+
+.course div{
+
+    text-align: center;
+    display: inline-block;
+    padding: 0;
+
+}
+
+.course div p{
+
+    display: inline-block !important;
+    vertical-align: middle !important;
+    line-height: normal;
+
+}
+
+.course-status{
+
+    color: #ffffff;
+    background-color: #DB7633;
+    height: 20px !important;
+    width: 30px !important;
+
+}
+
+.course-lang{
+
+    color: #ffffff;
+    background-color: #566473;
+    height: 20px !important;
+    width: 30px !important;
+
+}
+
+.open-details{
+
+    height: 41px !important;
+    width: 23px !important;
+    background: url(../img/arrow-right.png) no-repeat center;
+    border: 1px solid red !important;
+
+
+}
+
+.detail-disclosure{
+
+    text-indent: -9999px;
+
+}
+
 
 .even{
 

@@ -1,6 +1,7 @@
 // it_IT
 ;define({
 
+    'settingsDescription':  'Impostazioni',
     'loggingout':           'Disconnessione...',
     'pushnotification':     'Notifiche',
     'yes':                  'SI',
