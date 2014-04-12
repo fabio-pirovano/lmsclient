@@ -2,6 +2,8 @@
 
     (function($, $ui, login, dataManager, nav, router, Constants, miscellaneous){
 
+    var isLoginDisabled;
+
     var onDeviceReady = function(){
 
         var platform, devicePlatform;
@@ -48,13 +50,14 @@
             if(networkState == Connection.NONE){
 
                 navigator.notification.alert(miscellaneous.connectionRequired);
-                return;
+                isLoginDisabled = true;
 
             }
 
         }catch (error){
 
-            console.log(error)
+            console.log(error);
+            isLoginDisabled = true;
 
         }
 
@@ -63,21 +66,32 @@
             navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
             addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
 
-            $ui.launch();
-            $ui.showBackButton = false;
+            require(['utils/SectionsTitleFactory'], function(factory){
 
-            $ui.disableSideMenu();
-            $ui.toggleNavMenu();
+                factory.init($('#main'), $('#forgot-pwd'), $('#courses'), $('#reports'), $('#settings'));
+                launchUI();
 
-            $('#courses-link').text(nav.courses);
-            $('#reports-link').text(nav.reports);
-
-            $('#settings-link').text(nav.settings);
-            $('#settings').bind('loadpanel', loadSettingsModule);
-
-            $('#logout-link').text(nav.logout).bind('touchend', doLogout);
+            });
 
         });
+
+    };
+
+    var launchUI = function(){
+
+        $ui.launch();
+        $ui.showBackButton = false;
+
+        $ui.disableSideMenu();
+        $ui.toggleNavMenu();
+
+        $('#courses-link').text(nav.courses);
+        $('#reports-link').text(nav.reports);
+
+        $('#settings-link').text(nav.settings);
+        $('#settings').bind('loadpanel', loadSettingsModule);
+
+        $('#logout-link').text(nav.logout).bind('touchend', doLogout);
 
     };
 
@@ -140,7 +154,7 @@
         dataManager.init();
         router.init();
 
-        login.init(localStorage.getItem('userLocale') || locale.value);
+        login.init(localStorage.getItem('userLocale') || locale.value, isLoginDisabled);
 
     };
 

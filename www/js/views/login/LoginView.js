@@ -1,18 +1,25 @@
 ;define('views/login/LoginView', ['appframework', 'controllers/Login', 'i18n!nls/login', 'core/Constants', 'utils/ConfigurationManager'],
     (function($, controller, loginMessages, Constants, config){
 
-        var $username, $password, $domain,
+        var isDisabled,
+            $username, $password, $domain,
             $form, $forgotPassword, $languageSelector;
 
         var onLogin = function(evt){
 
             evt.preventDefault();
 
-            var username, password;
-            username = $username.val();
-            password = $password.val();
+            console.log('isDisabled', isDisabled)
 
-            controller.doLogin(username, password);
+            if(!isDisabled){
+
+                var username, password;
+                username = $username.val();
+                password = $password.val();
+
+                controller.doLogin(username, password);
+
+            }
 
         };
 
@@ -88,7 +95,9 @@
 
         };
 
-        var init = function(lang){
+        var init = function(lang, status){
+
+            isDisabled = status;
 
             controller.init(this);
 

@@ -427,6 +427,13 @@ input#reset-url{
 
 }
 
+#afui.ios > #header{
+
+    border-color: #0465ac !important;
+
+
+}
+
 #afui #backButton {
 
     background: #0465ac !important;
