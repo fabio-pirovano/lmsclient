@@ -88,9 +88,6 @@
 
     var readLogoData = function(path, destroy){
 
-
-       // console.log('utils/LogoLoader => readLogoData', this, that);
-
         fileSystem.root.getFile(path, {create: false, exclusive: true},
                                 function (fileEntry) {
 
@@ -122,7 +119,6 @@
 
                                             var event = new CustomEvent(events.LOGO_DATA_ERROR, {detail: {error: error.code}});
                                             that.dispatchEvent(event);
-
 
                                         };
 

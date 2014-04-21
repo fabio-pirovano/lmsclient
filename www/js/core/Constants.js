@@ -3,6 +3,7 @@ define('core/Constants', [], (function(){
     return {
 
         // URLs and Configuration constants
+        API_FILE: 'api_light.php',
         API_URL: 'http://www.gnstudio.com/demos/docebo/api_light.php',
         PANELS_DIRECTION: 'up',
         DETAILS_REVEALS_DIRECTION: 'right',

@@ -16,6 +16,17 @@
 
         };
 
+        var authenticateUser = function (username, password) {
+
+            view.showHideLoader('', function () {
+
+                login(username, password);
+                console.log('::::::::::::::::::::::: TRYING TO AUTENTICATE')
+
+            }, 'login-loader');
+
+        };
+
         var handleLogin = function(username, password){
 
             console.log(config.logoExists(), this);
@@ -39,19 +50,20 @@
 
                     evt.target.removeEventListener(evt.type, arguments.callee);
 
+                    that.addEventListener(logoLoader.events.LOGO_DOWNLOAD_ERROR, function(evt){
+
+                        evt.target.removeEventListener(evt.type, arguments.callee);
+                        login(username, password);
+
+                    });
                     that.addEventListener(logoLoader.events.LOGO_DATA_READY, function(evt){
 
                         evt.target.removeEventListener(evt.type, arguments.callee);
 
                         config.saveConfig('logo', evt.detail.logoData);
+                        cache['login-loader'].find('img').prop('src', config.configurationItem('logo'));
 
-                        cache['login-loader'].find("img").prop('src', config.configurationItem('logo'));
-
-                        view.showHideLoader('', function(){
-
-                            login(username, password);
-
-                        }, 'login-loader');
+                        authenticateUser(username, password);
 
                     });
 
@@ -103,7 +115,6 @@
                             var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_VIEW, module: Constants.COURSES_MODULE, data: dataManager, state: null}});
                             that.dispatchEvent(event);
 
-                            // TODO dispatch event in order to load the user profile
                             require(['controllers/UserProfile'], (function(profile){
 
                                 profile.fetch(currentUser.id, {token: currentUser.token, key: username});
