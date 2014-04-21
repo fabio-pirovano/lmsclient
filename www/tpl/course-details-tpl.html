@@ -3,16 +3,18 @@
     <div class='course'>
 
         {{#isLocked}}
-            <img src='../img/locked.png'/>
+            <img src='img/locked.png'/>
         {{/isLocked}}
         {{^isLocked}}
-            <img src='../img/{{courseType}}.png'/>
+            <img src='img/{{courseType}}.png'/>
         {{/isLocked}}
 
         <strong>{{title}}</strong>
 
         {{#isFolder}}
-            <img src='../img/right_arrow.png'/>
+            <div class='right-arrow-container'>
+                <img src='img/arrow-right.png'/>
+            </div>
         {{/isFolder}}
 
     </div>

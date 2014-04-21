@@ -1,8 +1,9 @@
-;define('controllers/Courses', ['appframework', 'core/Constants', 'model/Course', 'model/DetailsFactory'], (function($, Constants, Course, DetailsFactory){
+;define('controllers/Courses', ['appframework', 'core/Constants', 'model/Course', 'model/DetailsFactory', 'i18n!nls/courses'], (function($, Constants, Course, DetailsFactory, courses){
 
     var that = this;
     var view;
     var token, key, courseList;
+    var courseLoaded;
 
     var doInit = function(v){
 
@@ -14,6 +15,8 @@
 
         token = user.token;
         key = user.getUsername;
+
+        if(courseLoaded)return;
 
         $.ajax({
 
@@ -28,6 +31,7 @@
 
                     view.showLoader(true);
                     prepareCoursesData(currentData);
+                    courseLoaded = true;
 
                 }else{
 
@@ -54,8 +58,7 @@
 
     var doGetCourseDetails = function(id){
 
-        // TODO make the string multilanguage
-        view.showLoader(true, 'Loading course details...');
+        view.showLoader(true, courses.loadingCourse);
 
         $.ajax({
 
@@ -141,7 +144,7 @@
 
     var doSearchCourses = function(str){
 
-
+        // TODO implement server side research in the next version
 
     };
 

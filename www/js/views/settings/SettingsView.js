@@ -1,53 +1,86 @@
-;define('views/settings/SettingsView', ['appframework', 'i18n!nls/miscellaneous', 'utils/ConfigurationManager'], function($, miscellaneous, config){
+;define('views/settings/SettingsView', ['appframework', 'i18n!nls/miscellaneous', 'utils/ConfigurationManager', 'controllers/PushNotificationSettings', 'core/DataManager'],
+    function ($, miscellaneous, config, pushNotification, dataManager) {
 
-    var $settingsDescription, $pushNotification,
-        $pushNotificationLabel, $pushNotificationsValue;
+        var $settingsDescription, $pushNotification,
+            $pushNotificationLabel, $pushNotificationsValue;
+        var that = this;
 
-    var onPushNotification = function(evt){
+        var onPushNotification = function (evt) {
 
-        config.saveConfig('pushnotifications', evt.target.checked);
+            config.saveConfig('pushnotifications', evt.target.checked);
 
-    };
+            var event = new CustomEvent(dataManager.events.PUSH_NOTIFICATION_STATUS, {detail: {usePushNotification: evt.target.checked, settingsManager: pushNotification}});
+            that.dispatchEvent(event);
 
-    var onSettingFound = function(evt){
+        };
 
-        evt.target.removeEventListener(evt.type, arguments.callee);
+        var onSettingNotFound = function(evt){
 
-        if(evt.detail.value == 'true'){
-
-            $pushNotification.attr('checked');
-
-        }else{
+            evt.stopPropagation();
 
             $pushNotification.removeAttr('checked');
+            $pushNotification.bind('change', onPushNotification);
 
-        }
+        };
 
-        $pushNotification.bind('change', onPushNotification);
+        var onSettingFound = function (evt) {
 
-    };
+            evt.target.removeEventListener(evt.type, arguments.callee);
 
-    var init = function(){
+            if (evt.detail.value == 'true') {
 
-        $settingsDescription        = $('#settings > p:first-of-type');
-        $pushNotification           = $('#push-notification-settings input[type="checkbox"]');
-        $pushNotificationLabel      = $('#push-notification-settings .narrow-control');
-        $pushNotificationsValue     = $('#push-notification-values');
+                $pushNotification.attr('checked');
 
-        $settingsDescription.text(miscellaneous.settingsDescription);
-        $pushNotificationLabel.text(miscellaneous.pushnotification);
-        $pushNotificationsValue.attr('data-on', miscellaneous.yes);
-        $pushNotificationsValue.attr('data-off', miscellaneous.no);
+            } else {
 
-        addEventListener(config.events.CONFIGURATION_VALUE_FOUND, onSettingFound);
-        config.configurationItem('pushnotifications');
+                $pushNotification.removeAttr('checked');
 
-    };
+            }
 
-    return{
+            $pushNotification.bind('change', onPushNotification);
 
-        init: init
+        };
 
-    };
+        var showSettingsChanged = function(status){
 
-});
+            if(status == true){
+
+                $.ui.popup(miscellaneous.settingsChanged);
+
+            }else{
+
+                $.ui.popup(miscellaneous.settingsNotChanged);
+
+            }
+
+
+        };
+
+        var init = function () {
+
+            pushNotification.init(this);
+
+            $settingsDescription = $('#settings > p:first-of-type');
+            $pushNotification = $('#push-notification-settings input[type="checkbox"]');
+            $pushNotificationLabel = $('#push-notification-settings .narrow-control');
+            $pushNotificationsValue = $('#push-notification-values');
+
+            $settingsDescription.text(miscellaneous.settingsDescription);
+            $pushNotificationLabel.text(miscellaneous.pushnotification);
+            $pushNotificationsValue.attr('data-on', miscellaneous.yes);
+            $pushNotificationsValue.attr('data-off', miscellaneous.no);
+
+            addEventListener(config.events.CONFIGURATION_VALUE_FOUND, onSettingFound);
+            addEventListener(config.events.CONFIGURATION_VALUE_NOT_FOUND, onSettingNotFound);
+            config.configurationItem('pushnotifications');
+
+        };
+
+        return{
+
+            init: init,
+            showSettingsChanged: showSettingsChanged
+
+        };
+
+    });

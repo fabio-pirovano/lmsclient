@@ -1,9 +1,10 @@
 // it_IT
 ;define({
 
-    'loading':          'Caricamento Corsi...',
-    'loadingCourse':    'Preparando il corso...',
-    'goBack':           'Torna',
-    'myCourses':        'Corsi'
+    'loading':              'Caricamento Corsi...',
+    'loadingCourse':        'Carico il corso...',
+    'loadingCourseItem':    'Preparando il corso...',
+    'goBack':               'Torna',
+    'myCourses':            'Corsi'
 
 });

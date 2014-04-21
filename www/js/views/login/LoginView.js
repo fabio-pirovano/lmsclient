@@ -95,6 +95,18 @@
 
         };
 
+        var onFormDataChange = function(evt) {
+
+            var $errorMessages = $('#website').siblings($('.unhappyMessage'));
+
+            $errorMessages.each(function(){
+
+                $(this).addClass('removeErrorMessage');
+
+            });
+
+        };
+
         var init = function(lang, status){
 
             isDisabled = status;
@@ -130,6 +142,10 @@
                 controller.initValidation($form);
 
             });
+
+            $username.bind('focus', onFormDataChange);
+            $password.bind('focus', onFormDataChange);
+            $domain.bind('focus', onFormDataChange);
 
             $form.bind('submit', onLogin);
             $forgotPassword.bind('tap', controller.recoverPassword);

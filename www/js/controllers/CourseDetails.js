@@ -58,6 +58,8 @@
                     // TODO fix this smell, it's the same code of the DetailsFactory.js; the problem is that the factory loads asynchronously the CourseItem module and the result is an empty array
                     var results = [];
 
+                    console.log('course details', currentData);
+
                     for (var i = 0, tot = currentData.objects.length; i < tot; i++) {
 
                         var item = new CourseItem(courseID, currentData.objects[i].id_scormitem, currentData.objects[i].locked, currentData.objects[i].title, currentData.objects[i].type);
@@ -105,7 +107,7 @@
 
     var openLearningObject = function (id) {
 
-        view.showLoader(true, courses.loadingCourse);
+        view.showLoader(true, courses.loadingCourseItem);
 
         $.ajax({
 

@@ -123,11 +123,14 @@
 
         var url         = target.attr('data-url'),
             idCourse    = url.match(/idCourse=([^&]*)/)[1],
-            thumb        = target.find('img').attr('src'),
-            name       = target.find('strong').text();
+            thumb       = target.find('img').attr('src'),
+            name        = target.find('strong').text();
+
+        var courseDescription = target.find('.detail-disclosure').html();
 
         localStorage.setItem('currentCourseName', name);
         localStorage.setItem('currentCourseThumb', thumb);
+        localStorage.setItem('currentCourseDescription', courseDescription);
 
         controller.getCourseDetails(idCourse);
 

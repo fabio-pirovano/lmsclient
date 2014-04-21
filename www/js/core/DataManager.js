@@ -2,7 +2,7 @@
 
     var that = this;
     var events = {USER_LOGGED_IN: 'onUserLoggedIn', COURSE_OPENED: 'onCourseOpened', PUSH_NOTIFICATION_STATUS: 'onPushNotificationStatus'};
-    var user, currentCourse, pushNotification;
+    var user, currentCourse, pushNotificationStatus;
 
     var onUserLoggedIn = function(evt) {
 
@@ -24,7 +24,10 @@
 
         evt.stopPropagation();
 
-        pushNotification = evt.detail.usePushNotification;
+        pushNotificationStatus = evt.detail.usePushNotification;
+
+        var pushnotificationManager = evt.detail.settingsManager;
+        pushnotificationManager.changeSettings(pushNotificationStatus, user.userid, {token: user.token, key: user.getUsername});
 
     };
 
@@ -48,7 +51,7 @@
 
         getUser: function(){return user;},
         getCourse: function(){return currentCourse;},
-        getPushNotifications: function(){return pushNotification;},
+        getPushNotifications: function(){return pushNotificationStatus;},
         dispose: dispose,
         init: init,
         events: events

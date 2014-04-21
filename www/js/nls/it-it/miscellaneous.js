@@ -2,6 +2,8 @@
 ;define({
 
     'settingsDescription':  'Impostazioni',
+    'settingsChanged':      'Impostazioni modificate!',
+    'settingsNotChanged':   'Impstazioni non modificate...',
     'loggingout':           'Disconnessione...',
     'pushnotification':     'Notifiche',
     'yes':                  'SI',

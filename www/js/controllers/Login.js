@@ -103,8 +103,14 @@
                             var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_VIEW, module: Constants.COURSES_MODULE, data: dataManager, state: null}});
                             that.dispatchEvent(event);
 
-                        });
+                            // TODO dispatch event in order to load the user profile
+                            require(['controllers/UserProfile'], (function(profile){
 
+                                profile.fetch(currentUser.id, {token: currentUser.token, key: username});
+
+                            }));
+
+                        });
 
                     }else{
 

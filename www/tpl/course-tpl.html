@@ -1,18 +1,25 @@
 <li data-url='{{link}}' class='padd-right {{rowColorKind}}'>
 
-    <div class='course'>
-        <img src='{{thumb}}'/>
-        <strong>{{{name}}}</strong>
-        <br>
-        <div class='metadata'>
-            <p class='course-status'>{{status}}</p>
-            <p class='course-lang'>{{lang}}</p>
-        </div>
-    </div>
+    <div class='grid'>
+        <div class='course col2'>
+            <img src='{{thumb}}'/>
+            <strong>{{{name}}}</strong>
 
-    <div class='open-details'>
-        <a class='detail-disclosure'>
-            <span>{{{description}}}</span>
-        </a>
+            <br>
+
+            <div class='vertical-spacer'></div>
+
+            <div class='metadata'>
+                <p class='course-status'>{{status}}</p>
+
+                <p class='course-lang'>{{lang}}</p>
+            </div>
+        </div>
+
+        <div class='open-details col2'>
+            <a class='detail-disclosure'>
+                {{{description}}}
+            </a>
+        </div>
     </div>
 </li>

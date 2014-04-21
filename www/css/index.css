@@ -214,6 +214,28 @@ select#language{
 
 }
 
+.unhappyMessage{
+
+    background-color:#fff4c9;
+    position: absolute;
+    right: 0;
+    padding: 2px 2px 2px 6px;
+    border-radius: 6px;
+    border-color: #ffe79e;
+    box-shadow: 0 2px 2px 0 rgba(82,90,104,0.2);
+    -moz-transition: opacity 1s ease-in-out;
+    -o-transition: opacity 1s ease-in-out;
+    -ms-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
+
+}
+
+.removeErrorMessage{
+
+    opacity: 0;
+
+}
+
 /* ================================== */
 
 /* ============= FORGOT PASSWORD ===================== */
@@ -445,6 +467,7 @@ input#reset-url{
 
     background: #0465ac !important;
     border-top: 1px solid #0465ac !important;
+    box-shadow: none !important;
 
 }
 
@@ -591,6 +614,7 @@ input#reset-url{
     margin-left: 0;
     padding-left: 0;
     display: inline-block !important;
+    width: 100%;
 
 }
 
@@ -599,12 +623,19 @@ input#reset-url{
 
     float: left;
     width: 120px;
+    padding-right: 5px;
 
 }
 
 .course{
 
     width: 90% !important;
+
+}
+
+.course .grid{
+
+    min-height: 90px;
 
 }
 
@@ -648,13 +679,20 @@ input#reset-url{
 
 }
 
+
+
 .open-details{
 
     height: 41px !important;
     width: 23px !important;
     background: url(../img/arrow-right.png) no-repeat center;
-    border: 1px solid red !important;
 
+}
+
+.open-details > a{
+
+    height: 90px;
+    width: 90px;
 
 }
 
@@ -664,16 +702,98 @@ input#reset-url{
 
 }
 
+.detail-disclosure span{
+
+    display: none;
+
+}
+
+/* =============== details ============= */
+#course-details{
+
+    background-color:  #EFF3F3 !important;
+
+}
+
+#course-info{
+
+    color: #0465ac !important;
+    background-color: #ffffff !important;
+
+}
+
+#course-info > img{
+
+    vertical-align: top !important;
+    max-width: 50%;
+
+}
+
+#course-info p{
+
+       width: 100% !important;
+
+}
+
+#course-items li{
+
+    line-height: 45px;
+
+}
+
+#course-items li strong{
+
+    color: #333333 !important;
+
+}
+
+#course-items .course{
+
+    width: 100% !important;
+    margin: 2px 0 2px 2px;
+    height: 45px;
+
+}
+
+#course-items .right-arrow-container{
+
+    float: right;
+    height: 45px;
+    margin-right: 4px;
+
+}
+
+#course-items .right-arrow-container > img{
+
+    height: 25px;
+    margin-top: 8px;
+
+}
+
+#course-items .course > img{
+
+    vertical-align: middle;
+
+}
 
 .even{
 
+    min-height: 45px;
     background-color: #EFF3F3;
 
 }
 
 .odd{
 
+    min-height: 45px;
     background-color: #ffffff;
+
+}
+
+.vertical-spacer {
+
+    height: 100%;
+    min-height: 100%;
 
 }
 

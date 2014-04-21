@@ -25,14 +25,14 @@
         $.ui.setTitle(localStorage.getItem('currentCourseName').substr(0, 12) + '...');
 
         var $thumb  = $courseInfo.find('img').attr('src', ''),
-            $course = $courseInfo.find('span').text('');
+            $course = $courseInfo.find('span').html('');
 
         require([
             'text!../tpl/course-details-tpl.html'
         ], function(tpl){
 
             $thumb.attr('src', localStorage.getItem('currentCourseThumb'));
-            $course.text(localStorage.getItem('currentCourseName'));
+            $course.html('<strong>' + localStorage.getItem('currentCourseName') + '</strong><br>' + localStorage.getItem('currentCourseDescription'));
 
             detailsTemplate = tpl;
             renderCourseDetails(data.objects);

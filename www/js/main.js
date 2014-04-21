@@ -79,6 +79,8 @@
 
     var launchUI = function(){
 
+        $ui.splitview = false;
+
         $ui.launch();
         $ui.showBackButton = false;
 
