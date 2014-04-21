@@ -624,6 +624,9 @@ input#reset-url{
     float: left;
     width: 120px;
     padding-right: 5px;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
 
 }
 
@@ -642,6 +645,13 @@ input#reset-url{
 .course strong{
 
     color: #0465ac;
+
+}
+
+.course .is-allowed-true{
+
+
+
 
 }
 

@@ -1,8 +1,8 @@
-<li data-url='{{link}}' class='padd-right {{rowColorKind}}'>
+<li data-url='{{link}}' data-can='{{permission.can}}' class='padd-right {{rowColorKind}}'>
 
     <div class='grid'>
         <div class='course col2'>
-            <img src='{{thumb}}'/>
+            <img style='background-image: url({{thumb}})' src='img/is-allowed-{{permission.can}}.png' />
             <strong>{{{name}}}</strong>
 
             <br>

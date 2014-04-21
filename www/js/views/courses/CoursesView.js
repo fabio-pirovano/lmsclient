@@ -1,7 +1,7 @@
 ;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/coursesrouter'], (function($, mustache, controller, courses, router){
 
 
-    var courseTemplate, currentSeatch;
+    var courseTemplate, currentSearch;
     var $coursesSearch, $courses;
 
     var doInit = function(data){
@@ -52,16 +52,15 @@
 
     var onCourseSearch = function(evt){
 
-        var filter = this.value,
-            filterLenght = filter.length;
+        var filter = this.value;
 
-        if(currentSeatch){
+        if(currentSearch){
 
-            clearTimeout(currentSeatch);
+            clearTimeout(currentSearch);
 
         }
 
-        currentSeatch = setTimeout(function(){
+        currentSearch = setTimeout(function(){
 
             $courses.find('li').each(function(i, e){
 
@@ -123,10 +122,16 @@
 
         var url         = target.attr('data-url'),
             idCourse    = url.match(/idCourse=([^&]*)/)[1],
-            thumb       = target.find('img').attr('src'),
+            thumb       = target.find('img').css('background-image'),
             name        = target.find('strong').text();
 
+        thumb = /^url\((['"]?)(.*)\1\)$/.exec(thumb);
+        thumb = thumb ? thumb[2] : '';
+
+        var canAccess = target.attr('data-can');
         var courseDescription = target.find('.detail-disclosure').html();
+
+        if(!canAccess)return;
 
         localStorage.setItem('currentCourseName', name);
         localStorage.setItem('currentCourseThumb', thumb);
