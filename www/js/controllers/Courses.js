@@ -19,6 +19,8 @@
 
         if(courseLoaded)return;
 
+        view.showLoader(true);
+
         $.ajax({
 
             url: Constants.API_URL,
@@ -30,7 +32,6 @@
 
                 if(currentData.success === true){
 
-                    view.showLoader(true);
                     prepareCoursesData(currentData);
                     courseLoaded = true;
 

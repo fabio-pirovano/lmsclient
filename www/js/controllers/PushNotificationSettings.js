@@ -38,13 +38,13 @@
 
                     view.showSettingsChanged(true);
 
-                    if(currentData.sender_id){
+                    if(currentAction == 'register'){
 
-                        registerAndroidDevice(currentData.sender_id);
+                        registerDevice(currentData.sender_id)
 
                     }else{
 
-                        registerIOSDevice();
+                        pushNotification.unregister(function(result){console.log('unregister device:', result)}, errorHandler);
 
                     }
 
@@ -63,6 +63,20 @@
 
             }
         });
+
+    };
+
+    var registerDevice = function(senderID){
+
+        if(senderID){
+
+            registerAndroidDevice(senderID);
+
+        }else{
+
+            registerIOSDevice();
+
+        }
 
     };
 
@@ -94,8 +108,9 @@
                 if (evt.foreground) {
 
                     // if the notification contains a soundname, play it.
-                    var my_media = new Media('/android_asset/www/' + evt.soundname);
-                    my_media.play();
+                    // TODO discover why the Media plugin fails with File
+                    // var sound = new Media('/android_asset/www/' + evt.soundname);
+                    // sound.play();
 
                 }else{	// otherwise we were launched because the user touched a notification in the notification tray.
 
@@ -142,8 +157,9 @@
 
         if (evt.sound) {
 
-            var snd = new Media(evt.sound);
-            snd.play();
+            // TODO discover why the Media plugin fails with File
+            // var sound = new Media(evt.sound);
+            // sound.play();
 
         }
 

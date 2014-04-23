@@ -629,7 +629,7 @@ input#reset-url{
 
     float: left;
     width: 90px;
-    padding-right: 5px;
+    height: 90px;
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
@@ -639,6 +639,7 @@ input#reset-url{
 .course{
 
     width: 90% !important;
+    position: relative;
 
 }
 
@@ -659,7 +660,9 @@ input#reset-url{
 
     text-align: center;
     display: inline-block;
-    padding: 0;
+    padding-left: 2px;
+    position: absolute;
+    bottom: 0;
 
 }
 
@@ -698,7 +701,7 @@ input#reset-url{
 
 .open-details{
 
-    height: 41px !important;
+    height: 90px !important;
     width: 23px !important;
     background: url(../img/arrow-right.png) no-repeat center;
 
@@ -706,8 +709,8 @@ input#reset-url{
 
 .open-details > a{
 
-    height: 90px;
-    width: 90px;
+    height: 41px;
+    width: 23px;
 
 }
 
@@ -775,6 +778,10 @@ input#reset-url{
     width: 100% !important;
     margin: 2px 0 2px 2px;
     height: 45px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333333 !important;
 
 }
 

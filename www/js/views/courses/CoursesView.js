@@ -127,7 +127,7 @@
             canAccess   = target.attr('data-can'),
             courseDescription = target.find('.detail-disclosure').html();
 
-        if(!canAccess == true)return;
+       // if(canAccess != true)return;
 
         thumb = /^url\((['"]?)(.*)\1\)$/.exec(thumb);
         thumb = thumb ? thumb[2] : '';
