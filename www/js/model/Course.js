@@ -9,7 +9,7 @@
 
 
         this.link = info.course_link;
-        this.thumb = info.course_thumbnail;
+        this.thumb = 'http:' + encodeURI(info.course_thumbnail);
         this.status = info.courseuser_status;
 
         this.lang = 'IT';

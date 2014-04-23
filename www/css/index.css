@@ -605,7 +605,7 @@ input#reset-url{
 
 #courses ul{
 
-    margin: 10px !important;
+    margin-top: 10px !important;
     border: 1px solid #ccc !important;
     border-left: 0 !important;
     border-right: 0 !important;
@@ -618,11 +618,17 @@ input#reset-url{
 
 }
 
+#courses ul > li{
+
+    margin-top: 4px;
+
+}
+
 
 #courses ul li img{
 
     float: left;
-    width: 120px;
+    width: 90px;
     padding-right: 5px;
     background-position: top;
     background-repeat: no-repeat;
@@ -645,13 +651,7 @@ input#reset-url{
 .course strong{
 
     color: #0465ac;
-
-}
-
-.course .is-allowed-true{
-
-
-
+    padding-left: 2px;
 
 }
 
@@ -668,6 +668,10 @@ input#reset-url{
     display: inline-block !important;
     vertical-align: middle !important;
     line-height: normal;
+    text-transform: none !important;
+    width: auto !important;
+    min-width: 30px;
+    font-size: 12px !important;
 
 }
 
@@ -675,8 +679,9 @@ input#reset-url{
 
     color: #ffffff;
     background-color: #DB7633;
-    height: 20px !important;
+    height: 18px !important;
     width: 30px !important;
+    padding: 0 2px 0 2px !important;
 
 }
 
@@ -684,7 +689,7 @@ input#reset-url{
 
     color: #ffffff;
     background-color: #566473;
-    height: 20px !important;
+    height: 18px !important;
     width: 30px !important;
 
 }
@@ -709,10 +714,11 @@ input#reset-url{
 .detail-disclosure{
 
     text-indent: -9999px;
+    overflow: hidden;
 
 }
 
-.detail-disclosure span{
+.detail-disclosure *{
 
     display: none;
 
@@ -729,6 +735,7 @@ input#reset-url{
 
     color: #0465ac !important;
     background-color: #ffffff !important;
+    overflow: auto;
 
 }
 
@@ -736,12 +743,18 @@ input#reset-url{
 
     vertical-align: top !important;
     max-width: 50%;
+    margin-right: 2px;
+    float: left;
 
 }
 
-#course-info p{
+#course-info p, #course-info span{
 
-       width: 100% !important;
+    width: 100% !important;
+    font-size: 12px !important;
+    line-height: 14px !important;
+    text-transform: none;
+    padding-left: 4px;
 
 }
 

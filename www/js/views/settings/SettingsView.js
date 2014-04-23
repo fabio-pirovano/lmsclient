@@ -53,6 +53,19 @@
 
             }
 
+        };
+
+        var showLoader = function(status){
+
+            if(status){
+
+                $.ui.showMask(miscellaneous.updatingSettings);
+
+            }else{
+
+                $.ui.hideMask();
+
+            }
 
         };
 
@@ -79,7 +92,8 @@
         return{
 
             init: init,
-            showSettingsChanged: showSettingsChanged
+            showSettingsChanged: showSettingsChanged,
+            showLoader: showLoader
 
         };
 

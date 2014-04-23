@@ -5,6 +5,7 @@
     'settingsChanged':      'Impostazioni modificate!',
     'settingsNotChanged':   'Impstazioni non modificate...',
     'loggingout':           'Disconnessione...',
+    'updatingSettings':     'Aggiornamento...',
     'pushnotification':     'Notifiche',
     'yes':                  'SI',
     'no':                   'NO',

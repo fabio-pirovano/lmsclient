@@ -5,6 +5,9 @@
     'loadingCourse':        'Cargando el curso...',
     'loadingCourseItem':    'Preparación del curso...',
     'goBack':               'Espalda',
-    'myCourses':            'Cursos'
+    'myCourses':            'Cursos',
+    'notStarted':           'No ha comenzado',
+    'inProgress':           'En curso',
+    'completed':            'Terminado'
 
 });

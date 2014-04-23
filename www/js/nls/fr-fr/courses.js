@@ -5,6 +5,9 @@
     'loadingCourse':        'Chargement votre cours...',
     'loadingCourseItem':    'Préparer votre cours...',
     'goBack':               'Arrière',
-    'myCourses':            'Cours'
+    'myCourses':            'Cours',
+    'notStarted':           'Pas commencé',
+    'inProgress':           'En cours',
+    'completed':            'Terminé'
 
 });

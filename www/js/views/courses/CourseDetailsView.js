@@ -45,6 +45,8 @@
 
         console.log('renderCourseDetails ', data);
 
+        $courseItems.html('');
+
         var html;
 
         data.forEach(function (val, index){

@@ -27,7 +27,7 @@
         pushNotificationStatus = evt.detail.usePushNotification;
 
         var pushnotificationManager = evt.detail.settingsManager;
-        pushnotificationManager.changeSettings(pushNotificationStatus, user.userid, {token: user.token, key: user.getUsername});
+        pushnotificationManager.changeSettings(pushNotificationStatus, user.id, {token: user.token, key: user.getUsername});
 
     };
 

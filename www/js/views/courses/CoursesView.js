@@ -121,17 +121,16 @@
         var target = $(this);
 
         var url         = target.attr('data-url'),
-            idCourse    = url.match(/idCourse=([^&]*)/)[1],
+            idCourse    = url.match(/course_id=([^&]*)/)[1],
             thumb       = target.find('img').css('background-image'),
-            name        = target.find('strong').text();
+            name        = target.find('strong').text(),
+            canAccess   = target.attr('data-can'),
+            courseDescription = target.find('.detail-disclosure').html();
+
+        if(!canAccess == true)return;
 
         thumb = /^url\((['"]?)(.*)\1\)$/.exec(thumb);
         thumb = thumb ? thumb[2] : '';
-
-        var canAccess = target.attr('data-can');
-        var courseDescription = target.find('.detail-disclosure').html();
-
-        if(!canAccess)return;
 
         localStorage.setItem('currentCourseName', name);
         localStorage.setItem('currentCourseThumb', thumb);

@@ -4,6 +4,7 @@
     var view;
     var token, key, courseList;
     var courseLoaded;
+    var LOCALIZED_STATUSES = [courses.notStarted, courses.inProgress, courses.completed];
 
     var doInit = function(v){
 
@@ -103,6 +104,8 @@
             try{
 
                 var course = new Course(val.course_info);
+                course.status = LOCALIZED_STATUSES[course.status];
+
                 tmp[index] = course;
 
             }catch(error){
