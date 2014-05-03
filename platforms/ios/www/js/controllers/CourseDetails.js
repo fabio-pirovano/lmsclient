@@ -1,6 +1,6 @@
-;define('controllers/CourseDetails', ['appframework', 'core/Constants', 'model/CourseItem', 'i18n!nls/courses'], (function ($, Constants, CourseItem, courses) {
+;define('controllers/CourseDetails', ['appframework', 'core/Constants', 'model/CourseItem', 'model/DataProvider', 'i18n!nls/courses'], (function ($, Constants, CourseItem, dataProvider, courses) {
 
-    var token, key, view, detailsStack;
+    var token, key, view, detailsStack, currentCourseId;
 
     var init = function (currentToken, userKey, v) {
 
@@ -37,52 +37,51 @@
 
     };
 
-    var getFolderDetails = function (courseID, organizationID) {
+    var onCourseFolderDetails = function (data) {
 
-        console.log('getFolderDetails', courseID, organizationID, this, this.view, this.token, this.key);
-        view.showLoader(true);
+        var currentData = JSON.parse(data);
 
-        $.ajax({
+        if (currentData.success === true) {
 
-            url: Constants.API_URL,
-            type: 'post',
-            data: JSON.stringify({'details': {'action': 'courseFolderDetails', 'idCourse': courseID, 'idOrg': organizationID, 'token': token, 'key': key}}),
-            success: function (data) {
+            manageStack(view.currentData(), true);
 
-                var currentData = JSON.parse(data);
+            var results = [];
 
-                if (currentData.success === true) {
+            console.log('course details', currentData);
 
-                    manageStack(view.currentData(), true);
+            for (var i = 0, tot = currentData.objects.length; i < tot; i++) {
 
-                    // TODO fix this smell, it's the same code of the DetailsFactory.js; the problem is that the factory loads asynchronously the CourseItem module and the result is an empty array
-                    var results = [];
-
-                    console.log('course details', currentData);
-
-                    for (var i = 0, tot = currentData.objects.length; i < tot; i++) {
-
-                        var item = new CourseItem(courseID, currentData.objects[i].id_scormitem, currentData.objects[i].locked, currentData.objects[i].title, currentData.objects[i].type);
-                        results.push(item);
-
-                    }
-
-                    view.showLoader(false);
-                    view.refreshData(results);
-
-                } else {
-
-                    view.showError(data.message);
-
-                }
-
-            },
-            error: function (xhr, error) {
-
-                view.showError(error.message);
+                var item = new CourseItem(currentCourseId, currentData.objects[i].id_scormitem, currentData.objects[i].locked, currentData.objects[i].title, currentData.objects[i].type);
+                results.push(item);
 
             }
-        });
+
+            view.showLoader(false);
+            view.refreshData(results);
+
+        } else {
+
+            view.showError(data.message);
+
+        }
+
+    };
+
+    var onCourseFolderDetailsError = function (xhr, error) {
+
+        view.showError(error.message);
+
+    };
+
+    var getFolderDetails = function (courseID, organizationID) {
+
+        currentCourseId = courseID;
+
+        console.log('getFolderDetails', currentCourseId, organizationID, this, this.view, this.token, this.key);
+        view.showLoader(true);
+
+        var params =  JSON.stringify({'details': {'action': 'courseFolderDetails', 'idCourse': courseID, 'idOrg': organizationID, 'token': token, 'key': key}});
+        dataProvider.fetchData(params, onCourseFolderDetails, onCourseFolderDetailsError);
 
     };
 
@@ -105,37 +104,35 @@
 
     };
 
+    var onLearningObject = function (data) {
+
+        var currentData = JSON.parse(data);
+
+        if (currentData.success === true) {
+
+            view.showLoader(false);
+            view.openURL(currentData.launch_url);
+
+        } else {
+
+            view.showError(data.message);
+
+        }
+
+    };
+
+    var onLearningObjectError = function (xhr, error) {
+
+        view.showError(error.message);
+
+    };
+
     var openLearningObject = function (id) {
 
         view.showLoader(true, courses.loadingCourseItem);
 
-        $.ajax({
-
-            url: Constants.API_URL,
-            type: 'post',
-            data: JSON.stringify({'details': {'action': 'playLearningObject', 'idOrg': id, 'token': token, 'key': key}}),
-            success: function (data) {
-
-                var currentData = JSON.parse(data);
-
-                if (currentData.success === true) {
-
-                    view.showLoader(false);
-                    view.openURL(currentData.launch_url);
-
-                } else {
-
-                    view.showError(data.message);
-
-                }
-
-            },
-            error: function (xhr, error) {
-
-                view.showError(error.message);
-
-            }
-        });
+        var params = JSON.stringify({'details': {'action': 'playLearningObject', 'idOrg': id, 'token': token, 'key': key}});
+        dataProvider.fetchData(params, onLearningObject, onLearningObjectError);
 
     };
 

@@ -89,7 +89,7 @@
 
         };
 
-        var invalidCredentials = function(msg){
+        var loginIssue = function(msg){
 
             return document.getElementById($.ui.popup(msg).id);
 
@@ -178,7 +178,7 @@
             init: init,
             dispose: dispose,
             showHideLoader: doShowHideLoader,
-            invalidCredentials: invalidCredentials,
+            loginIssue: loginIssue,
             goNext: doGoNext,
             getUsername: function(){return $username;},
             getDomain: function(){return $domain.val();},

@@ -1,9 +1,9 @@
 ;define('controllers/Login', ['libs/happy/happy', 'libs/happy/happy.methods', 'core/Constants',
-    'utils/ConfigurationManager', 'utils/LogoLoader', 'utils/InfoProvider', 'core/DataManager',
+    'utils/ConfigurationManager', 'utils/LogoLoader', 'utils/InfoProvider', 'core/DataManager', 'model/DataProvider',
     'i18n!nls/login'],
-    (function(happy, validators, Constants, config, logoLoader, infoProvider, dataManager, loginMessages){
+    (function(happy, validators, Constants, config, logoLoader, infoProvider, dataManager, dataProvider, loginMessages){
 
-        var view, currentInterval;
+        var view, currentInterval, currentUserName;
         var that = this;
         var cache = {};
 
@@ -21,7 +21,6 @@
             view.showHideLoader('', function () {
 
                 login(username, password);
-                console.log('::::::::::::::::::::::: TRYING TO AUTENTICATE')
 
             }, 'login-loader');
 
@@ -80,69 +79,78 @@
 
         };
 
+        var onAuthenticate = function( data ) {
+
+            console.log( "Sample of data:", data);
+            var currentData = JSON.parse(data);
+
+            if(currentData.success === true){
+
+                require(['model/User'], function(User){
+
+                    var currentUser = new User();
+
+                    currentUser.getUsername = currentUserName;
+                    currentUser.id = currentData.id_user;
+
+                    currentUser.token = currentData.token;
+
+                    var event;
+
+                    event = new CustomEvent(dataManager.events.USER_LOGGED_IN, {detail: {user: currentUser}});
+                    that.dispatchEvent(event);
+
+                    config.saveConfig('username', currentUserName);
+
+                    cache['login-loader'].removeAttr('src');
+                    view.showHideLoader(false);
+                    view.goNext();
+
+                    event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_VIEW, module: Constants.COURSES_MODULE, data: dataManager, state: null}});
+                    that.dispatchEvent(event);
+
+                    require(['controllers/UserProfile'], (function(profile){
+
+                        profile.fetch(currentUser.id, {token: currentUser.token, key: currentUserName});
+
+                    }));
+
+                });
+
+            }else{
+
+                var popup = view.loginIssue(currentData.message);
+                currentInterval = setInterval(function(){
+
+                    handleUnsuccessfulLogin(popup);
+
+                }, 120);
+
+            }
+
+        };
+
+        var onAuthenticateError = function(xhr, error){
+
+            console.log(arguments);
+            var popup = view.loginIssue(loginMessages.remoteError);
+            currentInterval = setInterval(function(){
+
+                handleUnsuccessfulLogin(popup);
+
+            }, 120);
+
+        };
+
         var login = function(username, password){
 
-            $.ajax({
+            currentUserName = username;
 
-                url: Constants.API_URL,
-                type: 'post',
-                data: JSON.stringify({'details': {'action': 'authenticate', 'username': username , 'password': password }}),
-                success: function( data ) {
+            var params = JSON.stringify({'details': {'action': 'authenticate', 'username': username , 'password': password }});
+            dataProvider.fetchData(params, onAuthenticate, onAuthenticateError);
 
-                    console.log( "Sample of data:", data);
-                    var currentData = JSON.parse(data);
 
-                    if(currentData.success === true){
-
-                        require(['model/User'], function(User){
-
-                            var currentUser = new User();
-
-                            currentUser.getUsername = username;
-                            currentUser.id = currentData.id_user;
-
-                            currentUser.token = currentData.token;
-
-                            var event = new CustomEvent(dataManager.events.USER_LOGGED_IN, {detail: {user: currentUser}});
-                            that.dispatchEvent(event);
-
-                            config.saveConfig('username', username);
-
-                            cache['login-loader'].removeAttr('src');
-                            view.showHideLoader(false);
-                            view.goNext();
-
-                            var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.COURSES_VIEW, module: Constants.COURSES_MODULE, data: dataManager, state: null}});
-                            that.dispatchEvent(event);
-
-                            require(['controllers/UserProfile'], (function(profile){
-
-                                profile.fetch(currentUser.id, {token: currentUser.token, key: username});
-
-                            }));
-
-                        });
-
-                    }else{
-
-                        var popup = view.invalidCredentials(currentData.message);
-                        currentInterval = setInterval(function(){
-
-                            handleUnsuccessfulLogin(popup);
-
-                        }, 120);
-
-                    }
-
-                },
-                error: function(xhr, error){
-
-                    console.log(arguments);
-
-                }
-            });
-
-        }
+        };
 
         var elementInDocument = function(element) {
 
@@ -159,7 +167,7 @@
 
         };
 
-        var handleUnsuccessfulLogin= function(element){
+        var handleUnsuccessfulLogin = function(element){
 
             if(!elementInDocument(element)){
 
@@ -210,13 +218,15 @@
             that.addEventListener(config.events.CONFIGURATION_VALUE_FOUND, function(evt){
 
                 evt.target.removeEventListener(evt.type, arguments.callee);
+
                 view.getDomainItem().val(evt.detail.value);
+                dataProvider.setCurrentApiURL(evt.detail.value);
 
             });
 
             config.configurationItem('defaulturl');
 
-        }
+        };
 
         var onUsername = function(evt) {
 

@@ -1,5 +1,5 @@
-;define('controllers/ForgotPassword', ['appframework', 'core/Constants', 'libs/happy/happy', 'libs/happy/happy.methods', 'i18n!nls/forgot'],
-    function ($, Constants, happy, validators, forgot) {
+;define('controllers/ForgotPassword', ['appframework', 'libs/happy/happy', 'libs/happy/happy.methods', 'model/DataProvider', 'i18n!nls/forgot'],
+    function ($, happy, validators, dataProvider, forgot) {
 
         var view, currentInterval;
 
@@ -9,37 +9,34 @@
 
         };
 
+        var onRecoverPassword = function (data) {
+
+            var currentData = JSON.parse(data);
+
+            if (currentData.success === true) {
+
+                renderMessage('');
+
+            } else {
+
+                renderMessage(currentData.message);
+
+            }
+
+        };
+
+        var onRecoverPasswordError = function (xhr, error) {
+
+            renderMessage(error.message);
+
+        };
+
         var doRecoverPassword = function (email) {
 
             view.showLoader(true);
 
-            $.ajax({
-
-                url: Constants.API_URL,
-                type: 'post',
-                data: JSON.stringify({'details': {'action': 'recoverPassword', 'email': email}}),
-                success: function (data) {
-
-                    var currentData = JSON.parse(data);
-
-                    if (currentData.success === true) {
-
-                        renderMessage('');
-
-                    } else {
-
-                        renderMessage(currentData.message);
-
-                    }
-
-                },
-                error: function (xhr, error) {
-
-                    renderMessage(error.message);
-
-                }
-            });
-
+            var params = JSON.stringify({'details': {'action': 'recoverPassword', 'email': email}});
+            dataProvider.fetchData(params, onRecoverPassword, onRecoverPasswordError);
 
         };
 
@@ -86,7 +83,6 @@
 
             console.log('init validation', form);
 
-            //TODO add multi-language messages
             form.isHappy({
                 fields: {
                     // reference the field you're talking about, probably by `id`

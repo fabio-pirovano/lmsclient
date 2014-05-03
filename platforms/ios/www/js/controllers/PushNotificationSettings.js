@@ -1,6 +1,7 @@
-;define('controllers/PushNotificationSettings', ['appframework', 'core/Constants'], (function($, Constants){
+;define('controllers/PushNotificationSettings', ['appframework', 'model/DataProvider'], (function($, dataProvider){
 
-    var view, pushNotification = window.plugins.pushNotification;
+    var view, currentAction,
+        pushNotification = window.plugins.pushNotification;
 
     var init = function(v){
 
@@ -8,9 +9,41 @@
 
     };
 
-    var changeSettings = function(status, userID, data){
+    var onPushNotification  = function( data ) {
 
-        var currentAction;
+        view.showLoader(false);
+        var currentData = JSON.parse(data);
+
+        if(currentData.success == true){
+
+            view.showSettingsChanged(true);
+
+            if(currentAction == 'register'){
+
+                registerDevice(currentData.sender_id)
+
+            }else{
+
+                pushNotification.unregister(function(result){console.log('unregister device:', result)}, errorHandler);
+
+            }
+
+        }else{
+
+            view.showLoader(false);
+            view.showSettingsChanged(false);
+
+        }
+
+    };
+
+    var onPushNotificationError = function(xhr, error){
+
+        view.showSettingsChanged(false);
+
+    };
+
+    var changeSettings = function(status, userID, data){
 
         if(status == true){
 
@@ -24,45 +57,8 @@
 
         view.showLoader(true);
 
-        $.ajax({
-
-            url: Constants.API_URL,
-            type: 'post',
-            data: JSON.stringify({'details': {'action': currentAction, 'userid': userID , 'uuid': device.uuid, 'os': device.platform, 'token': data.token, 'key': data.key}}),
-            success: function( data ) {
-
-                view.showLoader(false);
-                var currentData = JSON.parse(data);
-
-                if(currentData.success == true){
-
-                    view.showSettingsChanged(true);
-
-                    if(currentAction == 'register'){
-
-                        registerDevice(currentData.sender_id)
-
-                    }else{
-
-                        pushNotification.unregister(function(result){console.log('unregister device:', result)}, errorHandler);
-
-                    }
-
-                }else{
-
-                    view.showLoader(false);
-                    view.showSettingsChanged(false);
-
-                }
-
-            },
-
-            error: function(xhr, error){
-
-                view.showSettingsChanged(false);
-
-            }
-        });
+        var params = JSON.stringify({'details': {'action': currentAction, 'userid': userID , 'uuid': device.uuid, 'os': device.platform, 'token': data.token, 'key': data.key}});
+        dataProvider.fetchData(params, onPushNotification, onPushNotificationError);
 
     };
 

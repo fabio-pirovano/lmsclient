@@ -1,4 +1,4 @@
-;define('controllers/Courses', ['appframework', 'core/Constants', 'model/Course', 'model/DetailsFactory', 'i18n!nls/courses'], (function($, Constants, Course, DetailsFactory, courses){
+;define('controllers/Courses', ['appframework', 'core/Constants', 'model/Course', 'model/DetailsFactory', 'model/DataProvider', 'i18n!nls/courses'], (function($, Constants, Course, DetailsFactory, dataProvider, courses){
 
     var that = this;
     var view;
@@ -12,42 +12,44 @@
 
     };
 
+    var onGetUserCourses = function( data ) {
+
+        var currentData = JSON.parse(data);
+
+        if(currentData.success === true){
+
+            prepareCoursesData(currentData);
+            courseLoaded = true;
+
+        }else{
+
+            showError(data.message);
+
+        }
+
+    };
+
+    var onGetUserCoursesError =  function(xhr, error){
+
+        view.showError(error.message);
+
+    };
+
     var doGetUserCourses = function(user){
 
         token = user.token;
         key = user.getUsername;
 
-        if(courseLoaded)return;
+        var params;
 
-        view.showLoader(true);
+        if(!courseLoaded){
 
-        $.ajax({
+            params = JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': token , 'key': key}}),
+            dataProvider.fetchData(params, onGetUserCourses, onGetUserCoursesError);
 
-            url: Constants.API_URL,
-            type: 'post',
-            data: JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': token , 'key': key}}),
-            success: function( data ) {
+            view.showLoader(true);
 
-                var currentData = JSON.parse(data);
-
-                if(currentData.success === true){
-
-                    prepareCoursesData(currentData);
-                    courseLoaded = true;
-
-                }else{
-
-                    showError(data.message);
-
-                }
-
-            },
-            error: function(xhr, error){
-
-                view.showError(error.message);
-
-            }
-        });
+        }
 
     };
 
@@ -58,41 +60,38 @@
 
     };
 
+    var onGetCourseDetails = function( data ) {
+
+        var currentData = JSON.parse(data);
+
+        if(currentData.success === true){
+
+         var event = new CustomEvent(Constants.DETAIL_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE,
+                                     data: {token: token, key: key, objects: DetailsFactory.create(id, currentData.objects)}, push: true}});
+          that.dispatchEvent(event);
+
+          view.showLoader(false);
+
+         }else{
+
+            showError(data.message);
+
+         }
+
+    };
+
+    var onGetCourseDetailsError = function(xhr, error){
+
+        showError(error.message);
+
+    };
+
     var doGetCourseDetails = function(id){
 
         view.showLoader(true, courses.loadingCourse);
 
-        $.ajax({
-
-            url: Constants.API_URL,
-            type: 'post',
-            data: JSON.stringify({'details': {'action': 'courseDetails', 'idCourse': id , 'token': token , 'key': key}}),
-            success: function( data ) {
-
-                var currentData = JSON.parse(data);
-
-                if(currentData.success === true){
-
-                    console.log(currentData.objects);
-                    var event = new CustomEvent(Constants.DETAIL_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE,
-                                                                              data: {token: token, key: key, objects: DetailsFactory.create(id, currentData.objects)}, push: true}});
-                    that.dispatchEvent(event);
-
-                    view.showLoader(false);
-
-                }else{
-
-                    showError(data.message);
-
-                }
-
-            },
-            error: function(xhr, error){
-
-                showError(error.message);
-
-            }
-        });
+        var params = JSON.stringify({'details': {'action': 'courseDetails', 'idCourse': id , 'token': token , 'key': key}});
+        dataProvider.fetchData(params, onGetCourseDetails, onGetCourseDetailsError);
 
     };
 
