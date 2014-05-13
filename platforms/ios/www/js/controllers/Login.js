@@ -72,7 +72,7 @@
 
                 });
 
-                infoProvider.getInfo(view.getDomain());
+                infoProvider.getInfo(view.getDomain(), view.getDomain(true));
                 view.showHideLoader(true, login.loadingAssets);
 
             }
@@ -132,7 +132,6 @@
 
         var onAuthenticateError = function(xhr, error){
 
-            console.log(arguments);
             var popup = view.loginIssue(loginMessages.remoteError);
             currentInterval = setInterval(function(){
 
@@ -146,15 +145,16 @@
 
             currentUserName = username;
 
-            var params = JSON.stringify({'details': {'action': 'authenticate', 'username': username , 'password': password }});
-            dataProvider.fetchData(params, onAuthenticate, onAuthenticateError);
+            var paramsForProxy = JSON.stringify({'details': {'action': 'authenticate', 'username': username , 'password': password }}),
+                params = JSON.stringify({'username': username , 'password': password });
 
+            dataProvider.fetchData('public/authenticate', params, onAuthenticate, onAuthenticateError, view.getDomain(true));
 
         };
 
         var elementInDocument = function(element) {
 
-            while (element = element.parentNode) {
+            while (element && (element == element.parentNode)) {
 
                 if (element == document) {
 

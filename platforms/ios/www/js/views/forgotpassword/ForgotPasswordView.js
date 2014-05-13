@@ -1,4 +1,4 @@
-;define('views/forgotpassword/ForgotPasswordView', ['controllers/ForgotPassword', 'i18n!nls/forgot'], (function(controller, forgot){
+;define('views/forgotpassword/ForgotPasswordView', ['controllers/ForgotPassword', 'core/Constants', 'i18n!nls/forgot'], (function(controller, Constants, forgot){
 
     var $resetURL, $email, $doRecover, $introText, $form;
 
@@ -34,9 +34,23 @@
 
         evt.preventDefault();
 
-        controller.recoverPassword($email.val());
+        controller.recoverPassword($email.val(), rootDomain());
 
     };
+
+    var rootDomain = function(){
+
+        var url = $resetURL.val();
+
+        if(url.indexOf(Constants.PROTCOL) < 0){
+
+            url = Constants.PROTCOL + url;
+
+        }
+
+        return url;
+
+    }
 
     var doShowLoader = function(status, message){
 

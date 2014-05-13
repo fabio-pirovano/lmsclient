@@ -1,11 +1,35 @@
-define('utils/InfoProvider', ['core/Constants'], (function(Constants){
+define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous'], (function($, $ui, Constants, dataProvider, miscellaneous){
 
     var events = {API_INFO_DATA_READY: 'onInfoDataReady'};
 
     var logoURL, dataCache;
     var that = this;
 
-    var getInfo = function(url){
+    var onInfoReady = function ( data ) {
+
+        dataCache = JSON.parse(data);
+
+        if(dataCache.success === true){
+
+            logoURL = dataCache.logo;
+            dataReady();
+
+        }
+
+    };
+
+    var onInfoError = function(xhr, error){
+
+        navigator.notification.alert(miscellaneous.genericError, function(){
+
+            $ui.hideMask();
+            $ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+
+        });
+
+    };
+
+    var getInfo = function(url, rootURL){
 
         if(dataCache && logoURL){
 
@@ -13,29 +37,10 @@ define('utils/InfoProvider', ['core/Constants'], (function(Constants){
 
         }else{
 
-            $.ajax({
+            var paramsForProxy = JSON.stringify({'details': {'action': 'getlmsinfo', 'url': url}}),
+                params = JSON.stringify({'url': url});
 
-                url: Constants.API_URL,
-                type: 'post',
-                data: JSON.stringify({'details': {'action': 'getlmsinfo', 'url': url}}),
-                success: function( data ) {
-
-                    dataCache = JSON.parse(data);
-
-                    if(dataCache.success === true){
-
-                        logoURL = dataCache.logo;
-                        dataReady();
-
-                    }
-
-                },
-                error: function(xhr, error){
-
-                    console.log(arguments);
-
-                }
-            });
+            dataProvider.fetchData('public/getlmsinfo', params, onInfoReady, onInfoError, rootURL);
 
         }
 
@@ -47,14 +52,6 @@ define('utils/InfoProvider', ['core/Constants'], (function(Constants){
 
         var event = new CustomEvent(events.API_INFO_DATA_READY, {bubbles: true, cancelable: true});
         that.dispatchEvent(event);
-
-        /*
-        var evt = document.createEvent("Event");
-        evt.initEvent(events.API_INFO_DATA_READY, true, true);
-
-        this.dispatchEvent(evt);
-
-        */
 
     };
 

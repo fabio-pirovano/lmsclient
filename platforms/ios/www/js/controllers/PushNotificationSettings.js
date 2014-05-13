@@ -57,8 +57,10 @@
 
         view.showLoader(true);
 
-        var params = JSON.stringify({'details': {'action': currentAction, 'userid': userID , 'uuid': device.uuid, 'os': device.platform, 'token': data.token, 'key': data.key}});
-        dataProvider.fetchData(params, onPushNotification, onPushNotificationError);
+        var paramsForProxy = JSON.stringify({'details': {'action': currentAction, 'userid': userID , 'uuid': device.uuid, 'os': device.platform, 'token': data.token, 'key': data.key}}),
+            params = JSON.stringify({'userid': userID , 'uuid': device.uuid, 'os': device.platform, 'token': data.token, 'key': data.key});
+
+        dataProvider.fetchData('pushnotification/' + currentAction, params, onPushNotification, onPushNotificationError);
 
     };
 
@@ -124,7 +126,7 @@
             break;
 
             case 'error':
-            navigator.notification.alert(evt.messa);
+            navigator.notification.alert(evt.message);
             break;
 
         }

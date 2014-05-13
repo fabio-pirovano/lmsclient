@@ -154,7 +154,7 @@
     var openURL = function(url){
 
         currentCourseWindow = window.open(url, '_blank', 'location=no');
-        currentCourseWindow.addEventListener('exit', function() { alert(event.url); });
+        // currentCourseWindow.addEventListener('exit', function() { alert(event.url); });
 
     };
 

@@ -40,12 +40,14 @@
         token = user.token;
         key = user.getUsername;
 
-        var params;
+        var params, paramsForProxy;
 
         if(!courseLoaded){
 
-            params = JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': token , 'key': key}}),
-            dataProvider.fetchData(params, onGetUserCourses, onGetUserCoursesError);
+            paramsForProxy = JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': token , 'key': key}});
+            params = JSON.stringify({'userid': user.id , 'token': token , 'key': key});
+
+            dataProvider.fetchData('user/userCourses', params, onGetUserCourses, onGetUserCoursesError);
 
             view.showLoader(true);
 
@@ -90,8 +92,10 @@
 
         view.showLoader(true, courses.loadingCourse);
 
-        var params = JSON.stringify({'details': {'action': 'courseDetails', 'idCourse': id , 'token': token , 'key': key}});
-        dataProvider.fetchData(params, onGetCourseDetails, onGetCourseDetailsError);
+        var paramsForProxy = JSON.stringify({'details': {'action': 'courseDetails', 'idCourse': id , 'token': token , 'key': key}}),
+            params = JSON.stringify({ 'idCourse': id , 'token': token , 'key': key});
+
+        dataProvider.fetchData('organization/listObjects', params, onGetCourseDetails, onGetCourseDetailsError);
 
     };
 

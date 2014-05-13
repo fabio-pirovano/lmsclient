@@ -31,18 +31,19 @@
 
         };
 
-        var doRecoverPassword = function (email) {
+        var doRecoverPassword = function (email, rootURL) {
 
             view.showLoader(true);
 
-            var params = JSON.stringify({'details': {'action': 'recoverPassword', 'email': email}});
-            dataProvider.fetchData(params, onRecoverPassword, onRecoverPasswordError);
+            var paramsForProxy = JSON.stringify({'details': {'action': 'recoverPassword', 'email': email}}),
+                params = JSON.stringify({'email': email});
+            dataProvider.fetchData('user/lostpassword', params, onRecoverPassword, onRecoverPasswordError, rootURL);
 
         };
 
         var elementInDocument = function (element) {
 
-            while (element = element.parentNode) {
+            while (element && element == element.parentNode) {
 
                 if (element == document) {
 
@@ -61,6 +62,7 @@
             if (!elementInDocument(element)) {
 
                 clearInterval(currentInterval);
+                currentInterval = null;
                 $.ui.goBack();
 
             }

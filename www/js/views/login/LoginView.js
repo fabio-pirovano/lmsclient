@@ -85,7 +85,18 @@
             }
 
             $('#menubadge').css('visibility', 'visible');
-            config.saveConfig('defaulturl', $domain.val());
+
+            var url = $domain.val();
+
+            if(url.indexOf(Constants.PROTCOL) < 0){
+
+                url = Constants.PROTCOL + url;
+
+            }
+
+            alert('url che salvo nel database');
+
+            config.saveConfig('defaulturl', url);
 
         };
 
@@ -172,6 +183,27 @@
 
         };
 
+        var getDomainValue = function(raw){
+
+            var url = $domain.val();
+
+            if(!raw){
+
+                if(url.indexOf(Constants.PROTCOL) >= 0){
+
+                    url = url.substr(url.indexOf(Constants.PROTCOL), Constants.PROTCOL.length);
+
+                }
+
+            }else{
+
+                url = Constants.PROTCOL + url;
+
+            }
+
+            return url;
+
+        }
 
         return {
 
@@ -181,7 +213,7 @@
             loginIssue: loginIssue,
             goNext: doGoNext,
             getUsername: function(){return $username;},
-            getDomain: function(){return $domain.val();},
+            getDomain: getDomainValue,
             getDomainItem: function(){return $domain;}
 
         }

@@ -4,7 +4,11 @@
 
     var onAppOffline = function(evt){
 
-        navigator.notification.alert(miscellaneous.connectionRequired);
+        navigator.notification.alert(miscellaneous.connectionRequired, function(){
+
+            $.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+
+        });
 
     };
 
@@ -21,7 +25,27 @@
 
     };
 
-    var fetchData = function(params, successHandler, errorHandler){
+    var fetchData = function(url, params, successHandler, errorHandler, rootURL){
+
+        $.ajax({
+
+            url: (rootURL || currentApiURL) + '/api/' + url,
+            type: 'post',
+            data: params,
+            success: successHandler,
+            error: errorHandler
+
+        });
+
+        if(!failureHandlerActive){
+
+            initFailureHandler();
+
+        }
+
+    };
+
+    var fetchDataWithProxy = function(params, successHandler, errorHandler){
 
         $.ajax({
 
@@ -44,6 +68,7 @@
     return {
 
         fetchData: fetchData,
+        fetchDataWithProxy: fetchDataWithProxy,
         setCurrentApiURL: setCurrentApiURL
 
     }

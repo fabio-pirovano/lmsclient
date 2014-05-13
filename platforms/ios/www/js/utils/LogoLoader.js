@@ -14,16 +14,12 @@
 
     var init = function(){
 
-        // console.log('utils/LogoLoader => init', this, that);
-
-        // return;
-
-        window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, function(fs){
+        window.requestFileSystem(LocalFileSystem.TEMPORARY, (1024 * 1024 * 10), function(fs){
 
             fileSystem = fs;
-            filePath = fileSystem.root.fullPath;
+            filePath = fileSystem.root.toURL();
             console.log('fileSystem', fileSystem)
-            console.log('fileSystem.root', fileSystem.root)
+            console.log('fileSystem.root', fileSystem.root.toURL());
 
         }, null);
 
@@ -31,16 +27,14 @@
 
     var loadLogo = function(url){
 
-        // console.log('utils/LogoLoader => loadLogo', this, that);
-
-        var uri = encodeURI(url);
+        var fileTransfer = new FileTransfer(),
+            uri = encodeURI(url),
+            fileName = getFilename(url),
+            event;
 
         console.log('URI', uri);
-        console.log('========');
+        console.log('========', fileName);
         console.log('filePath', filePath);
-
-        var fileTransfer = new FileTransfer();
-        var uri = encodeURI(url);
 
         fileTransfer.onprogress = function(progressEvent) {
 
@@ -54,41 +48,40 @@
 
         fileTransfer.download(
             uri,
-            filePath + '/' + getFilename(url),
+            filePath + '/' + fileName,
             function(entry) {
 
-                console.log("download complete ******************************: " + entry.fullPath, this);
+                console.log("download complete ******: " + entry.toURL());
 
-                var event = new CustomEvent(events.LOGO_DOWNLOADED, {detail: {logoPath: entry.fullPath}});
+                event = new CustomEvent(events.LOGO_DOWNLOADED, {detail: {logoPath: entry.toURL()}});
                 that.dispatchEvent(event);
 
-                readLogoData(entry.fullPath, true);
+                readLogoData(fileName, true);
 
             },
             function(error) {
 
-                console.log("download error source " +  error.source);
-                console.log("download error target " +  error.target);
-                console.log("download error code"    +  error.code);
-
-                var event = new CustomEvent(events.LOGO_DOWNLOAD_ERROR, {detail: {error: error.code, source: error.source}});
+                event = new CustomEvent(events.LOGO_DOWNLOAD_ERROR, {detail: {error: error.code, source: error.source}});
                 that.dispatchEvent(event);
+
+                console.log('download error source ' +  error.source);
+                console.log('download error target ' +  error.target);
+                console.log('download error code '   +  error.code);
 
             },
             false,
             {
                 headers: {
-                    "Authorization": "Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=="
+                    'Authorization': 'Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=='
                 }
             }
         );
-
 
     };
 
     var readLogoData = function(path, destroy){
 
-        fileSystem.root.getFile(path, {create: false, exclusive: true},
+        fileSystem.root.getFile(path, {create: false, exclusive: false},
                                 function (fileEntry) {
 
                                     fileEntry.file(function (file) {
@@ -124,20 +117,27 @@
 
                                         reader.readAsDataURL(file);
 
-                                    }, fileReadingFailure);
+                                    }, fileEntryFailure);
 
                                 },
                                 fileReadingFailure);
 
     };
 
+    var fileEntryFailure = function(error){
+
+        console.log('error with the fileEntry, code: ' +  error.code);
+
+        var event = new CustomEvent(events.FILE_ERROR, {detail: {error: error.code}});
+        that.dispatchEvent(event);
+
+    };
+
     var fileReadingFailure = function(error){
 
-        console.log("download error source " +  error.source);
-        console.log("download error target " +  error.target);
-        console.log("download error code"    +  error.code);
+        console.log('error reading file, code: ' +  error.code);
 
-        var event = new CustomEvent(events.FILE_ERROR, {detail: {error: error.code, source: error.source}});
+        var event = new CustomEvent(events.FILE_ERROR, {detail: {error: error.code}});
         that.dispatchEvent(event);
 
     };
