@@ -1,6 +1,7 @@
 ;define('routers/approuter', ['core/Constants', 'appframework'], (function(Constants, $){
 
-    var that = this;
+    var that = this,
+        currentView;
 
     var onChangeView = function(evt){
 
@@ -18,11 +19,22 @@
 
                    var data = evt.detail.data;
 
-                   module.init(data || null);
+                   try{
+
+                       currentView.dispose();
+
+                   }catch (error){
+
+                       console.log(module + ' does not implement dispose');
+
+                   }
+
+                   currentView = module;
+                   currentView.init(data || null);
 
                });
 
-                $(view).unbind('loadpanel', arguments.callee);
+                $('#' + view).unbind('loadpanel', arguments.callee);
 
             });
 

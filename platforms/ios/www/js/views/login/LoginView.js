@@ -94,8 +94,6 @@
 
             }
 
-            alert('url che salvo nel database');
-
             config.saveConfig('defaulturl', url);
 
         };
@@ -177,6 +175,10 @@
             $form.unbind('submit', onLogin);
             $forgotPassword.unbind('tap', controller.recoverPassword);
 
+        };
+
+        var clearData = function(){
+
             $username.val('');
             $password.val('');
             $domain.val('');
@@ -209,6 +211,7 @@
 
             init: init,
             dispose: dispose,
+            clearData: clearData,
             showHideLoader: doShowHideLoader,
             loginIssue: loginIssue,
             goNext: doGoNext,

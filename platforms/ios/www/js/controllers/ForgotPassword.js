@@ -1,5 +1,5 @@
-;define('controllers/ForgotPassword', ['appframework', 'libs/happy/happy', 'libs/happy/happy.methods', 'model/DataProvider', 'i18n!nls/forgot'],
-    function ($, happy, validators, dataProvider, forgot) {
+;define('controllers/ForgotPassword', ['appframework', 'libs/happy/happy', 'libs/happy/happy.methods', 'model/DataProvider', 'i18n!nls/forgot', 'i18n!nls/miscellaneous'],
+    function ($, happy, validators, dataProvider, forgot, miscellaneous) {
 
         var view, currentInterval;
 
@@ -27,7 +27,7 @@
 
         var onRecoverPasswordError = function (xhr, error) {
 
-            renderMessage(error.message);
+            renderMessage(error.message || miscellaneous.genericError);
 
         };
 

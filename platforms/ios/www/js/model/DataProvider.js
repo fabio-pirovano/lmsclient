@@ -1,6 +1,7 @@
 ;define('model/DataProvider', ['appframework', 'core/Constants', 'i18n!nls/miscellaneous'], (function($, Constants, miscellaneous){
 
     var failureHandlerActive, currentApiURL;
+    var current;
 
     var onAppOffline = function(evt){
 
@@ -15,6 +16,8 @@
     var initFailureHandler = function(){
 
         failureHandlerActive = true;
+
+        document.removeEventListener('offline', onAppOffline);
         document.addEventListener('offline', onAppOffline, false);
 
     };
@@ -27,13 +30,25 @@
 
     var fetchData = function(url, params, successHandler, errorHandler, rootURL){
 
+        if(url === current)return;
+
         $.ajax({
 
             url: (rootURL || currentApiURL) + '/api/' + url,
             type: 'post',
             data: params,
-            success: successHandler,
-            error: errorHandler
+            success: function(data){
+
+                successHandler(data);
+                current = '';
+
+            },
+            error:function(xhr, error){
+
+                errorHandler(xhr, error);
+                current = '';
+
+            }
 
         });
 
@@ -43,17 +58,31 @@
 
         }
 
+        current = url;
+
     };
 
     var fetchDataWithProxy = function(params, successHandler, errorHandler){
+
+        if(params.details.action === current)return;
 
         $.ajax({
 
             url: currentApiURL + Constants.API_URL,
             type: 'post',
             data: params,
-            success: successHandler,
-            error: errorHandler
+            success: function(data){
+
+                successHandler(data);
+                current = '';
+
+            },
+            error:function(xhr, error){
+
+                errorHandler(xhr, error);
+                current = '';
+
+            }
 
         });
 
@@ -62,6 +91,8 @@
             initFailureHandler();
 
         }
+
+        current = params.details.action;
 
     };
 
