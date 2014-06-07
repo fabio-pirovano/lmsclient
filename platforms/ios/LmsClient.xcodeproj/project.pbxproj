@@ -559,7 +559,7 @@
 					"\"$(BUILT_PRODUCTS_DIR)/libCordova.a\"",
 					"-ObjC",
 				);
-				PRODUCT_NAME = LmsClient;
+				PRODUCT_NAME = "LmsClient";
 				PROVISIONING_PROFILE = "2F500985-A793-4A71-8F03-34B3D68C3DD8";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -592,7 +592,7 @@
 					"\"$(BUILT_PRODUCTS_DIR)/libCordova.a\"",
 					"-ObjC",
 				);
-				PRODUCT_NAME = LmsClient;
+				PRODUCT_NAME = "LmsClient";
 				PROVISIONING_PROFILE = "2F500985-A793-4A71-8F03-34B3D68C3DD8";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

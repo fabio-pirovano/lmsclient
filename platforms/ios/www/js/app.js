@@ -8,6 +8,7 @@ require.config({
         text: 'libs/require/plugins/text',
         domReady: 'libs/require/plugins/domReady',
         i18n: 'libs/require/plugins/i18n',
+        css: 'libs/require/plugins/css',
         async: 'libs/require/plugins/async',
         happy: 'libs/happy/happy',
         happyValidators: 'libs/happy/happy.methods',
@@ -41,7 +42,7 @@ require.config({
 
 });
 
-require(['main'], function(main){
+require(['utils/CustomEventPolyfill', 'main'], function(polyfill, main){
 
     main.init();
 

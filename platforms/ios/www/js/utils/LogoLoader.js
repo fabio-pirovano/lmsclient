@@ -18,8 +18,6 @@
 
             fileSystem = fs;
             filePath = fileSystem.root.toURL();
-            console.log('fileSystem', fileSystem)
-            console.log('fileSystem.root', fileSystem.root.toURL());
 
         }, null);
 
@@ -32,15 +30,11 @@
             fileName = getFilename(url),
             event;
 
-        console.log('URI', uri);
-        console.log('========', fileName);
-        console.log('filePath', filePath);
-
         fileTransfer.onprogress = function(progressEvent) {
 
             if (progressEvent.lengthComputable) {
 
-                console.log(progressEvent.loaded)
+                // console.log(progressEvent.loaded)
 
             }
 
@@ -51,7 +45,7 @@
             filePath + '/' + fileName,
             function(entry) {
 
-                console.log("download complete ******: " + entry.toURL());
+                // console.log("download complete ******: " + entry.toURL());
 
                 event = new CustomEvent(events.LOGO_DOWNLOADED, {detail: {logoPath: entry.toURL()}});
                 that.dispatchEvent(event);
@@ -63,10 +57,6 @@
 
                 event = new CustomEvent(events.LOGO_DOWNLOAD_ERROR, {detail: {error: error.code, source: error.source}});
                 that.dispatchEvent(event);
-
-                console.log('download error source ' +  error.source);
-                console.log('download error target ' +  error.target);
-                console.log('download error code '   +  error.code);
 
             },
             false,
@@ -90,7 +80,6 @@
 
                                         reader.onloadend = function(evt) {
 
-                                            console.log("Read as data URL", this, that);
                                             // console.log(evt.target.result);
 
                                             logoData = evt.target.result;
@@ -108,7 +97,7 @@
 
                                         reader.onerror = function(error){
 
-                                            console.log('file reader error', error.code);
+                                            // console.log('file reader error', error.code);
 
                                             var event = new CustomEvent(events.LOGO_DATA_ERROR, {detail: {error: error.code}});
                                             that.dispatchEvent(event);
@@ -126,16 +115,12 @@
 
     var fileEntryFailure = function(error){
 
-        console.log('error with the fileEntry, code: ' +  error.code);
-
         var event = new CustomEvent(events.FILE_ERROR, {detail: {error: error.code}});
         that.dispatchEvent(event);
 
     };
 
     var fileReadingFailure = function(error){
-
-        console.log('error reading file, code: ' +  error.code);
 
         var event = new CustomEvent(events.FILE_ERROR, {detail: {error: error.code}});
         that.dispatchEvent(event);

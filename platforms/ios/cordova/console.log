@@ -17,3 +17,13 @@ Terminating in response to SpringBoard's termination.
 2014-01-02 10:24:50.844 LmsClient[62194:18e03] Resetting plugins due to page load.
 2014-01-02 10:24:50.857 LmsClient[62194:18e03] Finished load of: file:///Users/giorgionatili/Library/Application%20Support/iPhone%20Simulator/6.1/Applications/B110DE30-BFF8-4AC4-9F13-B2A9B81DA932/LmsClient.app/www/index.html?
 Terminating in response to SpringBoard's termination.
+2014-06-07 17:06:00.521 LmsClient[64909:18e03] Multi-tasking -> Device: YES, App: YES
+2014-06-07 17:06:00.569 LmsClient[64909:18e03] Unlimited access to network resources
+2014-06-07 17:06:00.745 LmsClient[64909:18e03] [CDVTimer][file] 0.217021ms
+2014-06-07 17:06:00.745 LmsClient[64909:18e03] [CDVTimer][TotalPluginStartup] 0.814974ms
+2014-06-07 17:06:00.804 LmsClient[64909:18e03] active
+2014-06-07 17:06:00.848 LmsClient[64909:18e03] Resetting plugins due to page load.
+2014-06-07 17:06:01.016 LmsClient[64909:18e03] Finished load of: file:///Users/giorgionatili/Library/Application%20Support/iPhone%20Simulator/6.1/Applications/8903F2BB-4D3D-42B3-9367-34EAC3D863E3/LmsClient.app/www/index.html
+2014-06-07 17:06:01.265 LmsClient[64909:18e03] log1
+2014-06-07 17:06:01.280 LmsClient[64909:18e03] THREAD WARNING: ['Globalization'] took '15.758789' ms. Plugin should use a background thread.
+Terminating in response to SpringBoard's termination.

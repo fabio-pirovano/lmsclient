@@ -83,7 +83,7 @@
 
         var initValidation = function (form) {
 
-            console.log('init validation', form);
+            // console.log('init validation', form);
 
             form.isHappy({
                 fields: {

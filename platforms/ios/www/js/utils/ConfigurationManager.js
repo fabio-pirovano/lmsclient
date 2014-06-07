@@ -1,7 +1,5 @@
 ;define('utils/ConfigurationManager', [], (function(){
 
-    console.log('utils/ConfigurationManager', this)
-
     // Custom events
     var events = {DATA_READY: 'dataReady',
                   ITEM_ADDED: 'itemAdded',
@@ -55,7 +53,6 @@
 
         // console.log('utils/ConfigurationManager => onLogoResult', this, that);
 
-        console.log('on logo quey result', tx, results, results.rows.length);
         logoExists = Boolean(results.rows.length);
 
         if(logoExists){
@@ -67,13 +64,11 @@
         var event = new CustomEvent(events.DATA_READY, {detail: {logoExists: logoExists}});
         that.dispatchEvent(event);
 
-        console.log('logoExists', logoExists, that);
+        // console.log('logoExists', logoExists, that);
 
     };
 
     var databaseError = function(transaction, error){
-
-        console.log('Database error', error.code, error.__proto__);
 
         // TODO add a meaningful message for the user and log something on the device
         /*
@@ -117,8 +112,6 @@
            db.transaction(function(tx){
 
                tx.executeSql('SELECT * FROM configuration WHERE name = "' + name + '"', [], function(tx, results){
-
-                   console.log('SELECT * FROM configuration WHERE name = "' + name + '"')
 
                    if(results && results.rows && results.rows.length){
 
@@ -171,8 +164,6 @@
     };
 
     var onConfigurationItemSaved = function (tx, results) {
-
-        console.log('on saveConfigurationItem query result', tx, results, results.rowsAffected, that);
 
         var event = new CustomEvent(events.ITEM_ADDED, {detail: {results: results}});
         that.dispatchEvent(event);

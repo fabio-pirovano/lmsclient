@@ -186,6 +186,9 @@ input#website {
     border-radius: 0 !important;
     border: none !important;
 
+    box-shadow: none !important;
+    border: none !important;
+
 }
 
 a#recover-password{
@@ -621,6 +624,7 @@ input#reset-url{
 #courses ul > li{
 
     margin-top: 4px;
+    border-bottom: 1px solid #cccccc;
 
 }
 
@@ -697,8 +701,6 @@ input#reset-url{
 
 }
 
-
-
 .open-details{
 
     height: 90px !important;
@@ -711,6 +713,7 @@ input#reset-url{
 
     height: 41px;
     width: 23px;
+    position: absolute;
 
 }
 
@@ -790,6 +793,7 @@ input#reset-url{
     float: right;
     height: 45px;
     margin-right: 4px;
+    right: 10px;
 
 }
 
@@ -828,3 +832,29 @@ input#reset-url{
 }
 
 /* ======== End Course Panel ======== */
+
+/* ======== Stats Panel ======== */
+
+#reports{
+
+    background-color:  #EFF3F3 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+}
+
+#reports > p:first-of-type{
+
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #666666 !important;
+
+}
+
+/* ======== End Stats Panel ======== */
+
+#afui input[type="text"]{
+
+    background-color: #ffffff !important;
+
+}

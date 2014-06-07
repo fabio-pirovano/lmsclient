@@ -5,9 +5,6 @@ define('views/forgotpassword/ForgotPasswordView', ['controllers/ForgotPassword',
 
     var doInit = function () {
 
-        console.log('should be ready');
-
-
             controller.init(this);
 
             $form = $('#recover-pwd-form');

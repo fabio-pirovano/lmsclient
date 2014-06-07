@@ -58,7 +58,7 @@
         view.showLoader(true);
 
         var paramsForProxy = JSON.stringify({'details': {'action': currentAction, 'userid': userID , 'uuid': device.uuid, 'os': device.platform, 'token': data.token, 'key': data.key}}),
-            params = JSON.stringify({'userid': userID , 'uuid': device.uuid, 'os': device.platform, 'token': data.token, 'key': data.key});
+            params = JSON.stringify({'id_user': userID , 'device_token': device.uuid, 'os': device.platform, 'token': data.token, 'key': data.key});
 
         dataProvider.fetchData('pushnotification/' + currentAction, params, onPushNotification, onPushNotificationError);
 

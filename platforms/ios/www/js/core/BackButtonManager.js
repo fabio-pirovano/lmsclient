@@ -5,9 +5,13 @@
 
      var enableBackButton = function(evt){
 
-         if(!isEnabled)$.ui.setBackButtonVisibility(true);
-         isEnabled = true;
+         if(!isEnabled){
 
+             $.ui.setBackButtonVisibility(true);
+
+         }
+
+         isEnabled = true;
 
      };
 
@@ -18,9 +22,7 @@
 
     };
 
-    var init = function(toDisable, toEnable){
-
-        console.log('init bb manager', this);
+    var init = function(toDisable, toEnable, falsyItems){
 
         $backButtonDisabled = toDisable;
         $backButtonDisabled.bind('loadpanel', disableBackButton);
@@ -31,6 +33,16 @@
 
             $backButtonEnabled[index].bind('loadpanel', enableBackButton);
             $backButtonEnabled[index].bind('content-loaded', enableBackButton);
+
+        });
+
+        $.each(falsyItems, function(index){
+
+            falsyItems[index].bind('loadpanel', function(){
+
+                isEnabled = false;
+
+            });
 
         });
 

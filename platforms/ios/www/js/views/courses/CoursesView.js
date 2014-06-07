@@ -27,8 +27,6 @@
 
     var doShowError = function(msg){
 
-        console.log('doShowError', msg);
-
         if(msg){
 
             $.ui.popup(msg);

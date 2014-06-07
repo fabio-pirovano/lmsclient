@@ -211,7 +211,9 @@
 
                 evt.target.removeEventListener(evt.type, arguments.callee);
 
-                view.getDomainItem().val(evt.detail.value);
+                var domain = evt.detail.value.replace(/.*?:\/\//g, '');
+
+                view.getDomainItem().val(domain);
                 dataProvider.setCurrentApiURL(evt.detail.value);
 
             });

@@ -7,6 +7,7 @@
     'myCourses':            'Courses',
     'notStarted':           'Not started',
     'inProgress':           'In progress',
-    'completed':            'Completed'
+    'completed':            'Completed',
+    'notAllowed':           'Item not allowed, sorry!'
 
 });

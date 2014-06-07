@@ -25,7 +25,7 @@
 
                    }catch (error){
 
-                       console.log(module + ' does not implement dispose');
+                       // console.log(module + ' does not implement dispose');
 
                    }
 

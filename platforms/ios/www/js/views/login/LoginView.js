@@ -9,8 +9,6 @@
 
             evt.preventDefault();
 
-            console.log('isDisabled', isDisabled)
-
             if(!isDisabled){
 
                 var username, password;
@@ -164,7 +162,8 @@
 
                 //  function(toDisable, toEnable)
                 backManager.init($('#courses'),
-                                [$('#reports'), $('#settings'), $('#logout'), $('#forgot-pwd'), $('#course-details')]);
+                                [$('#reports'), $('#settings'), $('#logout'), $('#forgot-pwd'), $('#course-details')],
+                                [$('#forgot-pwd')]);
 
             }));
 

@@ -228,7 +228,7 @@ module.exports.metadata =
     "org.apache.cordova.device": "0.2.8",
     "org.apache.cordova.file": "1.0.1",
     "org.apache.cordova.file-transfer": "0.4.0",
-    "org.apache.cordova.console": "0.2.5",
+    "org.apache.cordova.console": "0.2.8",
     "org.apache.cordova.globalization": "0.2.5",
     "org.apache.cordova.network-information": "0.2.6",
     "org.apache.cordova.inappbrowser": "0.3.1",

@@ -43,8 +43,6 @@
 
     var renderCourseDetails = function(data){
 
-        console.log('renderCourseDetails ', data);
-
         $courseItems.html('');
 
         var html;
@@ -55,8 +53,6 @@
 
             html = mustache.to_html(detailsTemplate, val);
             $courseItems.html($courseItems.html() + html);
-
-            console.log(val);
 
         });
 
@@ -72,7 +68,17 @@
 
         var isFolder     = $selectedItem.attr('data-folder') == 'true',
             courseId     = $selectedItem.attr('data-course'),
-            organization = $selectedItem.attr('data-organization');
+            organization = $selectedItem.attr('data-organization'),
+            isLocked     = $selectedItem.attr('data-locked') == 'true';
+
+        if(isLocked){
+
+            navigator.notification.alert(courses.notAllowed);
+            return;
+
+        }
+
+        doDispose();
 
         if(isFolder){
 
@@ -83,8 +89,6 @@
             controller.openLearningObject(organization);
 
         }
-
-        console.log(isFolder, courseId, organization);
 
     };
 
@@ -142,6 +146,7 @@
     var restoreHTML = function(html){
 
         $courseItems.html(html);
+        initInteraction();
 
     };
 

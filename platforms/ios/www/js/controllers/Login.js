@@ -9,7 +9,7 @@
 
         var doRecoverPassword = function(evt){
 
-            console.log('should  recover password');
+            // console.log('should  recover password');
 
             var event = new CustomEvent(Constants.CHANGE_VIEW_EVENT, {detail: {view: Constants.FORGOT_PWD_VIEW, module: Constants.FORGOT_PWD_MODULE, data: null, state: null}});
             that.dispatchEvent(event);
@@ -28,7 +28,6 @@
 
         var handleLogin = function(username, password){
 
-            console.log(config.logoExists(), this);
             cache['login-loader'] =  $('#login-loader');
 
             if(config.logoExists()){
@@ -42,8 +41,6 @@
                 }, 'login-loader');
 
             }else{
-
-                console.log('event', infoProvider.events.API_INFO_DATA_READY, this, window, that);
 
                 that.addEventListener(infoProvider.events.API_INFO_DATA_READY, function(evt){
 
@@ -66,8 +63,6 @@
 
                     });
 
-                    console.log('GETTING READY TO LOAD', infoProvider.logoURL(), this);
-
                     logoLoader.load(infoProvider.logoURL());
 
                 });
@@ -81,7 +76,6 @@
 
         var onAuthenticate = function( data ) {
 
-            console.log( "Sample of data:", data);
             var currentData = JSON.parse(data);
 
             if(currentData.success === true){
@@ -180,8 +174,6 @@
 
         var initValidation = function(form){
 
-            console.log('init validation', form);
-
             form.isHappy({
                 fields: {
                     // reference the field you're talking about, probably by `id`
@@ -219,7 +211,9 @@
 
                 evt.target.removeEventListener(evt.type, arguments.callee);
 
-                view.getDomainItem().val(evt.detail.value);
+                var domain = evt.detail.value.replace(/.*?:\/\//g, '');
+
+                view.getDomainItem().val(domain);
                 dataProvider.setCurrentApiURL(evt.detail.value);
 
             });
