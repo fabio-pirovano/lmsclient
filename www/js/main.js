@@ -1,6 +1,6 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants', 'i18n!nls/miscellaneous'],
+;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous'],
 
-    (function($, $ui, login, dataManager, nav, router, Constants, miscellaneous){
+    (function($, $ui, login, dataManager, nav, router, Constants, dataProvider, miscellaneous){
 
     var isLoginDisabled;
 
@@ -126,29 +126,35 @@
 
         var user = dataManager.getUser();
 
-        $.ajax({
+        var paramsForProxy = JSON.stringify({'details': {'action': 'logout', 'id_user': user.id, 'key': user.getUsername, 'token': user.token}}),
+            params = JSON.stringify({'id_user': user.id , 'token': user.token, 'key': user.getUsername});
 
-            url: Constants.API_URL,
-            type: 'post',
-            data: JSON.stringify({'details': {'action': 'logout', 'id_user': user.id, 'key': user.getUsername, 'token': user.token}}),
-            success: function( data ) {
+        dataProvider.fetchData('user/profile', params, onUserLogout, onUserLogoutError);
 
-                var currentData = JSON.parse(data);
+    };
 
-                if(currentData.success === true){
+    var onUserLogout = function( data ) {
 
-                    $.ui.hideMask();
-                    $.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+        var currentData = JSON.parse(data);
 
-                }
+        if(currentData.success === true){
 
-            },
-            error: function(xhr, error){
+            $.ui.hideMask();
+            $.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
 
-                // console.log(arguments);
+        }else{
 
-            }
-        });
+            $.ui.hideMask();
+            $.ui.popup(currentData.message);
+
+        }
+
+    }
+
+    var onUserLogoutError = function(xhr, error){
+
+        $.ui.hideMask();
+        $.ui.popup(currentData.message);
 
     };
 

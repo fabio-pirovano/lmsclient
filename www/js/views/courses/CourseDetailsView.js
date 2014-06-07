@@ -70,13 +70,15 @@
             courseId     = $selectedItem.attr('data-course'),
             organization = $selectedItem.attr('data-organization'),
             isLocked     = $selectedItem.attr('data-locked') == 'true';
-            
+
         if(isLocked){
-        
-          navigator.notification.alert(courses.notAllowed);          
-          return;
-        
+
+            navigator.notification.alert(courses.notAllowed);
+            return;
+
         }
+
+        doDispose();
 
         if(isFolder){
 
@@ -144,6 +146,7 @@
     var restoreHTML = function(html){
 
         $courseItems.html(html);
+        initInteraction();
 
     };
 
