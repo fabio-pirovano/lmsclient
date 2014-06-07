@@ -10,6 +10,10 @@
     'yes':                  'YES',
     'no':                   'NO',
     'connectionRequired':   'Internet connection required to use this app...',
-    'genericError':         'Something went wrong, please restart your app'
+    'genericError':         'Something went wrong, please restart your app',
+    'confirmTitle':         'API issue',
+    'ok':                   'OK',
+    'cancel':               'Cancel',
+    'genericMissingInfoError': 'Maybe you are missing the logo, would you like to proceed?'
 
 });

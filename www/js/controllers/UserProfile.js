@@ -19,7 +19,7 @@
     var recoverProfileData = function(id, data){
 
         var paramsForProxy = JSON.stringify({'details': {'action': 'userprofile', 'userid': id , 'token': data.token, 'key': data.key}}),
-            params = JSON.stringify({'userid': id , 'token': data.token, 'key': data.key});
+            params = JSON.stringify({'id_user': id , 'token': data.token, 'key': data.key});
 
         dataProvider.fetchData('user/profile', params, onProfileData, onProfileDataError);
 

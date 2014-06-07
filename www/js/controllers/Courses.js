@@ -45,7 +45,7 @@
         if(!courseLoaded){
 
             paramsForProxy = JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': token , 'key': key}});
-            params = JSON.stringify({'userid': user.id , 'token': token , 'key': key});
+            params = JSON.stringify({'id_user': user.id , 'token': token , 'key': key});
 
             dataProvider.fetchData('user/userCourses', params, onGetUserCourses, onGetUserCoursesError);
 
@@ -69,14 +69,14 @@
         if(currentData.success === true){
 
          var event = new CustomEvent(Constants.DETAIL_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE,
-                                     data: {token: token, key: key, objects: DetailsFactory.create(id, currentData.objects)}, push: true}});
+                                     data: {token: token, key: key, objects: DetailsFactory.create(currentCourseId, currentData.objects)}, push: true}});
           that.dispatchEvent(event);
-
+          
           view.showLoader(false);
 
          }else{
 
-            showError(data.message);
+            showError(currentData.message);
 
          }
 
@@ -91,9 +91,10 @@
     var doGetCourseDetails = function(id){
 
         view.showLoader(true, courses.loadingCourse);
+        currentCourseId = id;
 
         var paramsForProxy = JSON.stringify({'details': {'action': 'courseDetails', 'idCourse': id , 'token': token , 'key': key}}),
-            params = JSON.stringify({ 'idCourse': id , 'token': token , 'key': key});
+            params = JSON.stringify({ 'id_course': id , 'token': token , 'key': key});
 
         dataProvider.fetchData('organization/listObjects', params, onGetCourseDetails, onGetCourseDetailsError);
 

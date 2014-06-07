@@ -19,13 +19,34 @@ define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants'
     };
 
     var onInfoError = function(xhr, error){
+    
+      navigator.notification.confirm(miscellaneous.genericMissingInfoError,
+                                      function(buttonIndex){
+                                     
+                                        if(buttonIndex === 1){
+                                     
+                                            dataReady();
+                                     
+                                        }else{
+                                     
+                                          $ui.hideMask();
+                                          $ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+                                     
+                                        }
+                                     
+                                      }, miscellaneous.confirmTitle,
+                                         [miscellaneous.ok, miscellaneous.cancel]);
+                                     
+      
+      
+     /* confirmCallback, [title], [buttonLabels])
 
         navigator.notification.alert(miscellaneous.genericError, function(){
 
             $ui.hideMask();
             $ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
 
-        });
+        });*/
 
     };
 

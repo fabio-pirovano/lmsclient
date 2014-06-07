@@ -130,7 +130,7 @@
 
             url: Constants.API_URL,
             type: 'post',
-            data: JSON.stringify({'details': {'action': 'logout', 'userid': user.id, 'key': user.getUsername, 'token': user.token}}),
+            data: JSON.stringify({'details': {'action': 'logout', 'id_user': user.id, 'key': user.getUsername, 'token': user.token}}),
             success: function( data ) {
 
                 var currentData = JSON.parse(data);

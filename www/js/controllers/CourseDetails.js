@@ -47,8 +47,6 @@
 
             var results = [];
 
-            // console.log('course details', currentData);
-
             for (var i = 0, tot = currentData.objects.length; i < tot; i++) {
 
                 var item = new CourseItem(currentCourseId, currentData.objects[i].id_scormitem, currentData.objects[i].locked, currentData.objects[i].title, currentData.objects[i].type);
@@ -60,8 +58,9 @@
             view.refreshData(results);
 
         } else {
-
-            view.showError(data.message);
+            
+            view.showLoader(false);
+            view.showError(currentData.message);
 
         }
 
@@ -69,6 +68,7 @@
 
     var onCourseFolderDetailsError = function (xhr, error) {
 
+        view.showLoader(false);
         view.showError(error.message);
 
     };
@@ -76,12 +76,13 @@
     var getFolderDetails = function (courseID, organizationID) {
 
         currentCourseId = courseID;
-
-        // console.log('getFolderDetails', currentCourseId, organizationID, this, this.view, this.token, this.key);
+        
         view.showLoader(true);
 
-        var params =  JSON.stringify({'details': {'action': 'courseFolderDetails', 'idCourse': courseID, 'idOrg': organizationID, 'token': token, 'key': key}});
-        dataProvider.fetchData(params, onCourseFolderDetails, onCourseFolderDetailsError);
+        var paramsForProxy =  JSON.stringify({'details': {'action': 'courseFolderDetails', 'id_course': courseID, 'idOrg': organizationID, 'token': token, 'key': key}}),
+            params =  JSON.stringify({'id_course': courseID, 'id_org': organizationID, 'token': token, 'key': key});
+
+        dataProvider.fetchData('organization/listObjects', params, onCourseFolderDetails, onCourseFolderDetailsError);
 
     };
 
@@ -115,7 +116,8 @@
 
         } else {
 
-            view.showError(data.message);
+            view.showLoader(false);
+            view.showError(currentData.message);
 
         }
 
@@ -123,6 +125,7 @@
 
     var onLearningObjectError = function (xhr, error) {
 
+        view.showLoader(false);
         view.showError(error.message);
 
     };
@@ -131,8 +134,10 @@
 
         view.showLoader(true, courses.loadingCourseItem);
 
-        var params = JSON.stringify({'details': {'action': 'playLearningObject', 'idOrg': id, 'token': token, 'key': key}});
-        dataProvider.fetchData(params, onLearningObject, onLearningObjectError);
+        var paramsForProxy = JSON.stringify({'details': {'action': 'playLearningObject', 'idOrg': id, 'token': token, 'key': key}}),
+            params = JSON.stringify({'id_org': id, 'token': token, 'key': key});
+
+        dataProvider.fetchData('organization/play', params, onLearningObject, onLearningObjectError);
 
     };
 
