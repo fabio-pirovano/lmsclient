@@ -39,7 +39,7 @@
         if(platform == 'android'){
 
             $('#afui').css('position', 'inherit');
-            $('#do-login').css('box-shadow', '!important');
+            $('#do-login').css('box-shadow', 'inset 0 0 0 rgba(255,255,255,.4) !important');
 
             if(parseFloat(window.device.version) <= 4.3){
 

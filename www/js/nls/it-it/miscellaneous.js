@@ -10,6 +10,10 @@
     'yes':                  'SI',
     'no':                   'NO',
     'connectionRequired':   'Serve una connessione Internet attiva per utlizzare questa app...',
-    'genericError':         'Per cortesia riavviare l\'applicazione'
+    'genericError':         'Per cortesia riavviare l\'applicazione',
+    'confirmTitle':         'Problema sulle API',
+    'ok':                   'OK',
+    'cancel':               'Cancel',
+    'genericMissingInfoError': 'Potresti non vedere il logo, procedi ugualmente?'
 
 });
