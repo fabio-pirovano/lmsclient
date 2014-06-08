@@ -8,6 +8,7 @@
     'myCourses':            'Corsi',
     'notStarted':           'Da iniziare',
     'inProgress':           'In corso',
-    'completed':            'Completato'
+    'completed':            'Completato',
+    'notAllowed':           'Lezione non abilitata!'
 
 });

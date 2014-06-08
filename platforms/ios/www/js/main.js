@@ -39,10 +39,7 @@
         if(platform == 'android'){
 
             $('#afui').css('position', 'inherit');
-            $('#do-login').css('box-shadow', '!important');
-
-            alert(parseFloat(window.device.version))
-            alert(parseFloat(window.device.version) <= 4.3)
+            $('#do-login').css('box-shadow', 'inset 0 0 0 rgba(255,255,255,.4) !important');
 
             if(parseFloat(window.device.version) <= 4.3){
 
@@ -50,7 +47,6 @@
 
                     // Re-assigning the value to enforce the CSS appliance
                     platform = 'android';
-                    alert('si carica')
 
                 });
 

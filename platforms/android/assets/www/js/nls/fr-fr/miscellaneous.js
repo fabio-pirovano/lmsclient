@@ -10,6 +10,10 @@
     'yes':                  'OUI',
     'no':                   'NON',
     'connectionRequired':   'Connexion Internet requise pour utiliser cette application...',
-    'genericError':         'Quelque chose s\'est mal passé, s\'il vous plaît redémarrer votre application'
+    'genericError':         'Quelque chose s\'est mal passé, s\'il vous plaît redémarrer votre application',
+    'confirmTitle':         'API problème',
+    'ok':                   'OK',
+    'cancel':               'Cancel',
+    'genericMissingInfoError': 'Peut-être que vous êtes absent le logo, voulez-vous continuer?'
 
 });

@@ -36,18 +36,6 @@ define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants'
                                      
                                       }, miscellaneous.confirmTitle,
                                          [miscellaneous.ok, miscellaneous.cancel]);
-                                     
-      
-      
-     /* confirmCallback, [title], [buttonLabels])
-
-        navigator.notification.alert(miscellaneous.genericError, function(){
-
-            $ui.hideMask();
-            $ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
-
-        });*/
-
     };
 
     var getInfo = function(url, rootURL){
@@ -60,8 +48,6 @@ define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants'
 
             var paramsForProxy = JSON.stringify({'details': {'action': 'getlmsinfo', 'url': url}}),
                 params = JSON.stringify({'url': url});
-
-            alert(rootURL)
 
             dataProvider.fetchData('public/getlmsinfo', params, onInfoReady, onInfoError, rootURL);
 

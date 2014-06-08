@@ -8,6 +8,7 @@
     'myCourses':            'Cursos',
     'notStarted':           'No ha comenzado',
     'inProgress':           'En curso',
-    'completed':            'Terminado'
+    'completed':            'Terminado',
+    'notAllowed':           'El artículo no permitido, lo siento!'
 
 });
