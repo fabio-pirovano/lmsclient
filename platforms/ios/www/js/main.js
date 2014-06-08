@@ -41,12 +41,16 @@
             $('#afui').css('position', 'inherit');
             $('#do-login').css('box-shadow', '!important');
 
+            alert(parseFloat(window.device.version))
+            alert(parseFloat(window.device.version) <= 4.3)
+
             if(parseFloat(window.device.version) <= 4.3){
 
                 require(['css!../css/index-android-4.3.css'], function(css){
 
                     // Re-assigning the value to enforce the CSS appliance
                     platform = 'android';
+                    alert('si carica')
 
                 });
 

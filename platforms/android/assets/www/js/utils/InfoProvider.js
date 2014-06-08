@@ -1,6 +1,6 @@
 define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous'], (function($, $ui, Constants, dataProvider, miscellaneous){
 
-    var events = {API_INFO_DATA_READY: 'onInfoDataReady'};
+    var events = {API_INFO_DATA_READY: 'infoDataReady', API_INFO_DATA_ERROR: 'infoDataError'};
 
     var logoURL, dataCache;
     var that = this;
@@ -22,10 +22,10 @@ define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants'
     
       navigator.notification.confirm(miscellaneous.genericMissingInfoError,
                                       function(buttonIndex){
-                                     
+
                                         if(buttonIndex === 1){
                                      
-                                            dataReady();
+                                            dataReady(true);
                                      
                                         }else{
                                      
@@ -54,12 +54,14 @@ define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants'
 
         if(dataCache && logoURL){
 
-            dataReady();
+            dataReady(false);
 
         }else{
 
             var paramsForProxy = JSON.stringify({'details': {'action': 'getlmsinfo', 'url': url}}),
                 params = JSON.stringify({'url': url});
+
+            alert(rootURL)
 
             dataProvider.fetchData('public/getlmsinfo', params, onInfoReady, onInfoError, rootURL);
 
@@ -67,11 +69,22 @@ define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants'
 
     };
 
-    var dataReady = function(){
+    var dataReady = function(error){
 
-        // console.log('ON DATA READY', logoURL, this, this.dispatchEvent)
+        var eventType;
 
-        var event = new CustomEvent(events.API_INFO_DATA_READY, {bubbles: true, cancelable: true});
+        if(error){
+
+            eventType = events.API_INFO_DATA_ERROR;
+
+        }else{
+
+            eventType = events.API_INFO_DATA_READY;
+
+        }
+
+
+        var event = new CustomEvent(eventType, {bubbles: true, cancelable: true});
         that.dispatchEvent(event);
 
     };

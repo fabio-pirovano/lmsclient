@@ -42,6 +42,14 @@
 
             }else{
 
+                that.addEventListener(infoProvider.events.API_INFO_DATA_ERROR, function(evt){
+
+                    evt.target.removeEventListener(evt.type, arguments.callee);
+
+                    login(username, password);
+
+                });
+
                 that.addEventListener(infoProvider.events.API_INFO_DATA_READY, function(evt){
 
                     evt.target.removeEventListener(evt.type, arguments.callee);
