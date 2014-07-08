@@ -54,6 +54,8 @@
             html = mustache.to_html(detailsTemplate, val);
             $courseItems.html($courseItems.html() + html);
 
+            console.log('------->', val);
+
         });
 
         initInteraction();

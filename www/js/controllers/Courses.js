@@ -70,9 +70,9 @@
 
          var event = new CustomEvent(Constants.DETAIL_VIEW_EVENT, {detail: {view: Constants.COURSES_DETAILS_VIEW, module: Constants.COURSES_DETAILS_MODULE,
                                      data: {token: token, key: key, objects: DetailsFactory.create(currentCourseId, currentData.objects)}, push: true}});
-          that.dispatchEvent(event);
+         that.dispatchEvent(event);
           
-          view.showLoader(false);
+         view.showLoader(false);
 
          }else{
 

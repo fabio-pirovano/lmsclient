@@ -49,7 +49,14 @@
 
             for (var i = 0, tot = currentData.objects.length; i < tot; i++) {
 
-                var item = new CourseItem(currentCourseId, currentData.objects[i].id_scormitem, currentData.objects[i].locked, currentData.objects[i].title, currentData.objects[i].type);
+                var item = new CourseItem(currentCourseId, currentData.objects[i].id_scormitem, currentData.objects[i].locked || false, currentData.objects[i].title, currentData.objects[i].type);
+
+                if('status' in currentData.objects[i]){
+
+                    item.setStatus(currentData.objects[i].status);
+
+                }
+
                 results.push(item);
 
             }
