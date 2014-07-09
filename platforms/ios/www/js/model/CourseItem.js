@@ -1,5 +1,10 @@
 ;define('model/CourseItem', [], function(){
 
+    var STATUSES = {'attempted':    'inprogress',
+                    'failed':       'inprogress',
+                    'completed':    'completed',
+                    'passed':       'completed' };
+
     function CourseItem(id, organization, locked, title, type){
 
         this.courseId       = id;
@@ -10,6 +15,20 @@
         this.isFolder       = type === 'folder';
 
     }
+
+    CourseItem.prototype.setStatus = function(value){
+
+        if(value in STATUSES){
+
+            this.status = STATUSES[value];
+
+        }else{
+
+            this.status = 'notstarted';
+
+        }
+
+    };
 
     return CourseItem;
 

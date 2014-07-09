@@ -14,6 +14,7 @@
     'confirmTitle':         'API issue',
     'ok':                   'OK',
     'cancel':               'Aborrar',
-    'genericMissingInfoError': 'Quizá se echa en falta el logotipo, ¿le gustaría continuar?'
+    'genericMissingInfoError': 'Quizá se echa en falta el logotipo, ¿le gustaría continuar?',
+    'loadingData':           'Loading data...'
 
 });

@@ -54,8 +54,6 @@
             html = mustache.to_html(detailsTemplate, val);
             $courseItems.html($courseItems.html() + html);
 
-            console.log('------->', val);
-
         });
 
         initInteraction();
@@ -66,7 +64,7 @@
 
         evt.preventDefault();
 
-        var $selectedItem = $(this);
+        var $selectedItem = $(evt.target).parents('li');
 
         var isFolder     = $selectedItem.attr('data-folder') == 'true',
             courseId     = $selectedItem.attr('data-course'),
@@ -96,13 +94,13 @@
 
     var initInteraction = function(){
 
-        $courseItems.find('li').bind('tap', onItemSelection);
+        $courseItems.bind('tap', onItemSelection);
 
     };
 
     var doDispose = function(){
 
-        $courseItems.find('li').unbind('tap', onItemSelection);
+        $courseItems.unbind('tap', onItemSelection);
 
     };
 

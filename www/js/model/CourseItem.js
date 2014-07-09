@@ -18,8 +18,6 @@
 
     CourseItem.prototype.setStatus = function(value){
 
-        console.log('the status value is', value);
-
         if(value in STATUSES){
 
             this.status = STATUSES[value];
@@ -29,8 +27,6 @@
             this.status = 'notstarted';
 
         }
-
-        console.log('effectively', this);
 
     };
 

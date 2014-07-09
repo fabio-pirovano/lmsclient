@@ -13,6 +13,21 @@
 
         }else{
 
+            $('#' + view).bind('unloadpanel', function(e){
+
+                try{
+
+                    currentView.dispose();
+
+                }catch (error){
+
+                    // console.log(module + ' does not implement dispose');
+
+                }
+
+
+            });
+
             $('#' + view).bind('loadpanel', function(e){
 
                require([evt.detail.module], function(module){

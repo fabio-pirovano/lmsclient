@@ -24,11 +24,16 @@
 
     var setCurrentApiURL = function(value){
 
+        console.log('setCurrentApiURL', value)
         currentApiURL = value;
 
     };
 
     var fetchData = function(url, params, successHandler, errorHandler, rootURL){
+
+        console.log(arguments);
+        console.log(current)
+        console.log((rootURL || currentApiURL) + '/api/' + url)
 
         if(url === current)return;
 

@@ -75,6 +75,8 @@
 
                 });
 
+                dataProvider.setCurrentApiURL(view.getDomain(true));
+
                 infoProvider.getInfo(view.getDomain(), view.getDomain(true));
                 view.showHideLoader(true, login.loadingAssets);
 
@@ -219,10 +221,11 @@
 
                 evt.target.removeEventListener(evt.type, arguments.callee);
 
-                var domain = evt.detail.value.replace(/.*?:\/\//g, '');
-
-                view.getDomainItem().val(domain);
                 dataProvider.setCurrentApiURL(evt.detail.value);
+
+                var domain = evt.detail.value.replace(/.*?:\/\//g, '');
+                view.getDomainItem().val(domain);
+
 
             });
 

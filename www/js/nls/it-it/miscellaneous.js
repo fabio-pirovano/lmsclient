@@ -14,6 +14,7 @@
     'confirmTitle':         'Problema sulle API',
     'ok':                   'OK',
     'cancel':               'Cancel',
-    'genericMissingInfoError': 'Potresti non vedere il logo, procedi ugualmente?'
+    'genericMissingInfoError': 'Potresti non vedere il logo, procedi ugualmente?',
+    'loadingData':           'Caricamento in corso...'
 
 });

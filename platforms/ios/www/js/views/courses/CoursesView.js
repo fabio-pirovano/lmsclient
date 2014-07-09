@@ -85,13 +85,13 @@
 
         if(status){
 
-            $courses.find('li').bind('tap', onCourseSelection);
+            $courses.bind('tap', onCourseSelection);
             $coursesSearch.bind('input', onCourseSearch);
 
 
         }else{
 
-            $courses.find('li').unbind('tap', onCourseSelection);
+            $courses.unbind('tap', onCourseSelection);
             $coursesSearch.unbind('input', onCourseSearch);
 
         }
@@ -116,7 +116,7 @@
 
         evt.preventDefault();
 
-        var target = $(this);
+        var target = $(evt.target).parents('li');
 
         var url         = target.attr('data-url'),
             idCourse    = url.match(/course_id=([^&]*)/)[1],
