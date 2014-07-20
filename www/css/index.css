@@ -852,6 +852,13 @@ input#reset-url{
 
 }
 
+#reports-content{
+
+    width: 100% !important;
+    height: 100% !important;
+
+}
+
 /* ======== End Stats Panel ======== */
 
 #afui input[type="text"]{

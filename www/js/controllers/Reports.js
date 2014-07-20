@@ -1,111 +1,94 @@
-;define('controllers/Reports', ['model/DataProvider', 'core/DataManager', 'views/reports/ReportsView', 'i18n!nls/miscellaneous', 'utils/ConfigurationManager'],
-                               (function(dataProvider, dataManager, view, miscellaneous, config){
+;define('controllers/Reports', ['model/DataProvider', 'core/DataManager', 'i18n!nls/miscellaneous', 'utils/ConfigurationManager'],
+    (function (dataProvider, dataManager, miscellaneous, config) {
 
-    var totalCSS, totalJS,
-        currentCSS, currentJS,
-        currentHTML, currentURL
-        that = this;
+        var totalCSS, totalJS, view,
+            currentCSS, currentJS,
+            currentHTML, currentURL, currentProtocol,
+            that = this;
 
-    var loadData = function(){
+        var loadData = function (v) {
 
-        currentCSS = currentJS = 0;
+            view = v;
+            currentCSS = currentJS = 0;
 
-        that.addEventListener(config.events.CONFIGURATION_VALUE_FOUND, function(evt){
+            that.addEventListener(config.events.CONFIGURATION_VALUE_FOUND, function (evt) {
 
-            evt.target.removeEventListener(evt.type, arguments.callee);
+                evt.target.removeEventListener(evt.type, arguments.callee);
 
-            currentURL = evt.detail.value + '/';
+                currentURL = evt.detail.value + '/';
+                currentProtocol = currentURL.match(/^[^:]+(?=:\/\/)/)[0];
 
-            var user = dataManager.getUser();
-            var params = JSON.stringify({'id_user': user.id , 'token': user.token, 'key': user.getUsername});
+                var user = dataManager.getUser();
+                var params = JSON.stringify({'id_user': user.id, 'token': user.token, 'key': user.getUsername});
 
-            dataProvider.fetchData('report/user', params, onReportsData, onReportsError);
+                dataProvider.fetchData('report/user', params, onReportsData, onReportsError, null, true);
 
-            console.log(currentURL)
+            });
 
-        });
+            config.configurationItem('defaulturl');
 
-        config.configurationItem('defaulturl');
+        };
 
-    };
+        var parseFile = function (file) {
 
-    var parseFile = function (file) {
+            if (file.indexOf('http') < 0 && file.indexOf('https') < 0) {
 
-        if (file.indexOf('http') < 0) {
-
-            file = currentURL + file;
-
-        }
-
-        return file;
-
-    };
-
-    var onReportsData = function( data ) {
-
-        if(data.success === true){
-
-            totalCSS    = data.css.length;
-            totalJS     = data.js.length;
-
-            currentHTML = data.html;
-
-            var file;
-
-            for (var i = 0; i < totalCSS; i++){
-
-                file = parseFile(encodeURI(data.css[i]));
-
-                require(['css!' + file], function(css){
-
-                    totalCSS++;
-                    isInjectionReady();
-
-                });
+                file = currentProtocol + '://' + file;
 
             }
 
-            for (i = 0; i < totalJS; i++){
+            return file;
 
-                file = parseFile(data.js[i]);
+        };
 
-                require(['css!' + file], function(js){
+        var onReportsData = function (data) {
 
-                    totalJS++;
-                    isInjectionReady();
+            if (data.success === true) {
 
-                });
+                totalCSS = data.css.length;
+                totalJS = data.js.length;
+
+                currentHTML = '<body>';
+
+                var file;
+
+                for (var i = 0; i < totalCSS; i++) {
+
+                    file = parseFile(encodeURI(data.css[i]));
+                    currentHTML += '<link rel="stylesheet" type="text/css" href="' + file + '">';
+
+                }
+
+                for (i = 0; i < totalJS; i++) {
+
+                    file = parseFile(data.js[i]);
+                    currentHTML += '<script src="' + file + '"></script>';
+
+                }
+
+                currentHTML += data.html;
+                currentHTML += '</body>';
+
+                view.populate(currentHTML);
+
+            } else {
+
+                view.showError(miscellaneous.genericError);
 
             }
 
-        }else{
+        };
 
-            view.showError(miscellaneous.genericError);
+        var onReportsError = function (xhr, error) {
 
-        }
+            view.showError(error.message);
 
-    };
+        };
 
-    var isInjectionReady = function(){
+        return{
 
-        if(currentCSS === totalCSS && currentJS === totalJS){
+            loadData: loadData
 
-            view.populate(currentHTML);
+        };
 
-        }
-
-    };
-
-    var onReportsError = function(xhr, error){
-
-        view.showError(error.message);
-
-    };
-
-    return{
-
-        loadData: loadData
-
-    };
-
-}));
+    }));

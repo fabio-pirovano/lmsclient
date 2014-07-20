@@ -1,52 +1,58 @@
-;define('views/reports/ReportsView', ['appframework', 'controllers/Reports', 'i18n!nls/miscellaneous'], (function($, reports, miscellaneous){
+;define('views/reports/ReportsView', ['appframework', 'controllers/Reports', 'i18n!nls/miscellaneous'],
+    (function($, reports, miscellaneous){
 
-    var $content;
+        var content;
 
-    var init = function(){
+        var init = function(){
 
-        if(!$content)$content = $('#reports');
+            if(!content)content = document.getElementById('reports-content');
 
-        $content.html('');
+            content.contentWindow.document.open('text/html', 'replace');
+            content.contentWindow.document.write('');
+            content.contentWindow.document.close();
 
-        showLoader(true);
-        reports.loadData();
+            showLoader(true);
+            reports.loadData(this);
 
-    };
+        };
 
-    var populate = function(value){
+        var populate = function(value){
 
-        $content.html(value);
+            content.contentWindow.document.open('text/html', 'replace');
+            content.contentWindow.document.write(value);
+            content.contentWindow.document.close();
 
-    };
+            showLoader(false);
 
-    var showLoader = function(status){
+        };
 
-        if(status){
+        var showLoader = function(status){
 
-            $.ui.showMask(miscellaneous.loadingData);
+            if(status){
 
-        }else{
+                $.ui.showMask(miscellaneous.loadingData);
 
-            $.ui.hideMask();
+            }else{
 
-        }
+                $.ui.hideMask();
 
-    };
+            }
 
-    var showError = function(message){
+        };
 
-        showLoader(false);
-        $.ui.popup(message);
+        var showError = function(message){
 
-    };
+            showLoader(false);
+            $.ui.popup(message);
 
-    return{
+        };
 
-        init: init,
-        populate: populate,
-        showError: showError
+        return{
 
-    }
+            init: init,
+            populate: populate,
+            showError: showError
 
+        };
 
-}));
+    }));
