@@ -32,7 +32,7 @@
         ], function(tpl){
 
             $thumb.attr('src', localStorage.getItem('currentCourseThumb'));
-            $course.html('<strong>' + localStorage.getItem('currentCourseName') + '</strong><br>' + localStorage.getItem('currentCourseDescription'));
+            $course.html('<strong>' + localStorage.getItem('currentCourseName') + '</strong><br>');//  + localStorage.getItem('currentCourseDescription'));
 
             detailsTemplate = tpl;
             renderCourseDetails(data.objects);

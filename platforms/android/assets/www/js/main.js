@@ -34,6 +34,8 @@
 
         }
 
+        platform = 'ios7'
+
         $('#afui').get(0).className = platform;
 
         if(platform == 'android'){
@@ -98,7 +100,9 @@
         $ui.toggleNavMenu();
 
         $('#courses-link').text(nav.courses);
+
         $('#reports-link').text(nav.reports);
+        $('#reports').bind('loadpanel', loadReportsModule);
 
         $('#settings-link').text(nav.settings);
         $('#settings').bind('loadpanel', loadSettingsModule);
@@ -112,6 +116,16 @@
         require(['views/settings/SettingsView'], function(settings){
 
             settings.init();
+
+        });
+
+    };
+
+    var loadReportsModule = function(evt){
+
+        require(['views/reports/ReportsView'], function(reports){
+
+            reports.init();
 
         });
 

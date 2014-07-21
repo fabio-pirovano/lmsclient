@@ -28,14 +28,18 @@
 
     };
 
-    var fetchData = function(url, params, successHandler, errorHandler, rootURL){
+    var fetchData = function(url, params, successHandler, errorHandler, rootURL, forceJson){
 
         if(url === current)return;
+
+        var mime;
+        forceJson ? mime = 'json' : mime = 'default/html';
 
         $.ajax({
 
             url: (rootURL || currentApiURL) + '/api/' + url,
             type: 'post',
+            dataType: mime,
             data: params,
             success: function(data){
 
@@ -70,6 +74,7 @@
 
             url: currentApiURL + Constants.API_URL,
             type: 'post',
+            dataType: 'application/json',
             data: params,
             success: function(data){
 

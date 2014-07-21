@@ -32,7 +32,14 @@
 
             for (var i = 0, tot = courseItems.length; i < tot; i++) {
 
-                var item = new CourseItem(id, courseItems[i].id_org, courseItems[i].locked, courseItems[i].title, courseItems[i].type);
+                var item = new CourseItem(id, courseItems[i].id_org, courseItems[i].locked || false, courseItems[i].title, courseItems[i].type);
+
+                if('status' in courseItems[i]){
+
+                    item.setStatus(courseItems[i].status);
+
+                }
+
                 result.push(item);
 
             }

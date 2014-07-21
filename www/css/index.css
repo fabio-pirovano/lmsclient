@@ -141,7 +141,7 @@ input.login{
 
     background-repeat: no-repeat !important;
     text-indent: 25px !important;
-    background-size: 25px auto !important;
+    background-size: 18px auto !important;
     background-position: 5px center !important;
 
     color: #6B6B6B !important;
@@ -185,9 +185,13 @@ input#website {
     background-color: #53AB53 !important;
     border-radius: 0 !important;
     border: none !important;
-
+    text-shadow: none !important;
     box-shadow: none !important;
     border: none !important;
+    font-size: 14px !important; text-shadow: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    font-size: 14px !important;
 
 }
 
@@ -255,6 +259,9 @@ select#language{
     background-color: #53AB53 !important;
     border-radius: 0 !important;
     border: none !important;
+
+    text-shadow: none !important;
+    font-size: 14px !important;
 
 }
 
@@ -330,6 +337,7 @@ input#reset-url{
 }
 #menu_scroller {
     padding-bottom:10px;
+    width: 100% !important;
 }
 #menu > * {
     width:90%;
@@ -337,7 +345,7 @@ input#reset-url{
     margin-right:auto;
 }
 
-#menu  .title {
+#menu .title {
     font-size:16px;
     border-bottom:2px solid #333;
     margin-bottom:3px;
@@ -347,7 +355,7 @@ input#reset-url{
 #menu  ul {
 
     margin: 0px;
-    padding: 0px;
+    padding: 0 10px 0 10px;
     margin-bottom: 5px;
 
 }
@@ -438,6 +446,30 @@ input#reset-url{
 #menu #logout-link{
 
     background-image: url(../img/logout-menu-icon.png) !important;
+
+}
+
+#afui .menuButton{
+
+    right: 10px !important;
+    
+}
+
+#afui .menuButton::after{
+
+    border-bottom: none !important;
+    border-top: none !important;
+    background: url(../img/docebo-top-right.png) no-repeat !important;
+    background-size: 45px;
+    background-size: 40px;
+    height: 30px;
+    width: 40px;
+
+}
+
+#backButton{
+
+   /* text-indent: -9999px;  */
 
 }
 
@@ -638,6 +670,7 @@ input#reset-url{
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
+    margin-right: 10px;
 
 }
 
@@ -658,6 +691,8 @@ input#reset-url{
 
     color: #0465ac;
     padding-left: 2px;
+    text-transform: none !important;
+    font-size: 14px;
 
 }
 
@@ -752,13 +787,14 @@ input#reset-url{
     max-width: 50%;
     margin-right: 2px;
     float: left;
+    max-height: 90px;
 
 }
 
 #course-info p, #course-info span{
 
     width: 100% !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     line-height: 14px !important;
     text-transform: none;
     padding-left: 4px;

@@ -34,6 +34,8 @@
 
         }
 
+        platform = 'ios7'
+
         $('#afui').get(0).className = platform;
 
         if(platform == 'android'){

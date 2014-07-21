@@ -32,7 +32,7 @@
         ], function(tpl){
 
             $thumb.attr('src', localStorage.getItem('currentCourseThumb'));
-            $course.html('<strong>' + localStorage.getItem('currentCourseName') + '</strong><br>' + localStorage.getItem('currentCourseDescription'));
+            $course.html('<strong>' + localStorage.getItem('currentCourseName') + '</strong><br>');//  + localStorage.getItem('currentCourseDescription'));
 
             detailsTemplate = tpl;
             renderCourseDetails(data.objects);
@@ -64,7 +64,7 @@
 
         evt.preventDefault();
 
-        var $selectedItem = $(this);
+        var $selectedItem = $(evt.target).parents('li');
 
         var isFolder     = $selectedItem.attr('data-folder') == 'true',
             courseId     = $selectedItem.attr('data-course'),
@@ -94,13 +94,13 @@
 
     var initInteraction = function(){
 
-        $courseItems.find('li').bind('tap', onItemSelection);
+        $courseItems.bind('tap', onItemSelection);
 
     };
 
     var doDispose = function(){
 
-        $courseItems.find('li').unbind('tap', onItemSelection);
+        $courseItems.unbind('tap', onItemSelection);
 
     };
 

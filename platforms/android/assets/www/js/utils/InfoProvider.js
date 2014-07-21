@@ -40,8 +40,6 @@ define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants'
 
     var getInfo = function(url, rootURL){
 
-        console.log(arguments);
-
         if(dataCache && logoURL){
 
             dataReady(false);

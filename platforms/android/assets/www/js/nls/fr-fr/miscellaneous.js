@@ -14,6 +14,7 @@
     'confirmTitle':         'API problème',
     'ok':                   'OK',
     'cancel':               'Cancel',
-    'genericMissingInfoError': 'Peut-être que vous êtes absent le logo, voulez-vous continuer?'
+    'genericMissingInfoError': 'Peut-être que vous êtes absent le logo, voulez-vous continuer?',
+    'loadingData':           'Loading data...'
 
 });

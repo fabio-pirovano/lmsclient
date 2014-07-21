@@ -24,23 +24,22 @@
 
     var setCurrentApiURL = function(value){
 
-        console.log('setCurrentApiURL', value)
         currentApiURL = value;
 
     };
 
-    var fetchData = function(url, params, successHandler, errorHandler, rootURL){
-
-        console.log(arguments);
-        console.log(current)
-        console.log((rootURL || currentApiURL) + '/api/' + url)
+    var fetchData = function(url, params, successHandler, errorHandler, rootURL, forceJson){
 
         if(url === current)return;
+
+        var mime;
+        forceJson ? mime = 'json' : mime = 'default/html';
 
         $.ajax({
 
             url: (rootURL || currentApiURL) + '/api/' + url,
             type: 'post',
+            dataType: mime,
             data: params,
             success: function(data){
 
@@ -75,6 +74,7 @@
 
             url: currentApiURL + Constants.API_URL,
             type: 'post',
+            dataType: 'application/json',
             data: params,
             success: function(data){
 

@@ -14,6 +14,7 @@
     'confirmTitle':         'API issue',
     'ok':                   'OK',
     'cancel':               'Cancel',
-    'genericMissingInfoError': 'Maybe you are missing the logo, would you like to proceed?'
+    'genericMissingInfoError': 'Maybe you are missing the logo, would you like to proceed?',
+    'loadingData':           'Loading data...'
 
 });

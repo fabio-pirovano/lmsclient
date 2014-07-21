@@ -226,7 +226,6 @@
                 var domain = evt.detail.value.replace(/.*?:\/\//g, '');
                 view.getDomainItem().val(domain);
 
-
             });
 
             config.configurationItem('defaulturl');
