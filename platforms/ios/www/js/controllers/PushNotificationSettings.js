@@ -18,7 +18,7 @@
 
             view.showSettingsChanged(true);
 
-            if(currentAction == 'register'){
+            if(currentAction === 'register'){
 
                 registerDevice(currentData.sender_id)
 
@@ -45,7 +45,7 @@
 
     var changeSettings = function(status, userID, data){
 
-        if(status == true){
+        if(status === true){
 
             currentAction = 'register';
 

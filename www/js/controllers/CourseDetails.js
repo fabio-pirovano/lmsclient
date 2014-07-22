@@ -95,7 +95,7 @@
 
     var onDetailsStatusChange = function(evt){
 
-        if(window.location.hash == '#' + Constants.COURSES_DETAILS_VIEW){
+        if(window.location.hash === '#' + Constants.COURSES_DETAILS_VIEW){
 
             view.restoreHTML(detailsStack[0]);
             view.restoreBackButton();
@@ -104,7 +104,7 @@
 
         }
 
-        if(detailsStack.length == 0){
+        if(detailsStack.length === 0){
 
             $(window).unbind('hashchange', onDetailsStatusChange);
 

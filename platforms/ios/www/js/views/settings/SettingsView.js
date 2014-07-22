@@ -27,7 +27,7 @@
 
             evt.target.removeEventListener(evt.type, arguments.callee);
 
-            if (evt.detail.value == 'true') {
+            if (evt.detail.value === 'true') {
 
                 $pushNotification.attr('checked');
 
@@ -43,7 +43,7 @@
 
         var showSettingsChanged = function(status){
 
-            if(status == true){
+            if(status === true){
 
                 $.ui.popup(miscellaneous.settingsChanged);
 

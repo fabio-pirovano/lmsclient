@@ -34,7 +34,11 @@
 
         }
 
-        platform = 'ios7'
+        if(platform === 'ios7'){
+
+            document.write('<style type="text/css">body{-webkit-transform: translate3d(0,20px,0)}</style>');
+
+        }
 
         $('#afui').get(0).className = platform;
 

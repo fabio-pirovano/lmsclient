@@ -23,7 +23,7 @@
 
         var doShowHideLoader = function(show, msg, callBack, panel){
 
-            if(show == true){
+            if(show === true){
 
                 showMask(msg);
 

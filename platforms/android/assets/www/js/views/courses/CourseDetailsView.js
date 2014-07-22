@@ -66,10 +66,10 @@
 
         var $selectedItem = $(evt.target).parents('li');
 
-        var isFolder     = $selectedItem.attr('data-folder') == 'true',
+        var isFolder     = $selectedItem.attr('data-folder') === 'true',
             courseId     = $selectedItem.attr('data-course'),
             organization = $selectedItem.attr('data-organization'),
-            isLocked     = $selectedItem.attr('data-locked') == 'true';
+            isLocked     = $selectedItem.attr('data-locked') === 'true';
 
         if(isLocked){
 
