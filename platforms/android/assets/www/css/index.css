@@ -124,7 +124,6 @@ h1 {
     width: 171px;
 }
 
-
 /* ============= GRID SYSTEM ===================== */
 
 .col2{
@@ -492,14 +491,25 @@ input#reset-url{
 
 }
 
+#afui #backButton::before{
+
+    display: none;
+
+}
+
 #afui #backButton {
 
     color: #2980B9 !important;
     background-color: #2980B9 !important;
-    background: url(../img/arrow-left-background.png) no-repeat !important;
+    background-repeat: no-repeat !important;
+    background-image: url(../img/arrow-left-background.png) !important;
     background-size: 100% !important;
     text-indent: -9999px !important;
     height: 100% !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    top: 0 !important;
 
 }
 
