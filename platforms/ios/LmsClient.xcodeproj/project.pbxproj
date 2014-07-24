@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		07499BAB064349559BFE786F /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A4C065375084E62BC8B27F1 /* CDVInAppBrowser.m */; };
 		16C5126398934A368E5F3E5F /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = D922152604AD4DB981876EB3 /* CDVNotification.m */; };
@@ -369,6 +370,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 500;
+				TargetAttributes = {
+					1D6058900D05DD3D006BFB54 = {
+						DevelopmentTeam = D34NY92TC4;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "LmsClient" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -535,7 +541,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Giorgio Natili (RAAEY9M6GD)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -560,8 +567,9 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = LmsClient;
-				PROVISIONING_PROFILE = "2F500985-A793-4A71-8F03-34B3D68C3DD8";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -570,7 +578,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Giorgio Natili (RAAEY9M6GD)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LmsClient/LmsClient-Prefix.pch";
@@ -593,8 +602,9 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = LmsClient;
-				PROVISIONING_PROFILE = "2F500985-A793-4A71-8F03-34B3D68C3DD8";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};

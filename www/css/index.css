@@ -102,13 +102,13 @@ h1 {
     50% { opacity: 0.4; }
     to { opacity: 1.0; }
 }
- 
+
 @-webkit-keyframes fade {
     from { opacity: 1.0; }
     50% { opacity: 0.4; }
     to { opacity: 1.0; }
 }
- 
+
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
@@ -452,7 +452,7 @@ input#reset-url{
 
     right: 10px !important;
     top: 9px !important;
-    
+
 }
 
 #afui .menuButton::after{
@@ -475,6 +475,12 @@ input#reset-url{
 /* ======== End Menu ======== */
 
 /* ======== General Colors ======== */
+
+html{
+
+  background-color: #0465ac !important;
+
+}
 
 #afui #header {
 

@@ -54,7 +54,7 @@
 
             })();
 
-            sheet.addRule('body', '-webkit-transform: translate3d(0, 20px, 0);');
+            sheet.addRule('body', '-webkit-transform: translate3d(0, 25px, 0);');
 
         }
 
