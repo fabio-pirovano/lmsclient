@@ -6,7 +6,7 @@
     'domain':           'sito web',
     'submit':           'invia',
     'forgot':           'Password dimenticata',
-    'welcome':          'Benvenuto',
+    'welcome':          '',
     'userRequired':     'Inserire il nome utente',
     'passRequired':     'Per cortesia digutare la password!',
     'domainRequired':   'Indicare il sito a cui connettersi',

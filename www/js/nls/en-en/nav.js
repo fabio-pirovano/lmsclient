@@ -1,7 +1,7 @@
 // en_EN
 ;define({
 
-    'welcomeSection':   'Welcome',
+    'welcomeSection':   '',
     'forgotPwdSection': 'Reset Password',
     'coursesSection':   'Courses',
     'reportsSection':   'Reports',

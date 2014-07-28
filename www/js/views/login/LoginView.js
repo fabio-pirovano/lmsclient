@@ -120,7 +120,11 @@
 
             controller.init(this);
 
-            $('#main').attr('title', loginMessages.welcome);
+            $('#main').bind('loadpanel', function(e){
+
+                $('#pageTitle').html(loginMessages.welcome);
+
+            });
 
             $username           = $('#username');
             $password           = $('#password');
@@ -204,7 +208,7 @@
 
             return url;
 
-        }
+        };
 
         return {
 
@@ -218,6 +222,6 @@
             getDomain: getDomainValue,
             getDomainItem: function(){return $domain;}
 
-        }
+        };
 
     }));

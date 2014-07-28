@@ -21,6 +21,18 @@
             courseTemplate = tpl;
             controller.getUserCourses(user);
 
+            if($('#afui').get(0).className === 'ios7'){
+
+                $('body').removeClass('moveDown');
+
+                setTimeout(function(){
+
+                    $('body').addClass('moveDown');
+
+                }, 150);
+
+            }
+
         });
 
     };

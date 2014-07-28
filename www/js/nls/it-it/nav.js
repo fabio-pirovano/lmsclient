@@ -1,7 +1,7 @@
 // it_IT
 ;define({
 
-    'welcomeSection':   'Benvenuti',
+    'welcomeSection':   '',
     'forgotPwdSection': 'Re-imposta Password',
     'coursesSection':   'Corsi',
     'reportsSection':   'Reports',

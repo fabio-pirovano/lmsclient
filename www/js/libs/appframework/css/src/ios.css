@@ -67,14 +67,14 @@
     color:#fff;
     text-shadow:0 -1px 0 #333;
     background-color:#476999;
-    background-image: none !important;
+    background-image: none;
     border:1px solid;
     border-color:#375073 #375073 #375073 transparent;
     height:32px;
     border-radius:5px;
     box-shadow:0 1px 0 #9CABC0;
-    margin:0 0 0 15px !important;
-    padding-left:4px !important;
+    margin:0 0 0 15px;
+    padding-left:4px;
 } /* Sets up positioning of the back button which appears in the header */
 
 #afui.ios #backButton::before {

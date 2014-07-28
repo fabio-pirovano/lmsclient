@@ -44,7 +44,7 @@
 
         if(!courseLoaded){
 
-            paramsForProxy = JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': token , 'key': key}});
+            paramsForProxy = JSON.stringify({'details': {'action': 'userCourses', 'userid': user.id , 'token': token , 'key': key, 'smarthphone_only': 1}});
             params = JSON.stringify({'id_user': user.id , 'token': token , 'key': key});
 
             dataProvider.fetchData('user/userCourses', params, onGetUserCourses, onGetUserCoursesError);

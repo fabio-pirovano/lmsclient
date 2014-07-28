@@ -36,25 +36,9 @@
 
         if(platform === 'ios7'){
 
-            var sheet = (function() {
-                // Create the <style> tag
-                var style = document.createElement("style");
-
-                // Add a media (and/or media query) here if you'd like!
-                // style.setAttribute("media", "screen")
-                // style.setAttribute("media", "@media only screen and (max-width : 1024px)")
-
-                // WebKit hack :(
-                style.appendChild(document.createTextNode(""));
-
-                // Add the <style> element to the page
-                document.head.appendChild(style);
-
-                return style.sheet;
-
-            })();
-
-            sheet.addRule('body', '-webkit-transform: translate3d(0, 25px, 0);');
+            setTimeout(function(){
+                $('body').addClass('moveDown');
+            }, 350);
 
         }
 
@@ -117,6 +101,9 @@
 
         $ui.launch();
         $ui.showBackButton = false;
+
+        // Avoid a common issue on Android
+        $.isFocused_ = true;
 
         $ui.disableSideMenu();
         $ui.toggleNavMenu();

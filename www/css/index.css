@@ -466,12 +466,6 @@ input#reset-url{
 
 }
 
-#afui #backButton{
-
-   left: 0 !important;
-
-}
-
 /* ======== End Menu ======== */
 
 /* ======== General Colors ======== */
@@ -516,6 +510,8 @@ html{
     margin: 0 !important;
     border: none !important;
     top: 0 !important;
+    left: 0 !important;
+    background-size: 100% 100% !important;
 
 }
 
@@ -554,6 +550,19 @@ html{
 .panel.white{
 
     color: white !important;
+
+}
+
+#afui #content{
+
+    bottom: 0px !important;
+
+}
+
+.moveDown{
+
+    -webkit-transition: .2s ease-in-out;
+    -webkit-transform: translate3d(0, 15px, 0) !important;
 
 }
 

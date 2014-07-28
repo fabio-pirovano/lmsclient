@@ -1,7 +1,7 @@
 // es_ES
 ;define({
 
-    'welcomeSection':   'Bienvenidos',
+    'welcomeSection':   '',
     'forgotPwdSection': 'Restablecer Contraseña',
     'coursesSection':   'Cursos',
     'reportsSection':   'Informes',
