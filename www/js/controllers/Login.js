@@ -18,7 +18,7 @@
 
         var authenticateUser = function (username, password) {
 
-            view.showHideLoader('', function () {
+            view.showHideLoader(true, '', function () {
 
                 login(username, password);
 
