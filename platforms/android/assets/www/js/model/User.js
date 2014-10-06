@@ -1,13 +1,13 @@
-define('model/User', [], (function(){
+define('model/User', [], (function () {
 
-    function User(){
+	function User() {
 
-        this.id = '';
-        this.getUsername = '';
-        this.token = '';
+		this.id = '';
+		this.getUsername = '';
+		this.token = '';
 
-    }
+	}
 
-    return User;
+	return User;
 
 }));

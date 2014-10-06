@@ -1,223 +1,206 @@
-;define('views/login/LoginView', ['appframework', 'controllers/Login', 'i18n!nls/login', 'core/Constants', 'utils/ConfigurationManager'],
-    (function($, controller, loginMessages, Constants, config){
+;
+define('views/login/LoginView', ['appframework', 'controllers/Login', 'i18n!nls/login', 'core/Constants', 'utils/ConfigurationManager'],
 
-        var isDisabled,
-            $username, $password, $domain,
-            $form, $forgotPassword, $languageSelector;
+	(function ($, controller, loginMessages, Constants, config) {
 
-        var onLogin = function(evt){
+		var isDisabled,
+			$username, $password, $domain,
+			$form, $forgotPassword, $languageSelector;
 
-            evt.preventDefault();
+		var onLogin = function (evt) {
 
-            if(!isDisabled){
+			evt.preventDefault();
 
-                var username, password;
-                username = $username.val();
-                password = $password.val();
+			if (!isDisabled) {
 
-                controller.doLogin(username, password);
+				var username, password;
+				username = $username.val();
+				password = $password.val();
 
-            }
+				controller.doLogin(username, password);
+			}
+		};
 
-        };
+		var doShowHideLoader = function (show, msg, callBack, panel) {
 
-        var doShowHideLoader = function(show, msg, callBack, panel){
+			if (show === true) {
 
-            if(show === true){
+				showMask(msg);
+			} else {
 
-                showMask(msg);
+				$.ui.hideMask();
+			}
 
-            }else{
+			if (callBack) {
 
-                $.ui.hideMask();
+				$('#' + panel).bind('loadpanel', function (e) {
 
-            }
+					callBack();
+					$('#' + panel).unbind('loadpanel', arguments.callee);
+				});
+			}
 
-            if(callBack){
+			if (panel) {
 
-                $('#' + panel).bind('loadpanel', function(e){
+				$.ui.loadContent(panel, false, false, Constants.PANELS_DIRECTION);
+			}
+		};
 
-                    callBack();
-                    $('#' + panel).unbind('loadpanel', arguments.callee);
+		var showMask = function (msg) {
 
-                });
+			if (msg && msg != '') {
 
-            }
+				$.ui.showMask(msg);
+			} else {
 
-            if(panel){
+				$.ui.showMask('Authenticating...');
+			}
+		};
 
-                $.ui.loadContent(panel, false, false, Constants.PANELS_DIRECTION);
+		var doGoNext = function () {
 
-            }
+			//TODO handle the app routing since here
+			if (!$.ui.isSideMenuEnabled()) {
 
-        };
+				$.ui.enableSideMenu();
 
-        var showMask = function(msg){
+				if ($('#menu').hasClass('tabletMenu')) {
 
-            if(msg && msg != ''){
+					// TODO Discuss with the customer is the menu is needed on tablets
+					// $('#menu.tabletMenu')
+				}
+			}
 
-                $.ui.showMask(msg);
+			$('#menubadge').css('visibility', 'visible');
 
-            }else{
+			var url = $domain.val();
+			if (url.indexOf(Constants.PROTCOL) < 0) {
 
-                $.ui.showMask('Authenticating...');
+				url = Constants.PROTCOL + url;
+			}
 
-            }
+			config.saveConfig('defaulturl', url);
+		};
 
-        };
+		var loginIssue = function (msg) {
 
-        var doGoNext = function(){
+			return document.getElementById($.ui.popup(msg).id);
+		};
 
-            //TODO handle the app routing since here
-            if(!$.ui.isSideMenuEnabled()){
+		var onFormDataChange = function (evt) {
 
-                $.ui.enableSideMenu();
+			var $errorMessages = $('#website').siblings($('.unhappyMessage'));
 
-                if($('#menu').hasClass('tabletMenu')){
+			$errorMessages.each(function () {
 
-                    // TODO Discuss with the customer is the menu is needed on tablets
-                    // $('#menu.tabletMenu')
+				$(this).addClass('removeErrorMessage');
+			});
+		};
 
-                }
+		var init = function (lang, status) {
 
-            }
+			isDisabled = status;
 
-            $('#menubadge').css('visibility', 'visible');
+			controller.init(this);
 
-            var url = $domain.val();
+			$('#main').bind('loadpanel', function (e) {
 
-            if(url.indexOf(Constants.PROTCOL) < 0){
+				$('#pageTitle').html(loginMessages.welcome);
+			});
 
-                url = Constants.PROTCOL + url;
+			$username = $('#username');
+			$password = $('#password');
+			$domain = $('#website');
+			$languageSelector = $('#language');
+			$forgotPassword = $('#recover-password');
 
-            }
+			$form = $('#login-form');
 
-            config.saveConfig('defaulturl', url);
+			$username.attr('placeholder', loginMessages.username);
+			$password.attr('placeholder', loginMessages.password);
+			$domain.attr('placeholder', loginMessages.domain);
 
-        };
+			$forgotPassword.text(loginMessages.forgot);
+			$($form).find('#do-login').text(loginMessages.submit);
 
-        var loginIssue = function(msg){
+			require(['utils/SelectParser'], function (selectParser) {
 
-            return document.getElementById($.ui.popup(msg).id);
+				selectParser.init($languageSelector);
+				selectParser.update(lang || 'en')
 
-        };
+			});
 
-        var onFormDataChange = function(evt) {
+			require(['libs/happy/happy'], function (happy) {
 
-            var $errorMessages = $('#website').siblings($('.unhappyMessage'));
+				controller.initValidation($form);
 
-            $errorMessages.each(function(){
+			});
 
-                $(this).addClass('removeErrorMessage');
+			$username.bind('focus', onFormDataChange);
+			$password.bind('focus', onFormDataChange);
+			$domain.bind('focus', onFormDataChange);
 
-            });
+			$form.bind('submit', onLogin);
+			$forgotPassword.bind('tap', controller.recoverPassword);
+			$languageSelector.bind('change', controller.changeLanguage);
 
-        };
+			require(['core/BackButtonManager'], (function (backManager) {
 
-        var init = function(lang, status){
+				//  function(toDisable, toEnable)
+				backManager.init($('#courses'),
+					[$('#reports'), $('#settings'), $('#logout'), $('#forgot-pwd'), $('#course-details')],
+					[$('#forgot-pwd')]);
 
-            isDisabled = status;
+			}));
+		};
 
-            controller.init(this);
+		var dispose = function () {
 
-            $('#main').attr('title', loginMessages.welcome);
+			$form.unbind('submit', onLogin);
+			$forgotPassword.unbind('tap', controller.recoverPassword);
+		};
 
-            $username           = $('#username');
-            $password           = $('#password');
-            $domain             = $('#website');
-            $languageSelector   = $('#language');
-            $forgotPassword     = $('#recover-password');
+		var clearData = function () {
 
-            $form               = $('#login-form');
+			$username.val('');
+			$password.val('');
+			$domain.val('');
+		};
 
-            $username.attr('placeholder', loginMessages.username);
-            $password.attr('placeholder', loginMessages.password);
-            $domain.attr('placeholder', loginMessages.domain);
+		var getDomainValue = function (raw) {
 
-            $forgotPassword.text(loginMessages.forgot);
-            $($form).find('#do-login').text(loginMessages.submit);
+			var url = $domain.val();
 
-            require(['utils/SelectParser'], function(selectParser){
+			if (!raw) {
 
-                selectParser.init($languageSelector);
-                selectParser.update(lang || 'en')
+				if (url.indexOf(Constants.PROTCOL) >= 0) {
 
-            });
+					url = url.substr(url.indexOf(Constants.PROTCOL), Constants.PROTCOL.length);
+				}
+			} else {
 
-            require(['libs/happy/happy'], function(happy){
+				url = Constants.PROTCOL + url;
+			}
 
-                controller.initValidation($form);
+			return url;
+		};
 
-            });
+		return {
+			init: init,
+			dispose: dispose,
+			clearData: clearData,
+			showHideLoader: doShowHideLoader,
+			loginIssue: loginIssue,
+			goNext: doGoNext,
+			getUsername: function () {
+				return $username;
+			},
+			getDomain: getDomainValue,
+			getDomainItem: function () {
+				return $domain;
+			}
+		};
 
-            $username.bind('focus', onFormDataChange);
-            $password.bind('focus', onFormDataChange);
-            $domain.bind('focus', onFormDataChange);
+	})
 
-            $form.bind('submit', onLogin);
-            $forgotPassword.bind('tap', controller.recoverPassword);
-            $languageSelector.bind('change', controller.changeLanguage);
-
-            require(['core/BackButtonManager'], (function(backManager){
-
-                //  function(toDisable, toEnable)
-                backManager.init($('#courses'),
-                                [$('#reports'), $('#settings'), $('#logout'), $('#forgot-pwd'), $('#course-details')],
-                                [$('#forgot-pwd')]);
-
-            }));
-
-        };
-
-        var dispose = function(){
-
-            $form.unbind('submit', onLogin);
-            $forgotPassword.unbind('tap', controller.recoverPassword);
-
-        };
-
-        var clearData = function(){
-
-            $username.val('');
-            $password.val('');
-            $domain.val('');
-
-        };
-
-        var getDomainValue = function(raw){
-
-            var url = $domain.val();
-
-            if(!raw){
-
-                if(url.indexOf(Constants.PROTCOL) >= 0){
-
-                    url = url.substr(url.indexOf(Constants.PROTCOL), Constants.PROTCOL.length);
-
-                }
-
-            }else{
-
-                url = Constants.PROTCOL + url;
-
-            }
-
-            return url;
-
-        }
-
-        return {
-
-            init: init,
-            dispose: dispose,
-            clearData: clearData,
-            showHideLoader: doShowHideLoader,
-            loginIssue: loginIssue,
-            goNext: doGoNext,
-            getUsername: function(){return $username;},
-            getDomain: getDomainValue,
-            getDomainItem: function(){return $domain;}
-
-        }
-
-    }));
+);

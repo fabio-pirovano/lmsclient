@@ -24,13 +24,12 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name='viewport' content='user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi' />
 
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
         <!-- App Framework CSS -->
 
         <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/icons.css' />
 
-        <!--
-      <link rel='stylesheet' type='text/css' href='css/af.ui.css' title='default' />
-   -->
         <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/src/main.css'  />
         <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/src/appframework.css'  />
 
@@ -50,12 +49,9 @@
         <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/src/ios7.css'  />
         <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/src/ios.css'  />
 
-        <!--
-            <link rel='stylesheet' type='text/css' href='js/libs/appframework/css/af.ui.css'  />
-        -->
-
         <!-- App Styles -->
         <link rel='stylesheet' type='text/css' href='css/index.css' />
+	    <link rel='stylesheet' type='text/css' href='css/open-sans.css' />
 
         <title>Docebo LMS mobile app</title>
    </head>
@@ -73,7 +69,7 @@
             </div>
 
             <div id='header'>
-                <a id='menubadge' onclick='af.ui.toggleSideMenu()' class='menuButton'></a>
+                <a id='menubadge' onclick='af.ui.toggleSideMenu()' class=''></a>
             </div>
             <div id='content'>
 
@@ -84,7 +80,8 @@
                     <ul>
                         <li><a id='courses-link'    href='#courses'></a></li>
                         <li><a id='reports-link'    href='#reports'></a></li>
-                        <li><a id='settings-link'   href='#settings'></a></li>
+                        <!-- disabled until version 2
+                        <li><a id='settings-link'   href='#settings'></a></li> -->
                         <li><a id='logout-link'     ></a></li>
                     </ul>
 
@@ -107,8 +104,6 @@
                                 <select id='language' class='transparent '>
                                     <option value='en'>english</option>
                                     <option value='it'>italiano</option>
-                                    <option value='fr'>français</option>
-                                    <option value='es'>spanish</option>
                                 </select>
                             </div>
                         </div>
@@ -116,9 +111,9 @@
                         <br>
 
                         <form id='login-form'>
-                            <input id='username'    class='login' type='text' autocapitalize='off'>
-                            <input id='password'    class='login' type='password' value='' autocapitalize='off'>
-                            <input id='website'     class='login' type='text' value='' autocapitalize='off'>
+                            <input id='username'    class='login' data-touchlayer = 'ignore' type='text' autocapitalize='off'>
+                            <input id='password'    class='login' data-touchlayer = 'ignore' type='password' value='' autocapitalize='off'>
+                            <input id='website'     class='login' data-touchlayer = 'ignore' type='text' value='' autocapitalize='off'>
                             <input id='do-login'    class='button green' type='submit'>
                             <a id='recover-password'class='button flat'></a>
                         </form>

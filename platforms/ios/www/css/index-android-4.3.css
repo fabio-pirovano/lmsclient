@@ -380,7 +380,7 @@ input#reset-url{
     display: block;
     width: 100%;
     height: 48px;
-    font-family: 'Eurostile-Bold', Eurostile, Helvetica, Arial, sans-serif;
+	font-family: 'Open Sans', sans-serif;
     font-weight: normal;
     font-size: 14px;
     border-top: none;

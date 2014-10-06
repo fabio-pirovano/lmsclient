@@ -1,81 +1,83 @@
-;define('routers/approuter', ['core/Constants', 'appframework'], (function(Constants, $){
+;define('routers/approuter', ['core/Constants', 'appframework'], (
 
-    var that = this,
-        currentView;
+	function (Constants, $) {
 
-    var onChangeView = function(evt){
+	var that = this,
+		currentView;
 
-        var view = evt.detail.view;
+	var onChangeView = function (evt) {
 
-        if(evt.detail.state){
+		var view = evt.detail.view;
 
-            // TODO handle custom views such as the reports and the SCO
+		if (evt.detail.state) {
 
-        }else{
+			// TODO handle custom views such as the reports and the SCO
 
-            $('#' + view).bind('unloadpanel', function(e){
+		} else {
 
-                try{
+			$('#' + view).bind('unloadpanel', function (e) {
 
-                    currentView.dispose();
+				try {
 
-                }catch (error){
+					currentView.dispose();
 
-                    // console.log(module + ' does not implement dispose');
+				} catch (error) {
 
-                }
+					// console.log(module + ' does not implement dispose');
+
+				}
 
 
-            });
+			});
 
-            $('#' + view).bind('loadpanel', function(e){
+			$('#' + view).bind('loadpanel', function (e) {
 
-               require([evt.detail.module], function(module){
+				require([evt.detail.module], function (module) {
 
-                   var data = evt.detail.data;
+					var data = evt.detail.data;
 
-                   try{
+					try {
 
-                       currentView.dispose();
+						currentView.dispose();
 
-                   }catch (error){
+					} catch (error) {
 
-                       // console.log(module + ' does not implement dispose');
+						// console.log(module + ' does not implement dispose');
 
-                   }
+					}
 
-                   currentView = module;
-                   currentView.init(data || null);
+					currentView = module;
+					currentView.init(data || null);
 
-               });
+				});
 
-                $('#' + view).unbind('loadpanel', arguments.callee);
+				$('#' + view).unbind('loadpanel', arguments.callee);
 
-            });
+			});
 
-            $.ui.loadContent(view, false, false, Constants.PANELS_DIRECTION);
+			$.ui.loadContent(view, false, false, Constants.PANELS_DIRECTION);
 
-        }
+		}
 
-    };
+	};
 
-    var doDispose = function(){
+	var doDispose = function () {
 
-        that.removeEventListener(Constants.CHANGE_VIEW_EVENT, onChangeView);
+		that.removeEventListener(Constants.CHANGE_VIEW_EVENT, onChangeView);
 
-    };
+	};
 
-    var doInit = function(){
+	var doInit = function () {
 
-        that.addEventListener(Constants.CHANGE_VIEW_EVENT, onChangeView);
+		that.addEventListener(Constants.CHANGE_VIEW_EVENT, onChangeView);
 
-    };
+	};
 
-    return {
+	return {
 
-        init: doInit,
-        dispose: doDispose
+		init: doInit,
+		dispose: doDispose
 
-    }
+	}
 
 }));

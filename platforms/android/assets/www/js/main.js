@@ -1,235 +1,230 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous'],
+;
+define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous', 'core/BackButtonManager'],
 
-    (function($, $ui, login, dataManager, nav, router, Constants, dataProvider, miscellaneous){
+	(function ($, $ui, login, dataManager, nav, router, Constants, dataProvider, miscellaneous, BackButtonManager) {
 
-    var isLoginDisabled;
+		var isLoginDisabled;
 
-    var onDeviceReady = function(){
+		// These two param will store the last list of items requested, it will be then used on page refresh
+		var $courseId, $organizationId;
 
-        var platform, devicePlatform;
 
-        devicePlatform = window.device.platform;
+		var onDeviceReady = function () {
 
-        switch (true){
+			var platform, devicePlatform;
 
-            case  devicePlatform == 'Android':
-            platform = 'android';
-            break;
+			devicePlatform = window.device.platform;
 
-            case  devicePlatform == 'BlackBerry':
-            platform = 'bb';
-            break;
+			switch (true) {
 
-            case  devicePlatform == 'WinCE':
-            platform = 'win8';
-            break;
+				case  devicePlatform == 'Android':
+					platform = 'android';
+					break;
 
-            case  devicePlatform == 'iOS':
-            window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
-            break;
+				case  devicePlatform == 'BlackBerry':
+					platform = 'bb';
+					break;
 
-            default:
-            platform = 'ios7';
-            break;
+				case  devicePlatform == 'WinCE':
+					platform = 'win8';
+					break;
 
-        }
+				case  devicePlatform == 'iOS':
+					window.device.version >= 7.0 ? platform = 'ios7' : platform = 'ios';
+					break;
 
-        if(platform === 'ios7'){
+				default:
+					platform = 'ios7';
+					break;
 
-            var sheet = (function() {
-                // Create the <style> tag
-                var style = document.createElement("style");
+			}
 
-                // Add a media (and/or media query) here if you'd like!
-                // style.setAttribute("media", "screen")
-                // style.setAttribute("media", "@media only screen and (max-width : 1024px)")
+			if (platform === 'ios7') {
 
-                // WebKit hack :(
-                style.appendChild(document.createTextNode(""));
+				setTimeout(function () {
+					$('body').addClass('moveDown');
+				}, 350);
 
-                // Add the <style> element to the page
-                document.head.appendChild(style);
+			}
 
-                return style.sheet;
+			$('#afui').get(0).className = platform;
 
-            })();
+			if (platform == 'android') {
 
-            sheet.addRule('body', '-webkit-transform: translate3d(0, 20px, 0);');
+				$('#afui').css('position', 'inherit');
+				$('#do-login').css('box-shadow', 'inset 0 0 0 rgba(255,255,255,.4) !important');
 
-        }
+				if (parseFloat(window.device.version) <= 4.3) {
 
-        $('#afui').get(0).className = platform;
+					require(['css!../css/index-android-4.3.css'], function (css) {
 
-        if(platform == 'android'){
+						// Re-assigning the value to enforce the CSS appliance
+						platform = 'android';
 
-            $('#afui').css('position', 'inherit');
-            $('#do-login').css('box-shadow', 'inset 0 0 0 rgba(255,255,255,.4) !important');
+					});
 
-            if(parseFloat(window.device.version) <= 4.3){
+				}
 
-                require(['css!../css/index-android-4.3.css'], function(css){
+			}
+			if (window.device.platform === 'iOS' && window.device.version >= 7.0) {
+				require(['css!../css/ios7.css'], function (css) {
 
-                    // Re-assigning the value to enforce the CSS appliance
-                    platform = 'android';
+					// Re-assigning the value to enforce the CSS appliance
+					platform = 'ios7';
+				});
+			}
 
-                });
+			try {
 
-            }
+				var networkState = navigator.connection.type;
+				if (networkState == Connection.NONE) {
 
-        }
+					navigator.notification.alert(miscellaneous.connectionRequired);
+					isLoginDisabled = true;
+					console.log(networkState);
+				}
 
-        try{
+			} catch (error) {
 
-            var networkState = navigator.connection.type;
-            if(networkState == Connection.NONE){
+				console.log(error);
+				isLoginDisabled = true;
+			}
 
-                navigator.notification.alert(miscellaneous.connectionRequired);
-                isLoginDisabled = true;
+			$(document).ready(function () {
 
-            }
+				navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
+				addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
 
-        }catch (error){
+				require(['utils/SectionsTitleFactory'], function (factory) {
 
-            // console.log(error);
-            isLoginDisabled = true;
+					factory.init($('#main'), $('#forgot-pwd'), $('#courses'), $('#reports'), $('#settings'));
+					launchUI();
+				});
+			});
+		};
 
-        }
+		var launchUI = function () {
 
-        $(document).ready(function(){
+			$ui.splitview = false;
 
-            navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
-            addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
+			$ui.launch();
+			$ui.showBackButton = false;
 
-            require(['utils/SectionsTitleFactory'], function(factory){
+			// Avoid a common issue on Android
+			$.isFocused_ = true;
 
-                factory.init($('#main'), $('#forgot-pwd'), $('#courses'), $('#reports'), $('#settings'));
-                launchUI();
+			$ui.disableSideMenu();
+			$ui.toggleNavMenu();
 
-            });
+			$('#courses-link').text(nav.courses);
 
-        });
+			$('#reports-link').text(nav.reports);
+			$('#reports').bind('loadpanel', loadReportsModule);
 
-    };
+			// disabled until version 2
+			// $('#settings-link').text(nav.settings);
+			// $('#settings').bind('loadpanel', loadSettingsModule);
 
-    var launchUI = function(){
+			$('#logout-link').text(nav.logout).bind('touchend', doLogout);
+		};
 
-        $ui.splitview = false;
+		var loadSettingsModule = function (evt) {
 
-        $ui.launch();
-        $ui.showBackButton = false;
+			require(['views/settings/SettingsView'], function (settings) {
 
-        $ui.disableSideMenu();
-        $ui.toggleNavMenu();
+				settings.init();
 
-        $('#courses-link').text(nav.courses);
+			});
 
-        $('#reports-link').text(nav.reports);
-        $('#reports').bind('loadpanel', loadReportsModule);
+		};
 
-        $('#settings-link').text(nav.settings);
-        $('#settings').bind('loadpanel', loadSettingsModule);
+		var loadReportsModule = function (evt) {
 
-        $('#logout-link').text(nav.logout).bind('touchend', doLogout);
+			require(['views/reports/ReportsView'], function (reports) {
 
-    };
+				reports.init();
 
-    var loadSettingsModule = function(evt){
+			});
 
-        require(['views/settings/SettingsView'], function(settings){
+		};
 
-            settings.init();
+		var doLogout = function (evt) {
 
-        });
+			if (evt != undefined) {
+				evt.preventDefault();
+				evt.stopPropagation();
+			}
 
-    };
+			// hide back button if currently shown
+			BackButtonManager.disableBackButton();
 
-    var loadReportsModule = function(evt){
+			$.ui.showMask(miscellaneous.loggingout);
 
-        require(['views/reports/ReportsView'], function(reports){
+			var user = dataManager.getUser();
 
-            reports.init();
+			var paramsForProxy = JSON.stringify({
+					'details': {
+						'action': 'logout',
+						'id_user': user.id,
+						'key': user.getUsername,
+						'token': user.token
+					}
+				}),
+				params = JSON.stringify({'id_user': user.id, 'token': user.token, 'key': user.getUsername});
 
-        });
+			dataProvider.fetchData('user/profile', params, onUserLogout, onUserLogoutError);
+		};
 
-    };
+		var onUserLogout = function (data) {
 
-    var doLogout = function(evt){
+			var currentData = JSON.parse(data);
 
-        evt.preventDefault();
-        evt.stopPropagation();
+			//With false we have to do the same
+			// if (currentData.success === true) {}
 
-        $.ui.showMask(miscellaneous.loggingout);
+			$.ui.hideMask();
+			$('#menubadge').css('visibility', 'hidden');
+			$.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+		}
 
-        var user = dataManager.getUser();
+		var onUserLogoutError = function (xhr, error) {
 
-        var paramsForProxy = JSON.stringify({'details': {'action': 'logout', 'id_user': user.id, 'key': user.getUsername, 'token': user.token}}),
-            params = JSON.stringify({'id_user': user.id , 'token': user.token, 'key': user.getUsername});
+			$.ui.hideMask();
+			$.ui.popup(currentData.message);
+		};
 
-        dataProvider.fetchData('user/profile', params, onUserLogout, onUserLogoutError);
+		var onLocalePreferenceChanged = function (evt) {
 
-    };
+			localStorage.setItem('userLocale', evt.detail.value.toLocaleLowerCase());
+			location.reload();
+		};
 
-    var onUserLogout = function( data ) {
+		var onSystemLanguage = function (locale) {
 
-        var currentData = JSON.parse(data);
+			// console.log('onPreferredLanguage', locale.value);
 
-        if(currentData.success === true){
+			dataManager.init();
+			router.init();
 
-            $.ui.hideMask();
-            $.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+			login.init(localStorage.getItem('userLocale') || locale.value, isLoginDisabled);
+		};
 
-        }else{
+		var onGlobalizationError = function (error) {
 
-            $.ui.hideMask();
-            $.ui.popup(currentData.message);
+			navigator.notification.alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n', null);
+		};
 
-        }
+		var init = function () {
 
-    }
+			// console.log($);
+			document.addEventListener('deviceready', onDeviceReady, false);
+		};
 
-    var onUserLogoutError = function(xhr, error){
+		return {
+			init: init,
+			doLogout: doLogout
+		};
 
-        $.ui.hideMask();
-        $.ui.popup(currentData.message);
+	})
 
-    };
-
-    var onLocalePreferenceChanged = function(evt){
-
-        localStorage.setItem('userLocale', evt.detail.value.toLocaleLowerCase());
-        location.reload();
-
-    };
-
-    var onSystemLanguage = function(locale){
-
-        // console.log('onPreferredLanguage', locale.value);
-
-        dataManager.init();
-        router.init();
-
-        login.init(localStorage.getItem('userLocale') || locale.value, isLoginDisabled);
-
-    };
-
-    var onGlobalizationError = function(error) {
-
-        navigator.notification.alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n', null);
-
-    };
-
-    var init = function(){
-
-        // console.log($);
-        document.addEventListener('deviceready', onDeviceReady, false);
-
-    };
-
-    return{
-
-        init: init
-
-    };
-
-
-}));
+);

@@ -1,93 +1,93 @@
 ;
 define('views/forgotpassword/ForgotPasswordView', ['controllers/ForgotPassword', 'core/Constants', 'i18n!nls/forgot'], (function (controller, Constants, forgot) {
 
-    var $resetURL, $email, $doRecover, $introText, $form;
+	var $resetURL, $email, $doRecover, $introText, $form;
 
-    var doInit = function () {
+	var doInit = function () {
 
-            controller.init(this);
+		controller.init(this);
 
-            $form = $('#recover-pwd-form');
-            $resetURL = $('#reset-url');
-            $email = $('#e-mail');
-            $doRecover = $('#do-recover');
-            $introText = $('#intro-text');
+		$form = $('#recover-pwd-form');
+		$resetURL = $('#reset-url');
+		$email = $('#e-mail');
+		$doRecover = $('#do-recover');
+		$introText = $('#intro-text');
 
-            $introText.text(forgot.welcome);
+		$introText.text(forgot.welcome);
 
-            $resetURL.attr('placeholder', forgot.resetURL);
-            $email.attr('placeholder', forgot.email);
-            $doRecover.text(forgot.reset);
+		$resetURL.attr('placeholder', forgot.resetURL);
+		$email.attr('placeholder', forgot.email);
+		$doRecover.text(forgot.reset);
 
-            require(['libs/happy/happy'], function (happy) {
+		require(['libs/happy/happy'], function (happy) {
 
-                controller.initValidation($form);
+			controller.initValidation($form);
 
-            });
+		});
 
-            $form.bind('submit', recoverPassword);
+		$form.bind('submit', recoverPassword);
 
 
-    };
+	};
 
-    var recoverPassword = function (evt) {
+	var recoverPassword = function (evt) {
 
-        evt.preventDefault();
+		evt.preventDefault();
 
-        controller.recoverPassword($email.val(), rootDomain());
+		controller.recoverPassword($email.val(), rootDomain());
 
-    };
+	};
 
-    var rootDomain = function () {
+	var rootDomain = function () {
 
-        var url = $resetURL.val();
+		var url = $resetURL.val();
 
-        if (url.indexOf(Constants.PROTCOL) < 0) {
+		if (url.indexOf(Constants.PROTCOL) < 0) {
 
-            url = Constants.PROTCOL + url;
+			url = Constants.PROTCOL + url;
 
-        }
+		}
 
-        return url;
+		return url;
 
-    }
+	}
 
-    var doShowLoader = function (status, message) {
+	var doShowLoader = function (status, message) {
 
-        if (status) {
+		if (status) {
 
-            $.ui.showMask(message || forgot.loading);
+			$.ui.showMask(message || forgot.loading);
 
-        } else {
+		} else {
 
-            $.ui.hideMask();
+			$.ui.hideMask();
 
-        }
+		}
 
-    };
+	};
 
-    var doShowMessage = function (msg) {
+	var doShowMessage = function (msg) {
 
-        if (msg) {
+		if (msg) {
 
-            return document.getElementById($.ui.popup(msg).id);
+			return document.getElementById($.ui.popup(msg).id);
 
-        }
+		}
 
-    };
+	};
 
-    var dispose = function(){
+	var dispose = function () {
 
-        $form.unbind('submit', recoverPassword);
+		$form.unbind('submit', recoverPassword);
 
-    };
+	};
 
-    return{
+	return{
 
-        init: doInit,
-        showLoader: doShowLoader,
-        showMessage: doShowMessage
+		init: doInit,
+		showLoader: doShowLoader,
+		showMessage: doShowMessage
 
-    }
+	}
 
 }));

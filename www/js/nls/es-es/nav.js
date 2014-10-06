@@ -1,14 +1,15 @@
 // es_ES
-;define({
+;
+define({
 
-    'welcomeSection':   '',
-    'forgotPwdSection': 'Restablecer Contraseña',
-    'coursesSection':   'Cursos',
-    'reportsSection':   'Informes',
-    'settingsSections': 'Configuración',
-    'courses':          'Mis Cursos',
-    'reports':          'Mis informes',
-    'settings':         'Configuración',
-    'logout':           'Salir'
+	'welcomeSection': '',
+	'forgotPwdSection': 'Restablecer Contraseña',
+	'coursesSection': 'Cursos',
+	'reportsSection': 'Informes',
+	'settingsSections': 'Configuración',
+	'courses': 'Mis Cursos',
+	'reports': 'Mis informes',
+	'settings': 'Configuración',
+	'logout': 'Salir'
 
 });

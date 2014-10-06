@@ -1,112 +1,114 @@
-;define('model/DataProvider', ['appframework', 'core/Constants', 'i18n!nls/miscellaneous'], (function($, Constants, miscellaneous){
+;define('model/DataProvider', ['appframework', 'core/Constants', 'i18n!nls/miscellaneous'],
 
-    var failureHandlerActive, currentApiURL;
-    var current;
+	(function ($, Constants, miscellaneous) {
 
-    var onAppOffline = function(evt){
+	var failureHandlerActive, currentApiURL;
+	var current;
 
-        navigator.notification.alert(miscellaneous.connectionRequired, function(){
+	var onAppOffline = function (evt) {
 
-            $.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+		navigator.notification.alert(miscellaneous.connectionRequired, function () {
 
-        });
+			$.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
 
-    };
+		});
 
-    var initFailureHandler = function(){
+	};
 
-        failureHandlerActive = true;
+	var initFailureHandler = function () {
 
-        document.removeEventListener('offline', onAppOffline);
-        document.addEventListener('offline', onAppOffline, false);
+		failureHandlerActive = true;
 
-    };
+		document.removeEventListener('offline', onAppOffline);
+		document.addEventListener('offline', onAppOffline, false);
 
-    var setCurrentApiURL = function(value){
+	};
 
-        currentApiURL = value;
+	var setCurrentApiURL = function (value) {
 
-    };
+		currentApiURL = value;
 
-    var fetchData = function(url, params, successHandler, errorHandler, rootURL, forceJson){
+	};
 
-        if(url === current)return;
+	var fetchData = function (url, params, successHandler, errorHandler, rootURL, forceJson) {
 
-        var mime;
-        forceJson ? mime = 'json' : mime = 'default/html';
+		if (url === current)return;
 
-        $.ajax({
+		var mime;
+		forceJson ? mime = 'json' : mime = 'default/html';
 
-            url: (rootURL || currentApiURL) + '/api/' + url,
-            type: 'post',
-            dataType: mime,
-            data: params,
-            success: function(data){
+		$.ajax({
 
-                successHandler(data);
-                current = '';
+			url: (rootURL || currentApiURL) + '/api/' + url,
+			type: 'post',
+			dataType: mime,
+			data: params,
+			success: function (data) {
 
-            },
-            error:function(xhr, error){
+				successHandler(data);
+				current = '';
 
-                errorHandler(xhr, error);
-                current = '';
+			},
+			error: function (xhr, error) {
 
-            }
+				errorHandler(xhr, error);
+				current = '';
 
-        });
+			}
 
-        if(!failureHandlerActive){
+		});
 
-            initFailureHandler();
+		if (!failureHandlerActive) {
 
-        }
+			initFailureHandler();
 
-        current = url;
+		}
 
-    };
+		current = url;
 
-    var fetchDataWithProxy = function(params, successHandler, errorHandler){
+	};
 
-        if(params.details.action === current)return;
+	var fetchDataWithProxy = function (params, successHandler, errorHandler) {
 
-        $.ajax({
+		if (params.details.action === current)return;
 
-            url: currentApiURL + Constants.API_URL,
-            type: 'post',
-            dataType: 'application/json',
-            data: params,
-            success: function(data){
+		$.ajax({
 
-                successHandler(data);
-                current = '';
+			url: currentApiURL + Constants.API_URL,
+			type: 'post',
+			dataType: 'application/json',
+			data: params,
+			success: function (data) {
 
-            },
-            error:function(xhr, error){
+				successHandler(data);
+				current = '';
 
-                errorHandler(xhr, error);
-                current = '';
+			},
+			error: function (xhr, error) {
 
-            }
+				errorHandler(xhr, error);
+				current = '';
 
-        });
+			}
 
-        if(!failureHandlerActive){
+		});
 
-            initFailureHandler();
+		if (!failureHandlerActive) {
 
-        }
+			initFailureHandler();
 
-        current = params.details.action;
+		}
 
-    };
+		current = params.details.action;
 
-    return {
+	};
 
-        fetchData: fetchData,
-        fetchDataWithProxy: fetchDataWithProxy,
-        setCurrentApiURL: setCurrentApiURL
+	return {
 
-    }
+		fetchData: fetchData,
+		fetchDataWithProxy: fetchDataWithProxy,
+		setCurrentApiURL: setCurrentApiURL
+
+	}
 
 }));

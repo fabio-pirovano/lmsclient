@@ -1,57 +1,58 @@
-;define('utils/SelectParser', [], (function(){
+;
+define('utils/SelectParser', [], (function () {
 
-    var $select, $options;
+	var $select, $options;
 
-    var init = function(select){
+	var init = function (select) {
 
-        $select = select;
-        $options = $select.find('option');
+		$select = select;
+		$options = $select.find('option');
 
-    };
+	};
 
-    var update = function(val){
+	var update = function (val) {
 
-        var options, swapIndex, value, html;
+		var options, swapIndex, value, html;
 
-        options = new Array($options.length);
-        html = '';
+		options = new Array($options.length);
+		html = '';
 
-        $.each($options, function(currentIndex, currentValue){
+		$.each($options, function (currentIndex, currentValue) {
 
-            options[currentIndex] = currentValue;
+			options[currentIndex] = currentValue;
 
-            if($(currentValue).attr('value') === val){
+			if ($(currentValue).attr('value') === val) {
 
-                swapIndex = currentIndex;
+				swapIndex = currentIndex;
 
-            }
+			}
 
-        });
+		});
 
-        if(swapIndex){
+		if (swapIndex) {
 
-            value = options.splice(swapIndex, 1);
-            options.unshift(value[0]);
+			value = options.splice(swapIndex, 1);
+			options.unshift(value[0]);
 
-            $select.empty();
+			$select.empty();
 
-            for(var i = 0, tot = options.length; i < tot; i++){
+			for (var i = 0, tot = options.length; i < tot; i++) {
 
-                html += options[i].outerHTML;
+				html += options[i].outerHTML;
 
-            }
+			}
 
-            $select.html(html);
+			$select.html(html);
 
-        }
+		}
 
-    };
+	};
 
-    return {
+	return {
 
-        init: init,
-        update: update
+		init: init,
+		update: update
 
-    }
+	}
 
 }));
