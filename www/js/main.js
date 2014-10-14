@@ -1,222 +1,230 @@
-;define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous'],
+;
+define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core/DataManager', 'i18n!nls/nav', 'routers/approuter', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous', 'core/BackButtonManager'],
 
-    (function($, $ui, login, dataManager, nav, router, Constants, dataProvider, miscellaneous){
+	(function ($, $ui, login, dataManager, nav, router, Constants, dataProvider, miscellaneous, BackButtonManager) {
 
-    var isLoginDisabled;
+		var isLoginDisabled;
 
-    var onDeviceReady = function(){
+		// These two param will store the last list of items requested, it will be then used on page refresh
+		var $courseId, $organizationId;
 
-        var platform, devicePlatform;
 
-        devicePlatform = window.device.platform;
+		var onDeviceReady = function () {
 
-        switch (true){
+			var platform, devicePlatform;
 
-            case  devicePlatform == 'Android':
-            platform = 'android';
-            break;
+			devicePlatform = window.device.platform;
 
-            case  devicePlatform == 'BlackBerry':
-            platform = 'bb';
-            break;
+			switch (true) {
 
-            case  devicePlatform == 'WinCE':
-            platform = 'win8';
-            break;
+				case  devicePlatform == 'Android':
+					platform = 'android';
+					break;
 
-            case  devicePlatform == 'iOS':
-            window.device.version >= 7.0 ?  platform = 'ios7' : platform = 'ios';
-            break;
+				case  devicePlatform == 'BlackBerry':
+					platform = 'bb';
+					break;
 
-            default:
-            platform = 'ios7';
-            break;
+				case  devicePlatform == 'WinCE':
+					platform = 'win8';
+					break;
 
-        }
+				case  devicePlatform == 'iOS':
+					window.device.version >= 7.0 ? platform = 'ios7' : platform = 'ios';
+					break;
 
-        if(platform === 'ios7'){
+				default:
+					platform = 'ios7';
+					break;
 
-            setTimeout(function(){
-                $('body').addClass('moveDown');
-            }, 350);
+			}
 
-        }
+			if (platform === 'ios7') {
 
-        $('#afui').get(0).className = platform;
+				setTimeout(function () {
+					$('body').addClass('moveDown');
+				}, 350);
 
-        if(platform == 'android'){
+			}
 
-            $('#afui').css('position', 'inherit');
-            $('#do-login').css('box-shadow', 'inset 0 0 0 rgba(255,255,255,.4) !important');
+			$('#afui').get(0).className = platform;
 
-            if(parseFloat(window.device.version) <= 4.3){
+			if (platform == 'android') {
 
-                require(['css!../css/index-android-4.3.css'], function(css){
+				$('#afui').css('position', 'inherit');
+				$('#do-login').css('box-shadow', 'inset 0 0 0 rgba(255,255,255,.4) !important');
 
-                    // Re-assigning the value to enforce the CSS appliance
-                    platform = 'android';
+				if (parseFloat(window.device.version) <= 4.3) {
 
-                });
+					require(['css!../css/index-android-4.3.css'], function (css) {
 
-            }
+						// Re-assigning the value to enforce the CSS appliance
+						platform = 'android';
 
-        }
+					});
 
-        try{
+				}
 
-            var networkState = navigator.connection.type;
-            if(networkState == Connection.NONE){
+			}
+			if (window.device.platform === 'iOS' && window.device.version >= 7.0) {
+				require(['css!../css/ios7.css'], function (css) {
 
-                navigator.notification.alert(miscellaneous.connectionRequired);
-                isLoginDisabled = true;
+					// Re-assigning the value to enforce the CSS appliance
+					platform = 'ios7';
+				});
+			}
 
-            }
+			try {
 
-        }catch (error){
+				var networkState = navigator.connection.type;
+				if (networkState == Connection.NONE) {
 
-            // console.log(error);
-            isLoginDisabled = true;
+					navigator.notification.alert(miscellaneous.connectionRequired);
+					isLoginDisabled = true;
+					console.log(networkState);
+				}
 
-        }
+			} catch (error) {
 
-        $(document).ready(function(){
+				console.log(error);
+				isLoginDisabled = true;
+			}
 
-            navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
-            addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
+			$(document).ready(function () {
 
-            require(['utils/SectionsTitleFactory'], function(factory){
+				navigator.globalization.getPreferredLanguage(onSystemLanguage, onGlobalizationError);
+				addEventListener('localePreferenceChanged', onLocalePreferenceChanged);
 
-                factory.init($('#main'), $('#forgot-pwd'), $('#courses'), $('#reports'), $('#settings'));
-                launchUI();
+				require(['utils/SectionsTitleFactory'], function (factory) {
 
-            });
+					factory.init($('#main'), $('#forgot-pwd'), $('#courses'), $('#reports'), $('#settings'));
+					launchUI();
+				});
+			});
+		};
 
-        });
+		var launchUI = function () {
 
-    };
+			$ui.splitview = false;
 
-    var launchUI = function(){
+			$ui.launch();
+			$ui.showBackButton = false;
 
-        $ui.splitview = false;
+			// Avoid a common issue on Android
+			$.isFocused_ = true;
 
-        $ui.launch();
-        $ui.showBackButton = false;
+			$ui.disableSideMenu();
+			$ui.toggleNavMenu();
 
-        // Avoid a common issue on Android
-        $.isFocused_ = true;
+			$('#courses-link').text(nav.courses);
 
-        $ui.disableSideMenu();
-        $ui.toggleNavMenu();
+			$('#reports-link').text(nav.reports);
+			$('#reports').bind('loadpanel', loadReportsModule);
 
-        $('#courses-link').text(nav.courses);
+			// disabled until version 2
+			// $('#settings-link').text(nav.settings);
+			// $('#settings').bind('loadpanel', loadSettingsModule);
 
-        $('#reports-link').text(nav.reports);
-        $('#reports').bind('loadpanel', loadReportsModule);
+			$('#logout-link').text(nav.logout).bind('touchend', doLogout);
+		};
 
-        $('#settings-link').text(nav.settings);
-        $('#settings').bind('loadpanel', loadSettingsModule);
+		var loadSettingsModule = function (evt) {
 
-        $('#logout-link').text(nav.logout).bind('touchend', doLogout);
+			require(['views/settings/SettingsView'], function (settings) {
 
-    };
+				settings.init();
 
-    var loadSettingsModule = function(evt){
+			});
 
-        require(['views/settings/SettingsView'], function(settings){
+		};
 
-            settings.init();
+		var loadReportsModule = function (evt) {
 
-        });
+			require(['views/reports/ReportsView'], function (reports) {
 
-    };
+				reports.init();
 
-    var loadReportsModule = function(evt){
+			});
 
-        require(['views/reports/ReportsView'], function(reports){
+		};
 
-            reports.init();
+		var doLogout = function (evt) {
 
-        });
+			if (evt != undefined) {
+				evt.preventDefault();
+				evt.stopPropagation();
+			}
 
-    };
+			// hide back button if currently shown
+			BackButtonManager.disableBackButton();
 
-    var doLogout = function(evt){
+			$.ui.showMask(miscellaneous.loggingout);
 
-        evt.preventDefault();
-        evt.stopPropagation();
+			var user = dataManager.getUser();
 
-        $.ui.showMask(miscellaneous.loggingout);
+			var paramsForProxy = JSON.stringify({
+					'details': {
+						'action': 'logout',
+						'id_user': user.id,
+						'key': user.getUsername,
+						'token': user.token
+					}
+				}),
+				params = JSON.stringify({'id_user': user.id, 'token': user.token, 'key': user.getUsername});
 
-        var user = dataManager.getUser();
+			dataProvider.fetchData('user/profile', params, onUserLogout, onUserLogoutError);
+		};
 
-        var paramsForProxy = JSON.stringify({'details': {'action': 'logout', 'id_user': user.id, 'key': user.getUsername, 'token': user.token}}),
-            params = JSON.stringify({'id_user': user.id , 'token': user.token, 'key': user.getUsername});
+		var onUserLogout = function (data) {
 
-        dataProvider.fetchData('user/profile', params, onUserLogout, onUserLogoutError);
+			var currentData = JSON.parse(data);
 
-    };
+			//With false we have to do the same
+			// if (currentData.success === true) {}
 
-    var onUserLogout = function( data ) {
+			$.ui.hideMask();
+			$('#menubadge').css('visibility', 'hidden');
+			$.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+		}
 
-        var currentData = JSON.parse(data);
+		var onUserLogoutError = function (xhr, error) {
 
-        if(currentData.success === true){
+			$.ui.hideMask();
+			$.ui.popup(currentData.message);
+		};
 
-            $.ui.hideMask();
-            $.ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+		var onLocalePreferenceChanged = function (evt) {
 
-        }else{
+			localStorage.setItem('userLocale', evt.detail.value.toLocaleLowerCase());
+			location.reload();
+		};
 
-            $.ui.hideMask();
-            $.ui.popup(currentData.message);
+		var onSystemLanguage = function (locale) {
 
-        }
+			// console.log('onPreferredLanguage', locale.value);
 
-    }
+			dataManager.init();
+			router.init();
 
-    var onUserLogoutError = function(xhr, error){
+			login.init(localStorage.getItem('userLocale') || locale.value, isLoginDisabled);
+		};
 
-        $.ui.hideMask();
-        $.ui.popup(currentData.message);
+		var onGlobalizationError = function (error) {
 
-    };
+			navigator.notification.alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n', null);
+		};
 
-    var onLocalePreferenceChanged = function(evt){
+		var init = function () {
 
-        localStorage.setItem('userLocale', evt.detail.value.toLocaleLowerCase());
-        location.reload();
+			// console.log($);
+			document.addEventListener('deviceready', onDeviceReady, false);
+		};
 
-    };
+		return {
+			init: init,
+			doLogout: doLogout
+		};
 
-    var onSystemLanguage = function(locale){
+	})
 
-        // console.log('onPreferredLanguage', locale.value);
-
-        dataManager.init();
-        router.init();
-
-        login.init(localStorage.getItem('userLocale') || locale.value, isLoginDisabled);
-
-    };
-
-    var onGlobalizationError = function(error) {
-
-        navigator.notification.alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n', null);
-
-    };
-
-    var init = function(){
-
-        // console.log($);
-        document.addEventListener('deviceready', onDeviceReady, false);
-
-    };
-
-    return{
-
-        init: init
-
-    };
-
-
-}));
+);
