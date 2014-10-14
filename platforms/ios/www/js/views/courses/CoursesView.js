@@ -1,146 +1,152 @@
-;
-define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/coursesrouter'],
-
-	(function ($, mustache, controller, courses, router) {
+;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/coursesrouter'], (function($, mustache, controller, courses, router){
 
 
-		var courseTemplate, currentSearch;
-		var $coursesSearch, $courses;
+    var courseTemplate, currentSearch;
+    var $coursesSearch, $courses;
 
-		var doInit = function (data) {
+    var doInit = function(data){
 
-			router.init();
+        router.init();
 
-			$coursesSearch = $('#user-courses-search');
-			$courses = $('#user-courses');
+        $coursesSearch = $('#user-courses-search');
+        $courses = $('#user-courses');
 
-			controller.init(this);
+        var user = data.getUser();
+        controller.init(this);
 
-			require([
-				'text!../tpl/course-tpl.html'
-			], function (tpl) {
+        require([
+            'text!../tpl/course-tpl.html'
+        ], function(tpl){
 
-				courseTemplate = tpl;
-				controller.updateMyCourses(data);
-				/*
-				 if($('#afui').get(0).className === 'ios7'){
+            courseTemplate = tpl;
+            controller.getUserCourses(user);
 
-				 $('body').removeClass('moveDown');
+        });
 
-				 setTimeout(function(){
+    };
 
-				 $('body').addClass('moveDown');
+    var doShowError = function(msg){
 
-				 }, 150);
+        if(msg){
 
-				 }
-				 */
-			});
+            $.ui.popup(msg);
 
-		};
+        }
 
-		var doShowError = function (msg) {
+    };
 
-			if (msg) {
-				$.ui.popup(msg);
-			}
-		};
+    var doShowCourse = function(data){
 
-		var doShowCourse = function (data) {
+        var html = mustache.to_html(courseTemplate, data);
+        $courses.html($courses.html() + html);
 
-			var html = mustache.to_html(courseTemplate, data);
-			$courses.html($courses.html() + html);
-		};
+    };
 
-		var doClearCourses = function () {
+    var doClearCourses = function(){
 
-			$courses.html('');
-		};
+        $courses.html('');
 
-		var onCourseSearch = function (evt) {
+    };
 
-			var filter = this.value;
+    var onCourseSearch = function(evt){
 
-			if (currentSearch) {
+        var filter = this.value;
 
-				clearTimeout(currentSearch);
+        if(currentSearch){
 
-			}
+            clearTimeout(currentSearch);
 
-			currentSearch = setTimeout(function () {
+        }
 
-				$courses.find('li').each(function (i, e) {
+        currentSearch = setTimeout(function(){
 
-					var sel = $(e).find('div strong').text().toLowerCase().trim();
-					var query = filter.toLowerCase();
+            $courses.find('li').each(function(i, e){
 
-					if (sel.indexOf(query) === -1) {
+                var sel = $(e).find('div strong').text().toLowerCase().trim();
+                var query = filter.toLowerCase();
 
-						$(e).hide();
-					} else {
+                if(sel.indexOf(query) === -1){
 
-						$(e).show();
-					}
-				});
-			}, 300);
-		};
+                    $(e).hide();
 
-		var doInitCoursesInteraction = function (status) {
+                } else {
 
-			if (status) {
+                    $(e).show();
 
-				$courses.bind('tap', onCourseSelection);
-				$coursesSearch.bind('input', onCourseSearch);
-			} else {
+                }
 
-				$courses.unbind('tap', onCourseSelection);
-				$coursesSearch.unbind('input', onCourseSearch);
-			}
-		};
+            });
 
-		var doShowLoader = function (status, message) {
+        }, 300);
 
-			if (status) {
+    };
 
-				$.ui.showMask(message || courses.loading);
-			} else {
+    var doInitCoursesInteraction = function(status){
 
-				$.ui.hideMask();
-			}
-		};
+        if(status){
 
-		var onCourseSelection = function (evt) {
+            $courses.bind('tap', onCourseSelection);
+            $coursesSearch.bind('input', onCourseSearch);
 
-			evt.preventDefault();
 
-			var target = $(evt.target).parents('li');
+        }else{
 
-			var url = target.attr('data-url'),
-				idCourse = url.match(/course_id=([^&]*)/)[1],
-				thumb = target.find('img').css('background-image'),
-				name = target.find('strong').text(),
-				canAccess = target.attr('data-can'),
-				courseDescription = target.find('.detail-disclosure').html();
+            $courses.unbind('tap', onCourseSelection);
+            $coursesSearch.unbind('input', onCourseSearch);
 
-			// if(canAccess != true)return;
+        }
 
-			thumb = /^url\((['"]?)(.*)\1\)$/.exec(thumb);
-			thumb = thumb ? thumb[2] : '';
+    };
 
-			localStorage.setItem('currentCourseName', name);
-			localStorage.setItem('currentCourseThumb', thumb);
-			localStorage.setItem('currentCourseDescription', courseDescription);
+    var doShowLoader = function(status, message){
 
-			controller.getCourseDetails(idCourse);
-		};
+        if(status){
 
-		return {
-			init: doInit,
-			showError: doShowError,
-			showCourse: doShowCourse,
-			clearCourses: doClearCourses,
-			showLoader: doShowLoader,
-			initCoursesInteraction: doInitCoursesInteraction
-		}
+            $.ui.showMask(message || courses.loading);
 
-	}));
+        }else{
+
+            $.ui.hideMask();
+
+        }
+
+    };
+
+    var onCourseSelection = function(evt){
+
+        evt.preventDefault();
+
+        var target = $(evt.target).parents('li');
+
+        var url         = target.attr('data-url'),
+            idCourse    = url.match(/course_id=([^&]*)/)[1],
+            thumb       = target.find('img').css('background-image'),
+            name        = target.find('strong').text(),
+            canAccess   = target.attr('data-can'),
+            courseDescription = target.find('.detail-disclosure').html();
+
+       // if(canAccess != true)return;
+
+        thumb = /^url\((['"]?)(.*)\1\)$/.exec(thumb);
+        thumb = thumb ? thumb[2] : '';
+
+        localStorage.setItem('currentCourseName', name);
+        localStorage.setItem('currentCourseThumb', thumb);
+        localStorage.setItem('currentCourseDescription', courseDescription);
+
+        controller.getCourseDetails(idCourse);
+
+    };
+
+    return{
+
+        init: doInit,
+        showError: doShowError,
+        showCourse: doShowCourse,
+        clearCourses: doClearCourses,
+        showLoader: doShowLoader,
+        initCoursesInteraction: doInitCoursesInteraction
+
+    }
+
+}));

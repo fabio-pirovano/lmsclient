@@ -5382,11 +5382,11 @@ if (!Date.now)
                 }
             }
 
-            //$("#header #menubadge").css("float", "right");
+            $("#header #menubadge").css("float", "right");
             if (this.history.length === 0) {
                 this.setBackButtonVisibility(false);
                 this.history = [];
-                //$("#header #menubadge").css("float", "left");
+                $("#header #menubadge").css("float", "left");
             } else if (this.showBackButton && this.showBackbutton) this.setBackButtonVisibility(true);
             this.activeDiv = what;
             if (this.scrollingDivs[this.activeDiv.id]) {

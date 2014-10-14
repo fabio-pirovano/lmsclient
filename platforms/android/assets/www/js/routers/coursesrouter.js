@@ -1,74 +1,73 @@
-;
-define('routers/coursesrouter', ['core/Constants', 'appframework'], (function (Constants, $) {
+;define('routers/coursesrouter', ['core/Constants', 'appframework'], (function(Constants, $){
 
-	var that = this;
-	var history = [];
+    var that = this;
+    var history = [];
 
-	var loadView = function (view, module, data, reverse) {
+    var loadView = function (view, module, data, reverse) {
 
-		var direction;
+        var direction;
 
-		$('#' + view).bind('loadpanel', function (e) {
+        $('#' + view).bind('loadpanel', function (e) {
 
-			require([module], function (module) {
+            require([module], function (module) {
 
-				module.init(data || null);
+                module.init(data || null);
 
-			});
+            });
 
-			$('#' + view).unbind('loadpanel', arguments.callee);
+            $('#' + view).unbind('loadpanel', arguments.callee);
 
-		});
+        });
 
-		reverse ? direction = Constants.DETAILS_HIDE_DIRECTION : Constants.DETAILS_REVEALS_DIRECTION;
+        reverse ? direction  = Constants.DETAILS_HIDE_DIRECTION : Constants.DETAILS_REVEALS_DIRECTION;
 
-		$.ui.loadContent(view, false, false, direction);
+        $.ui.loadContent(view, false, false, direction);
 
-	};
+    };
 
-	var onOpenDetails = function (evt) {
+    var onOpenDetails = function(evt){
 
-		evt.stopImmediatePropagation();
+        evt.stopImmediatePropagation();
 
-		var view = evt.detail.view,
-			module = evt.detail.module,
-			data = evt.detail.data;
+        var view = evt.detail.view,
+            module = evt.detail.module,
+            data = evt.detail.data;
 
-		if (evt.detail.push) {
+        if(evt.detail.push){
 
-			history.push({view: view, module: module, data: data});
+            history.push({view: view, module: module, data: data});
 
-		}
+        }
 
-		loadView(view, module, data);
+        loadView(view, module, data);
 
-	};
+    };
 
-	var doGoBack = function () {
+    var doGoBack = function(){
 
-		var details = history.pop();
-		loadView(details.view, details.module, details.data, true);
+        var details = history.pop();
+        loadView(details.view, details.module, details.data, true);
 
-	};
+    };
 
-	var doDispose = function () {
+    var doDispose = function(){
 
-		that.removeEventListener(Constants.DETAIL_VIEW_EVENT, onOpenDetails);
+        that.removeEventListener(Constants.DETAIL_VIEW_EVENT, onOpenDetails);
 
-	};
+    };
 
-	var doInit = function () {
+    var doInit = function(){
 
-		that.addEventListener(Constants.DETAIL_VIEW_EVENT, onOpenDetails);
+        that.addEventListener(Constants.DETAIL_VIEW_EVENT, onOpenDetails);
 
-	};
+    };
 
-	return {
+    return {
 
-		init: doInit,
-		dispose: doDispose,
-		goBack: doGoBack
+        init: doInit,
+        dispose: doDispose,
+        goBack: doGoBack
 
-	}
+    }
 
 }));

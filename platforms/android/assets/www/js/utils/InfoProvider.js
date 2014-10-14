@@ -1,88 +1,86 @@
-define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous'], (function ($, $ui, Constants, dataProvider, miscellaneous) {
+define('utils/InfoProvider', ['appframework', 'appframeworkui', 'core/Constants', 'model/DataProvider', 'i18n!nls/miscellaneous'], (function($, $ui, Constants, dataProvider, miscellaneous){
 
-	var events = {API_INFO_DATA_READY: 'infoDataReady', API_INFO_DATA_ERROR: 'infoDataError'};
+    var events = {API_INFO_DATA_READY: 'infoDataReady', API_INFO_DATA_ERROR: 'infoDataError'};
 
-	var logoURL, dataCache;
-	var that = this;
+    var logoURL, dataCache;
+    var that = this;
 
-	var onInfoReady = function (data) {
+    var onInfoReady = function ( data ) {
 
-		dataCache = JSON.parse(data);
+        dataCache = JSON.parse(data);
 
-		if (dataCache.success === true) {
+        if(dataCache.success === true){
 
-			logoURL = dataCache.logo;
-			dataReady();
+            logoURL = dataCache.logo;
+            dataReady();
 
-		}
+        }
 
-	};
+    };
 
-	var onInfoError = function (xhr, error) {
+    var onInfoError = function(xhr, error){
+    
+      navigator.notification.confirm(miscellaneous.genericMissingInfoError,
+                                      function(buttonIndex){
 
-		navigator.notification.confirm(miscellaneous.genericMissingInfoError,
-			function (buttonIndex) {
+                                        if(buttonIndex === 1){
+                                     
+                                            dataReady(true);
+                                     
+                                        }else{
+                                     
+                                          $ui.hideMask();
+                                          $ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+                                     
+                                        }
+                                     
+                                      }, miscellaneous.confirmTitle,
+                                         [miscellaneous.ok, miscellaneous.cancel]);
+    };
 
-				if (buttonIndex === 1) {
+    var getInfo = function(url, rootURL){
 
-					dataReady(true);
+        if(dataCache && logoURL){
 
-				} else {
+            dataReady(false);
 
-					$ui.hideMask();
-					$ui.loadContent('main', false, false, Constants.PANELS_DIRECTION);
+        }else{
 
-				}
+            var paramsForProxy = JSON.stringify({'details': {'action': 'getlmsinfo', 'url': url}}),
+                params = JSON.stringify({'url': url});
 
-			}, miscellaneous.confirmTitle,
-			[miscellaneous.ok, miscellaneous.cancel]);
-	};
+            dataProvider.fetchData('public/getlmsinfo', params, onInfoReady, onInfoError, rootURL);
 
-	var getInfo = function (url, rootURL) {
+        }
 
-		if (dataCache && logoURL) {
+    };
 
-			dataReady(false);
+    var dataReady = function(error){
 
-		} else {
+        var eventType;
 
-			var paramsForProxy = JSON.stringify({'details': {'action': 'getlmsinfo', 'url': url}}),
-				params = JSON.stringify({'url': url});
+        if(error){
 
-			dataProvider.fetchData('public/getlmsinfo', params, onInfoReady, onInfoError, rootURL);
+            eventType = events.API_INFO_DATA_ERROR;
 
-		}
+        }else{
 
-	};
+            eventType = events.API_INFO_DATA_READY;
 
-	var dataReady = function (error) {
-
-		var eventType;
-
-		if (error) {
-
-			eventType = events.API_INFO_DATA_ERROR;
-
-		} else {
-
-			eventType = events.API_INFO_DATA_READY;
-
-		}
+        }
 
 
-		var event = new CustomEvent(eventType, {bubbles: true, cancelable: true});
-		that.dispatchEvent(event);
+        var event = new CustomEvent(eventType, {bubbles: true, cancelable: true});
+        that.dispatchEvent(event);
 
-	};
+    };
 
-	return {
+    return {
 
-		getInfo: getInfo,
-		logoURL: function () {
-			return logoURL;
-		},
-		events: events
+        getInfo: getInfo,
+        logoURL: function(){return logoURL;},
+        events:  events
 
-	}
+    }
 
 }));

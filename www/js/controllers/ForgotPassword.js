@@ -1,120 +1,120 @@
 ;define('controllers/ForgotPassword', ['appframework', 'libs/happy/happy', 'libs/happy/happy.methods', 'model/DataProvider', 'i18n!nls/forgot', 'i18n!nls/miscellaneous'],
-	function ($, happy, validators, dataProvider, forgot, miscellaneous) {
+    function ($, happy, validators, dataProvider, forgot, miscellaneous) {
 
-		var view, currentInterval;
+        var view, currentInterval;
 
-		var doInit = function (v) {
+        var doInit = function (v) {
 
-			view = v;
+            view = v;
 
-		};
+        };
 
-		var onRecoverPassword = function (data) {
+        var onRecoverPassword = function (data) {
 
-			var currentData = JSON.parse(data);
+            var currentData = JSON.parse(data);
 
-			if (currentData.success === true) {
+            if (currentData.success === true) {
 
-				renderMessage('');
+                renderMessage('');
 
-			} else {
+            } else {
 
-				renderMessage(currentData.message);
+                renderMessage(currentData.message);
 
-			}
+            }
 
-		};
+        };
 
-		var onRecoverPasswordError = function (xhr, error) {
+        var onRecoverPasswordError = function (xhr, error) {
 
-			renderMessage(error.message || miscellaneous.genericError);
+            renderMessage(error.message || miscellaneous.genericError);
 
-		};
+        };
 
-		var doRecoverPassword = function (email, rootURL) {
+        var doRecoverPassword = function (email, rootURL) {
 
-			view.showLoader(true);
+            view.showLoader(true);
 
-			var paramsForProxy = JSON.stringify({'details': {'action': 'recoverPassword', 'email': email}}),
-				params = JSON.stringify({'email': email});
-			dataProvider.fetchData('user/lostpassword', params, onRecoverPassword, onRecoverPasswordError, rootURL);
+            var paramsForProxy = JSON.stringify({'details': {'action': 'recoverPassword', 'email': email}}),
+                params = JSON.stringify({'email': email});
+            dataProvider.fetchData('user/lostpassword', params, onRecoverPassword, onRecoverPasswordError, rootURL);
 
-		};
+        };
 
-		var elementInDocument = function (element) {
+        var elementInDocument = function (element) {
 
-			while (element && element == element.parentNode) {
+            while (element && element == element.parentNode) {
 
-				if (element == document) {
+                if (element == document) {
 
-					return true;
+                    return true;
 
-				}
+                }
 
-			}
+            }
 
-			return false;
+            return false;
 
-		};
+        };
 
-		var handlePopupDisposal = function (element) {
+        var handlePopupDisposal = function (element) {
 
-			if (!elementInDocument(element)) {
+            if (!elementInDocument(element)) {
 
-				clearInterval(currentInterval);
-				currentInterval = null;
-				$.ui.goBack();
+                clearInterval(currentInterval);
+                currentInterval = null;
+                $.ui.goBack();
 
-			}
+            }
 
-		};
-		var renderMessage = function (msg) {
+        };
+        var renderMessage = function (msg) {
 
-			view.showLoader(false);
+            view.showLoader(false);
 
-			var popup = view.showMessage(msg);
-			currentInterval = setInterval(function () {
+            var popup = view.showMessage(msg);
+            currentInterval = setInterval(function () {
 
-				handlePopupDisposal(popup);
+                handlePopupDisposal(popup);
 
-			}, 120);
+            }, 120);
 
-		};
+        };
 
-		var initValidation = function (form) {
+        var initValidation = function (form) {
 
-			// console.log('init validation', form);
+            // console.log('init validation', form);
 
-			form.isHappy({
-				fields: {
-					// reference the field you're talking about, probably by `id`
-					// but you could certainly do $('[name=name]') as well.
-					'#e-mail': {
+            form.isHappy({
+                fields: {
+                    // reference the field you're talking about, probably by `id`
+                    // but you could certainly do $('[name=name]') as well.
+                    '#e-mail': {
 
-						required: true,
-						message: forgot.emailRequired, //'Might we inquire your name'
-						test: validators.email
+                        required: true,
+                        message: forgot.emailRequired, //'Might we inquire your name'
+                        test: validators.email
 
-					},
+                    },
 
-					'#reset-url': {
+                    '#reset-url': {
 
-						required: true,
-						message: forgot.urlRequired //'Please type your password!'
+                        required: true,
+                        message: forgot.urlRequired //'Please type your password!'
 
-					}
-				},
-				submitButton: '#do-recover'
-			});
+                    }
+                },
+                submitButton: '#do-recover'
+            });
 
-		};
+        };
 
-		return{
+        return{
 
-			init: doInit,
-			recoverPassword: doRecoverPassword,
-			initValidation: initValidation
+            init: doInit,
+            recoverPassword: doRecoverPassword,
+            initValidation: initValidation
 
-		};
+        };
 
-	});
+    });

@@ -1,178 +1,180 @@
-;
-define('views/courses/CourseDetailsView', ['appframework', 'mustache', 'i18n!nls/courses', 'main'], (function ($, mustache, courses, main) {
+;define('views/courses/CourseDetailsView', ['appframework', 'mustache', 'i18n!nls/courses'], (function($, mustache, courses){
 
-	var ALTERNATE_COLORS_CLASSES = ['even', 'odd'];
-	var detailsTemplate, controller, currentCourseWindow;
-	var $courseDetails, $courseInfo, $courseItems;
+    var ALTERNATE_COLORS_CLASSES = ['even', 'odd'];
+    var detailsTemplate, controller, currentCourseWindow;
+    var $courseDetails, $courseInfo, $courseItems;
 
-	/**
-	 * Initialize the course detail view, this is the list of
-	 * @param data
-	 */
-	var doInit = function (data) {
+    var doInit = function(data){
 
-		var token = data.token;
-		var key = data.key;
+        var token = data.token;
+        var key = data.key;
 
-		var view = this;
+        var view = this;
 
-		require(['controllers/CourseDetails'], function (module) {
+        require(['controllers/CourseDetails'], function(module){
 
-			controller = module;
-			module.init(token, key, view);
+            controller = module;
+            module.init(token, key, view);
 
-		});
+        });
 
-		$courseDetails = $('#course-details');
-		$courseInfo = $('#course-info');
-		$courseItems = $('#course-items');
+        $courseDetails  = $('#course-details');
+        $courseInfo     = $('#course-info');
+        $courseItems    = $('#course-items');
 
-		$.ui.setTitle(localStorage.getItem('currentCourseName').substr(0, 12) + '...');
+        $.ui.setTitle(localStorage.getItem('currentCourseName').substr(0, 12) + '...');
 
-		var $thumb = $courseInfo.find('img').attr('src', ''),
-			$course = $courseInfo.find('span').html('');
+        var $thumb  = $courseInfo.find('img').attr('src', ''),
+            $course = $courseInfo.find('span').html('');
 
-		require([
-			'text!../tpl/course-details-tpl.html'
-		], function (tpl) {
+        require([
+            'text!../tpl/course-details-tpl.html'
+        ], function(tpl){
 
-			$thumb.attr('src', localStorage.getItem('currentCourseThumb'));
-			$course.html('<strong>' + localStorage.getItem('currentCourseName') + '</strong><br>');//  + localStorage.getItem('currentCourseDescription'));
+            $thumb.attr('src', localStorage.getItem('currentCourseThumb'));
+            $course.html('<strong>' + localStorage.getItem('currentCourseName') + '</strong><br>');//  + localStorage.getItem('currentCourseDescription'));
 
-			detailsTemplate = tpl;
-			renderCourseDetails(data.objects);
-		});
-	};
+            detailsTemplate = tpl;
+            renderCourseDetails(data.objects);
 
-	/**
-	 * This render the list of learning object and the page via tpl
-	 * @param data
-	 */
-	var renderCourseDetails = function (data) {
+        });
 
-		var html;
-		$courseItems.html('');
+    };
 
-		data.forEach(function (val, index) {
+    var renderCourseDetails = function(data){
 
-			val.rowColorKind = ALTERNATE_COLORS_CLASSES[index % 2];
+        $courseItems.html('');
 
-			html = mustache.to_html(detailsTemplate, val);
-			$courseItems.html($courseItems.html() + html);
+        var html;
 
-		});
-		initInteraction();
-	};
+        data.forEach(function (val, index){
 
-	var onItemSelection = function (evt) {
+            val.rowColorKind = ALTERNATE_COLORS_CLASSES[index % 2];
 
-		evt.preventDefault();
+            html = mustache.to_html(detailsTemplate, val);
+            $courseItems.html($courseItems.html() + html);
 
-		var $selectedItem = $(evt.target).parents('li');
+        });
 
-		var isFolder = $selectedItem.attr('data-folder') === 'true',
-			courseId = $selectedItem.attr('data-course'),
-			organization = $selectedItem.attr('data-organization'),
-			isLocked = $selectedItem.attr('data-locked') === 'true';
+        initInteraction();
 
-		if (isLocked) {
+    };
 
-			navigator.notification.alert(courses.notAllowed);
-			return;
-		}
+    var onItemSelection = function(evt){
 
-		doDispose();
+        evt.preventDefault();
 
-		if (isFolder) {
-			controller.getFolderDetails(courseId, organization);
-		} else {
+        var $selectedItem = $(evt.target).parents('li');
 
-			controller.openLearningObject(organization);
-		}
-	};
+        var isFolder     = $selectedItem.attr('data-folder') === 'true',
+            courseId     = $selectedItem.attr('data-course'),
+            organization = $selectedItem.attr('data-organization'),
+            isLocked     = $selectedItem.attr('data-locked') === 'true';
 
-	var initInteraction = function () {
+        if(isLocked){
 
-		$courseItems.bind('tap', onItemSelection);
-	};
+            navigator.notification.alert(courses.notAllowed);
+            return;
 
-	var doDispose = function () {
+        }
 
-		$courseItems.unbind('tap', onItemSelection);
-	};
+        doDispose();
 
-	var doShowError = function (msg) {
+        if(isFolder){
 
-		if (msg) {
+            controller.getFolderDetails(courseId, organization);
 
-			$.ui.popup(msg);
-		}
-	};
+        }else{
 
-	var doShowLoader = function (status, message) {
+            controller.openLearningObject(organization);
 
-		if (status) {
+        }
 
-			$.ui.showMask(message || courses.loading);
-		} else {
+    };
 
-			$.ui.hideMask();
-		}
-	};
+    var initInteraction = function(){
 
-	var getCurrentData = function () {
+        $courseItems.bind('tap', onItemSelection);
 
-		return $courseItems.html();
-	};
+    };
 
-	var refreshData = function (data) {
+    var doDispose = function(){
 
-		$courseItems.html('');
+        $courseItems.unbind('tap', onItemSelection);
 
-		$.ui.setBackButtonText(courses.goBack);
-		renderCourseDetails(data);
-	};
+    };
 
-	var restoreHTML = function (html) {
+    var doShowError = function(msg){
 
-		$courseItems.html(html);
-		initInteraction();
-	};
+        if(msg){
 
-	var restoreBackButton = function () {
+            $.ui.popup(msg);
 
-		$.ui.setBackButtonText(courses.myCourses);
-	};
+        }
 
-	var openURL = function (url) {
+    };
 
-		currentCourseWindow = window.open(url, '_blank', 'location=no,closebuttoncaption=' + courses.close);
-		currentCourseWindow.addEventListener('exit', function () {
+    var doShowLoader = function(status, message){
 
-			// refreshData();
-			controller.refreshData();
-			initInteraction();
-		});
-		currentCourseWindow.addEventListener('loadstop', function (event) {
-			if (event.url.match("scormorg/default/closePlayer")) {
-				currentCourseWindow.close();
-			}
-		});
+        if(status){
 
-	};
+            $.ui.showMask(message || courses.loading);
 
-	return{
+        }else{
 
-		init: doInit,
-		dispose: doDispose,
-		showError: doShowError,
-		showLoader: doShowLoader,
-		currentData: getCurrentData,
-		restoreHTML: restoreHTML,
-		restoreBackButton: restoreBackButton,
-		refreshData: refreshData,
-		openURL: openURL
+            $.ui.hideMask();
 
-	};
+        }
+
+    };
+
+    var getCurrentData = function(){
+
+        return $courseItems.html();
+
+    };
+
+    var refreshData = function(data){
+
+        $courseItems.html('');
+
+        $.ui.setBackButtonText(courses.goBack);
+        renderCourseDetails(data);
+
+    };
+
+    var restoreHTML = function(html){
+
+        $courseItems.html(html);
+        initInteraction();
+
+    };
+
+    var restoreBackButton = function(){
+
+        $.ui.setBackButtonText(courses.myCourses);
+
+    };
+
+    var openURL = function(url){
+
+        currentCourseWindow = window.open(url, '_blank', 'location=no');
+        // currentCourseWindow.addEventListener('exit', function() { alert(event.url); });
+
+    };
+
+    return{
+
+        init: doInit,
+        dispose: doDispose,
+        showError: doShowError,
+        showLoader: doShowLoader,
+        currentData: getCurrentData,
+        restoreHTML: restoreHTML,
+        restoreBackButton: restoreBackButton,
+        refreshData: refreshData,
+        openURL: openURL
+
+    };
 
 }));

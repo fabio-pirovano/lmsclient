@@ -1,35 +1,35 @@
-;define('model/CourseItem', [], function () {
+;define('model/CourseItem', [], function(){
 
-	var STATUSES = {'attempted': 'inprogress',
-		'failed': 'inprogress',
-		'completed': 'completed',
-		'passed': 'completed' };
+    var STATUSES = {'attempted':    'inprogress',
+                    'failed':       'inprogress',
+                    'completed':    'completed',
+                    'passed':       'completed' };
 
-	function CourseItem(id, organization, locked, title, type) {
+    function CourseItem(id, organization, locked, title, type){
 
-		this.courseId = id;
-		this.organization = organization;
-		this.isLocked = locked;
-		this.title = title;
-		this.courseType = type;
-		this.isFolder = type === 'folder';
+        this.courseId       = id;
+        this.organization   = organization;
+        this.isLocked       = locked;
+        this.title          = title;
+        this.courseType     = type;
+        this.isFolder       = type === 'folder';
 
-	}
+    }
 
-	CourseItem.prototype.setStatus = function (value) {
+    CourseItem.prototype.setStatus = function(value){
 
-		if (value in STATUSES) {
+        if(value in STATUSES){
 
-			this.status = STATUSES[value];
+            this.status = STATUSES[value];
 
-		} else {
+        }else{
 
-			this.status = 'notstarted';
+            this.status = 'notstarted';
 
-		}
+        }
 
-	};
+    };
 
-	return CourseItem;
+    return CourseItem;
 
 });

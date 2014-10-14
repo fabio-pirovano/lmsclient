@@ -1,148 +1,164 @@
-;
-define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/coursesrouter'],
-
-	(function ($, mustache, controller, courses, router) {
+;define('views/courses/CoursesView', ['appframework', 'mustache', 'controllers/Courses', 'i18n!nls/courses', 'routers/coursesrouter'], (function($, mustache, controller, courses, router){
 
 
-		var courseTemplate, currentSearch;
-		var $coursesSearch, $courses;
-		var tpl_loaded = false;
+    var courseTemplate, currentSearch;
+    var $coursesSearch, $courses;
 
-		var doInit = function (data) {
+    var doInit = function(data){
 
-			router.init();
+        router.init();
 
-			$coursesSearch = $('#user-courses-search');
-			$courses = $('#user-courses');
+        $coursesSearch = $('#user-courses-search');
+        $courses = $('#user-courses');
 
-			controller.init(this);
+        var user = data.getUser();
+        controller.init(this);
 
-			require([
-				'text!../tpl/course-tpl.html'
-			], function (tpl) {
+        require([
+            'text!../tpl/course-tpl.html'
+        ], function(tpl){
 
-				tpl_loaded = true;
-				courseTemplate = tpl;
-				controller.updateMyCourses(data);
-				/*
-				 if($('#afui').get(0).className === 'ios7'){
+            courseTemplate = tpl;
+            controller.getUserCourses(user);
 
-				 $('body').removeClass('moveDown');
+            if($('#afui').get(0).className === 'ios7'){
 
-				 setTimeout(function(){
+                $('body').removeClass('moveDown');
 
-				 $('body').addClass('moveDown');
+                setTimeout(function(){
 
-				 }, 150);
+                    $('body').addClass('moveDown');
 
-				 }
-				 */
-			});
+                }, 150);
 
-		};
+            }
 
-		var doShowError = function (msg) {
+        });
 
-			if (msg) {
-				$.ui.popup(msg);
-			}
-		};
+    };
 
-		var doShowCourse = function (data) {
+    var doShowError = function(msg){
 
-			var html = mustache.to_html(courseTemplate, data);
-			$courses.html($courses.html() + html);
-		};
+        if(msg){
 
-		var doClearCourses = function () {
+            $.ui.popup(msg);
 
-			$courses.html('');
-		};
+        }
 
-		var onCourseSearch = function (evt) {
+    };
 
-			var filter = this.value;
+    var doShowCourse = function(data){
 
-			if (currentSearch) {
+        var html = mustache.to_html(courseTemplate, data);
+        $courses.html($courses.html() + html);
 
-				clearTimeout(currentSearch);
+    };
 
-			}
+    var doClearCourses = function(){
 
-			currentSearch = setTimeout(function () {
+        $courses.html('');
 
-				$courses.find('li').each(function (i, e) {
+    };
 
-					var sel = $(e).find('div strong').text().toLowerCase().trim();
-					var query = filter.toLowerCase();
+    var onCourseSearch = function(evt){
 
-					if (sel.indexOf(query) === -1) {
+        var filter = this.value;
 
-						$(e).hide();
-					} else {
+        if(currentSearch){
 
-						$(e).show();
-					}
-				});
-			}, 300);
-		};
+            clearTimeout(currentSearch);
 
-		var doInitCoursesInteraction = function (status) {
+        }
 
-			if (status) {
+        currentSearch = setTimeout(function(){
 
-				$courses.bind('tap', onCourseSelection);
-				$coursesSearch.bind('input', onCourseSearch);
-			} else {
+            $courses.find('li').each(function(i, e){
 
-				$courses.unbind('tap', onCourseSelection);
-				$coursesSearch.unbind('input', onCourseSearch);
-			}
-		};
+                var sel = $(e).find('div strong').text().toLowerCase().trim();
+                var query = filter.toLowerCase();
 
-		var doShowLoader = function (status, message) {
+                if(sel.indexOf(query) === -1){
 
-			if (status) {
+                    $(e).hide();
 
-				$.ui.showMask(message || courses.loading);
-			} else {
+                } else {
 
-				$.ui.hideMask();
-			}
-		};
+                    $(e).show();
 
-		var onCourseSelection = function (evt) {
+                }
 
-			evt.preventDefault();
+            });
 
-			var target = $(evt.target).parents('li');
+        }, 300);
 
-			var url = target.attr('data-url'),
-				idCourse = url.match(/course_id=([^&]*)/)[1],
-				thumb = target.find('img').css('background-image'),
-				name = target.find('strong').text(),
-				canAccess = target.attr('data-can'),
-				courseDescription = target.find('.detail-disclosure').html();
+    };
 
-			// if(canAccess != true)return;
+    var doInitCoursesInteraction = function(status){
 
-			thumb = /^url\((['"]?)(.*)\1\)$/.exec(thumb);
-			thumb = thumb ? thumb[2] : '';
+        if(status){
 
-			localStorage.setItem('currentCourseName', name);
-			localStorage.setItem('currentCourseThumb', thumb);
-			localStorage.setItem('currentCourseDescription', courseDescription);
+            $courses.bind('tap', onCourseSelection);
+            $coursesSearch.bind('input', onCourseSearch);
 
-			controller.getCourseDetails(idCourse);
-		};
 
-		return {
-			init: doInit,
-			showError: doShowError,
-			showCourse: doShowCourse,
-			clearCourses: doClearCourses,
-			showLoader: doShowLoader,
-			initCoursesInteraction: doInitCoursesInteraction
-		}
+        }else{
 
-	}));
+            $courses.unbind('tap', onCourseSelection);
+            $coursesSearch.unbind('input', onCourseSearch);
+
+        }
+
+    };
+
+    var doShowLoader = function(status, message){
+
+        if(status){
+
+            $.ui.showMask(message || courses.loading);
+
+        }else{
+
+            $.ui.hideMask();
+
+        }
+
+    };
+
+    var onCourseSelection = function(evt){
+
+        evt.preventDefault();
+
+        var target = $(evt.target).parents('li');
+
+        var url         = target.attr('data-url'),
+            idCourse    = url.match(/course_id=([^&]*)/)[1],
+            thumb       = target.find('img').css('background-image'),
+            name        = target.find('strong').text(),
+            canAccess   = target.attr('data-can'),
+            courseDescription = target.find('.detail-disclosure').html();
+
+       // if(canAccess != true)return;
+
+        thumb = /^url\((['"]?)(.*)\1\)$/.exec(thumb);
+        thumb = thumb ? thumb[2] : '';
+
+        localStorage.setItem('currentCourseName', name);
+        localStorage.setItem('currentCourseThumb', thumb);
+        localStorage.setItem('currentCourseDescription', courseDescription);
+
+        controller.getCourseDetails(idCourse);
+
+    };
+
+    return{
+
+        init: doInit,
+        showError: doShowError,
+        showCourse: doShowCourse,
+        clearCourses: doClearCourses,
+        showLoader: doShowLoader,
+        initCoursesInteraction: doInitCoursesInteraction
+
+    }
+
+}));

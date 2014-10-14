@@ -1,155 +1,160 @@
-;define('controllers/CourseDetails', ['appframework', 'core/Constants', 'model/CourseItem', 'model/DataProvider', 'i18n!nls/courses', 'main'],
+;define('controllers/CourseDetails', ['appframework', 'core/Constants', 'model/CourseItem', 'model/DataProvider', 'i18n!nls/courses'], (function ($, Constants, CourseItem, dataProvider, courses) {
 
-	(function ($, Constants, CourseItem, dataProvider, courses, main) {
+    var token, key, view, detailsStack, currentCourseId;
 
-		var token, key, view, detailsStack, currentCourseId;
+    var init = function (currentToken, userKey, v) {
 
+        token = currentToken;
+        key = userKey;
+        view = v;
 
-		var init = function (currentToken, userKey, v) {
+        detailsStack = [];
 
-			token = currentToken;
-			key = userKey;
-			view = v;
+    };
 
-			detailsStack = [];
-		};
+    var manageStack = function (data, push) {
 
-		var manageStack = function (data, push) {
+        if (push) {
 
-			if (push) {
+            detailsStack.push(data);
+            $.ui.pushHistory('course-details', 'course-details?stack=', 'up', detailsStack.length);
 
-				detailsStack.push(data);
-				$.ui.pushHistory('course-details', 'course-details?stack=', 'up', detailsStack.length);
-			} else {
+        } else {
 
-				detailsStack.pop();
-			}
+            detailsStack.pop();
 
-			if (detailsStack.length > 0) {
+        }
 
-				$(window).bind('hashchange', onDetailsStatusChange);
-			} else {
+        if(detailsStack.length > 0){
 
-				$(window).unbind('hashchange', onDetailsStatusChange);
-			}
+            $(window).bind('hashchange', onDetailsStatusChange);
 
-		};
+        }else{
 
-		var onCourseFolderDetails = function (data) {
+            $(window).unbind('hashchange', onDetailsStatusChange);
 
-			var currentData = JSON.parse(data);
+        }
 
-			if (currentData.success === true) {
+    };
 
-				manageStack(view.currentData(), true);
+    var onCourseFolderDetails = function (data) {
 
-				var results = [];
-				for (var i = 0, tot = currentData.objects.length; i < tot; i++) {
+        var currentData = JSON.parse(data);
 
-					var item = new CourseItem(currentCourseId, currentData.objects[i].id_org, currentData.objects[i].locked || false, currentData.objects[i].title, currentData.objects[i].type);
+        if (currentData.success === true) {
 
-					if ('status' in currentData.objects[i]) {
+            manageStack(view.currentData(), true);
 
-						item.setStatus(currentData.objects[i].status);
-					}
+            var results = [];
 
-					results.push(item);
-				}
+            for (var i = 0, tot = currentData.objects.length; i < tot; i++) {
 
-				view.showLoader(false);
-				view.refreshData(results);
-			} else {
+                var item = new CourseItem(currentCourseId, currentData.objects[i].id_scormitem, currentData.objects[i].locked || false, currentData.objects[i].title, currentData.objects[i].type);
 
-				view.showLoader(false);
-				main.doLogout();
-				// view.showError(currentData.message);
-			}
-		};
+                if('status' in currentData.objects[i]){
 
-		var onCourseFolderDetailsError = function (xhr, error) {
+                    item.setStatus(currentData.objects[i].status);
 
-			view.showLoader(false);
-			// view.showError(error.message);
-			main.doLogout();
-		};
+                }
 
-		var getFolderDetails = function (courseID, organizationID) {
+                results.push(item);
 
-			currentCourseId = courseID;
+            }
 
-			main.lastCourseId = courseID;
-			main.lastOrganizationId = organizationID;
+            view.showLoader(false);
+            view.refreshData(results);
 
-			view.showLoader(true);
+        } else {
+            
+            view.showLoader(false);
+            view.showError(currentData.message);
 
-			var paramsForProxy = JSON.stringify({'details': {'action': 'courseFolderDetails', 'id_course': courseID, 'idOrg': organizationID, 'token': token, 'key': key}}),
-				params = JSON.stringify({'id_course': courseID, 'id_org': organizationID, 'token': token, 'key': key});
+        }
 
-			dataProvider.fetchData('organization/listObjects', params, onCourseFolderDetails, onCourseFolderDetailsError);
-		};
+    };
 
-		var refreshData = function () {
+    var onCourseFolderDetailsError = function (xhr, error) {
 
-			this.getFolderDetails(main.lastCourseId, main.lastOrganizationId);
-		};
+        view.showLoader(false);
+        view.showError(error.message);
 
-		var onDetailsStatusChange = function (evt) {
+    };
 
-			if (window.location.hash === '#' + Constants.COURSES_DETAILS_VIEW) {
+    var getFolderDetails = function (courseID, organizationID) {
 
-				view.restoreHTML(detailsStack[0]);
-				view.restoreBackButton();
+        currentCourseId = courseID;
+        
+        view.showLoader(true);
 
-				manageStack(null, false);
-			}
+        var paramsForProxy =  JSON.stringify({'details': {'action': 'courseFolderDetails', 'id_course': courseID, 'idOrg': organizationID, 'token': token, 'key': key}}),
+            params =  JSON.stringify({'id_course': courseID, 'id_org': organizationID, 'token': token, 'key': key});
 
-			if (detailsStack.length === 0) {
+        dataProvider.fetchData('organization/listObjects', params, onCourseFolderDetails, onCourseFolderDetailsError);
 
-				$(window).unbind('hashchange', onDetailsStatusChange);
-			}
+    };
 
-		};
+    var onDetailsStatusChange = function(evt){
 
-		var onLearningObject = function (data) {
+        if(window.location.hash === '#' + Constants.COURSES_DETAILS_VIEW){
 
-			var currentData = JSON.parse(data);
+            view.restoreHTML(detailsStack[0]);
+            view.restoreBackButton();
 
-			if (currentData.success === true) {
+            manageStack(null, false);
 
-				view.showLoader(false);
-				view.openURL(currentData.launch_url);
-			} else {
+        }
 
-				view.showLoader(false);
-				main.doLogout();
-				// view.showError(currentData.message);
-			}
+        if(detailsStack.length === 0){
 
-		};
+            $(window).unbind('hashchange', onDetailsStatusChange);
 
-		var onLearningObjectError = function (xhr, error) {
+        }
 
-			view.showLoader(false);
-			// view.showError(error.message);
-			main.doLogout();
-		};
+    };
 
-		var openLearningObject = function (id) {
+    var onLearningObject = function (data) {
 
-			view.showLoader(true, courses.loadingCourseItem);
+        var currentData = JSON.parse(data);
 
-			var paramsForProxy = JSON.stringify({'details': {'action': 'playLearningObject', 'idOrg': id, 'token': token, 'key': key}}),
-				params = JSON.stringify({'id_org': id, 'token': token, 'key': key});
+        if (currentData.success === true) {
 
-			dataProvider.fetchData('organization/play', params, onLearningObject, onLearningObjectError);
-		};
+            view.showLoader(false);
+            view.openURL(currentData.launch_url);
 
-		return {
-			openLearningObject: openLearningObject,
-			getFolderDetails: getFolderDetails,
-			refreshData: refreshData,
-			init: init
-		};
+        } else {
 
-	}))
+            view.showLoader(false);
+            view.showError(currentData.message);
+
+        }
+
+    };
+
+    var onLearningObjectError = function (xhr, error) {
+
+        view.showLoader(false);
+        view.showError(error.message);
+
+    };
+
+    var openLearningObject = function (id) {
+
+        view.showLoader(true, courses.loadingCourseItem);
+
+        var paramsForProxy = JSON.stringify({'details': {'action': 'playLearningObject', 'idOrg': id, 'token': token, 'key': key}}),
+            params = JSON.stringify({'id_org': id, 'token': token, 'key': key});
+
+        dataProvider.fetchData('organization/play', params, onLearningObject, onLearningObjectError);
+
+    };
+
+    return {
+
+        openLearningObject: openLearningObject,
+        getFolderDetails: getFolderDetails,
+        init: init
+
+    };
+
+}))
 ;

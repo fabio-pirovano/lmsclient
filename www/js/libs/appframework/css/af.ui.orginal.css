@@ -2087,8 +2087,7 @@ color:inherit;
 
 
 #afui.win8 {
-	/*font:14px  "Segoe UI Semilight", "HelveticaNeue-light", Helvetica, Arial, sans-serif;*/
-	font-size:14px;
+	font:14px  "Segoe UI Semilight", "HelveticaNeue-light", Helvetica, Arial, sans-serif;
  	background:#000;
  	color:#fff;
 }
@@ -2774,7 +2773,7 @@ color:inherit;
 /* border rgba(158,158,158,255) */
 
 #afui.ios7 {
-     /*font-family:'HelveticaNeue', 'Helvetica Neue',Helvetica, Arial, sans-serif;*/
+     font-family:'HelveticaNeue', 'Helvetica Neue',Helvetica, Arial, sans-serif;
 }
 
 #afui.ios7 #header {

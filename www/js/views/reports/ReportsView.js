@@ -1,59 +1,58 @@
-;
-define('views/reports/ReportsView', ['appframework', 'controllers/Reports', 'i18n!nls/miscellaneous'],
-	(function ($, reports, miscellaneous) {
+;define('views/reports/ReportsView', ['appframework', 'controllers/Reports', 'i18n!nls/miscellaneous'],
+    (function($, reports, miscellaneous){
 
-		var content;
+        var content;
 
-		var init = function () {
+        var init = function(){
 
-			if (!content)content = document.getElementById('reports-content');
+            if(!content)content = document.getElementById('reports-content');
 
-			content.contentWindow.document.open('text/html', 'replace');
-			content.contentWindow.document.write('');
-			content.contentWindow.document.close();
+            content.contentWindow.document.open('text/html', 'replace');
+            content.contentWindow.document.write('');
+            content.contentWindow.document.close();
 
-			showLoader(true);
-			reports.loadData(this);
+            showLoader(true);
+            reports.loadData(this);
 
-		};
+        };
 
-		var populate = function (value) {
+        var populate = function(value){
 
-			content.contentWindow.document.open('text/html', 'replace');
-			content.contentWindow.document.write(value);
-			content.contentWindow.document.close();
+            content.contentWindow.document.open('text/html', 'replace');
+            content.contentWindow.document.write(value);
+            content.contentWindow.document.close();
 
-			showLoader(false);
+            showLoader(false);
 
-		};
+        };
 
-		var showLoader = function (status) {
+        var showLoader = function(status){
 
-			if (status) {
+            if(status){
 
-				$.ui.showMask(miscellaneous.loadingData);
+                $.ui.showMask(miscellaneous.loadingData);
 
-			} else {
+            }else{
 
-				$.ui.hideMask();
+                $.ui.hideMask();
 
-			}
+            }
 
-		};
+        };
 
-		var showError = function (message) {
+        var showError = function(message){
 
-			showLoader(false);
-			$.ui.popup(message);
+            showLoader(false);
+            $.ui.popup(message);
 
-		};
+        };
 
-		return{
+        return{
 
-			init: init,
-			populate: populate,
-			showError: showError
+            init: init,
+            populate: populate,
+            showError: showError
 
-		};
+        };
 
-	}));
+    }));
