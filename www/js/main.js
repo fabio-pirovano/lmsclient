@@ -117,7 +117,12 @@
         $('#settings').bind('loadpanel', loadSettingsModule);
 
         $('#logout-link').text(nav.logout).bind('touchend', doLogout);
-
+        
+        if(window.device.platform === 'iOS' && $('#menu').hasClass('tabletMenu')){
+           
+           $.ui.enableLeftSideMenu();
+           
+         }
     };
 
     var loadSettingsModule = function(evt){
