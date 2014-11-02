@@ -124,6 +124,18 @@ define('main', ['appframework', 'appframeworkui', 'views/login/LoginView', 'core
 			// disabled until version 2
 			// $('#settings-link').text(nav.settings);
 			// $('#settings').bind('loadpanel', loadSettingsModule);
+			if($('#menu').hasClass('tabletMenu')){
+
+        $('#menu').removeClass('tabletMenu');
+
+        $('#courses').bind('loadpanel', function(evt){
+
+            $('#menu').addClass('tabletMenu');
+            $ui.enableSideMenu();
+
+        });
+
+      }
 
 			$('#logout-link').text(nav.logout).bind('touchend', doLogout);
 		};
